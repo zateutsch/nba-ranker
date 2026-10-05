@@ -1,0 +1,4 @@
+nba_api>=1.11
+pandas>=2.0
+lxml>=5.0
+requests>=2.31
