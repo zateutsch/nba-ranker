@@ -48,6 +48,13 @@ MANUAL_IDS: dict[str, int] = {
     "Steve Smith": 120,
 }
 
+# Awards missing from NBA.com's PlayerAwards data, keyed by NBA.com player ID.
+# Merged in before summarizing; skipped if NBA.com later adds the same entry.
+AWARD_CORRECTIONS: dict[int, list[dict]] = {
+    2572: [{"DESCRIPTION": "NBA All-Star", "SEASON": "2006-07"}],   # Josh Howard, 2007 ASG
+    77134: [{"DESCRIPTION": "NBA All-Star", "SEASON": "1987-88"}],  # Steve Johnson, 1988 ASG
+}
+
 STAT_FIELDS = [
     "GP", "GS", "MIN", "PTS", "REB", "AST", "STL", "BLK", "TOV",
     "FG_PCT", "FG3_PCT", "FT_PCT", "FGM", "FGA", "FG3M", "FG3A", "FTM", "FTA",
@@ -206,6 +213,10 @@ def build_player(pid: int, refresh: bool, delay: float) -> dict:
     info = get_info(pid, refresh, delay)
     career = get_career(pid, refresh, delay)
     awards = get_awards(pid, refresh, delay)
+    seen = {(a["DESCRIPTION"], a["SEASON"]) for a in awards}
+    awards = awards + [
+        a for a in AWARD_CORRECTIONS.get(pid, []) if (a["DESCRIPTION"], a["SEASON"]) not in seen
+    ]
     draft_year = info.get("DRAFT_YEAR")
     return {
         "id": pid,

@@ -39,4 +39,5 @@ python scripts/fetch_players.py --limit 5  # quick test
 Run it from a home connection — stats.nba.com usually blocks cloud/CI IPs.
 Responses are cached in `scripts/.cache/`; pass `--refresh` to re-fetch (e.g.
 at the start of a new season). If a new All-Star's name doesn't match NBA.com,
-add it to `MANUAL_IDS` in the script.
+add it to `MANUAL_IDS` in the script. If NBA.com is missing an award, add it
+to `AWARD_CORRECTIONS`.

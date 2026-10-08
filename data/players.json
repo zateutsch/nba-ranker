@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T20:29:03+00:00",
+  "generatedAt": "2026-10-08T23:26:30+00:00",
   "sources": {
     "players": "https://en.wikipedia.org/wiki/List_of_NBA_All-Stars",
     "stats": "stats.nba.com (via nba_api)"
@@ -29120,7 +29120,7 @@
         "pf": 3.3
       },
       "accolades": {
-        "allStar": 0,
+        "allStar": 1,
         "championships": 0,
         "mvp": 0,
         "finalsMvp": 0,
@@ -29149,6 +29149,9 @@
         "seasons": {
           "allRookie": [
             "2003-04"
+          ],
+          "allStar": [
+            "2006-07"
           ]
         }
       }
@@ -46819,7 +46822,7 @@
         "pf": 3.1
       },
       "accolades": {
-        "allStar": 0,
+        "allStar": 1,
         "championships": 0,
         "mvp": 0,
         "finalsMvp": 0,
@@ -46845,7 +46848,11 @@
           "1": 0,
           "2": 0
         },
-        "seasons": {}
+        "seasons": {
+          "allStar": [
+            "1987-88"
+          ]
+        }
       }
     },
     {
