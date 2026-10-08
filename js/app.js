@@ -188,14 +188,16 @@ function playerCard(p, side) {
   const s = p.careerRegularSeason || {};
   return `<button class="player-card" data-pick="${p.id}" aria-label="Pick ${escapeHtml(p.name)}">
     ${headshot(p)}
-    <span class="player-name">${escapeHtml(p.name)}</span>
-    <span class="player-meta">${escapeHtml(p.position || "")} · ${p.fromYear}–${p.active ? "now" : p.toYear}</span>
-    <span class="stat-row">
-      <span><strong>${fmt(s.pts)}</strong>PTS</span>
-      <span><strong>${fmt(s.reb)}</strong>REB</span>
-      <span><strong>${fmt(s.ast)}</strong>AST</span>
+    <span class="card-body">
+      <span class="player-name">${escapeHtml(p.name)}</span>
+      <span class="player-meta">${escapeHtml(p.position || "")} · ${p.fromYear}–${p.active ? "now" : p.toYear}</span>
+      <span class="stat-row">
+        <span><strong>${fmt(s.pts)}</strong>PTS</span>
+        <span><strong>${fmt(s.reb)}</strong>REB</span>
+        <span><strong>${fmt(s.ast)}</strong>AST</span>
+      </span>
+      <span class="chips">${accoladeChips(p.accolades)}</span>
     </span>
-    <span class="chips">${accoladeChips(p.accolades)}</span>
     <span class="key-hint">${side === "left" ? "← key" : "→ key"}</span>
   </button>`;
 }
@@ -259,6 +261,11 @@ function renderCompare() {
   for (const btn of app.querySelectorAll("[data-pick]")) {
     btn.addEventListener("click", () => pick(Number(btn.dataset.pick)));
   }
+  // The new card renders under the cursor that just picked; hold off on the
+  // hover highlight until the pointer actually moves.
+  const versus = app.querySelector(".versus");
+  versus.classList.add("await-pointer");
+  versus.addEventListener("pointermove", () => versus.classList.remove("await-pointer"), { once: true });
   app.querySelector("[data-action=undo]").addEventListener("click", undo);
   app.querySelector("[data-action=quit]").addEventListener("click", () => {
     if (done && !confirm("Discard this ranking and start over?")) return;
