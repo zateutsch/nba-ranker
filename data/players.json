@@ -1,10 +1,20 @@
 {
-  "generatedAt": "2026-10-09T01:17:59+00:00",
+  "generatedAt": "2026-10-09T02:18:18+00:00",
   "sources": {
-    "players": "https://en.wikipedia.org/wiki/List_of_NBA_All-Stars",
+    "players": [
+      "https://en.wikipedia.org/wiki/List_of_NBA_All-Stars",
+      "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player_Award",
+      "https://en.wikipedia.org/wiki/Bill_Russell_NBA_Finals_Most_Valuable_Player_Award",
+      "https://en.wikipedia.org/wiki/NBA_Defensive_Player_of_the_Year_Award",
+      "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year_Award",
+      "https://en.wikipedia.org/wiki/NBA_Sixth_Man_of_the_Year_Award",
+      "https://en.wikipedia.org/wiki/NBA_Most_Improved_Player_Award",
+      "https://en.wikipedia.org/wiki/NBA_All-Star_Game_Most_Valuable_Player_Award",
+      "https://en.wikipedia.org/wiki/NBA_Conference_Finals_Most_Valuable_Player"
+    ],
     "stats": "stats.nba.com (via nba_api)"
   },
-  "count": 466,
+  "count": 522,
   "players": [
     {
       "id": 920,
@@ -113,6 +123,206 @@
           ],
           "allDefensive2": [
             "1988-89"
+          ]
+        }
+      }
+    },
+    {
+      "id": 201166,
+      "name": "Aaron Brooks",
+      "slug": "aaron-brooks",
+      "position": "Guard",
+      "height": "6-0",
+      "weight": "161",
+      "country": "USA",
+      "birthdate": "1985-01-14",
+      "fromYear": 2007,
+      "toYear": 2017,
+      "active": false,
+      "lastTeam": "Houston Rockets",
+      "draft": {
+        "year": "2007",
+        "round": "1",
+        "pick": "26"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/201166.png",
+      "careerRegularSeason": {
+        "gp": 645,
+        "gs": 183,
+        "min": 20.8,
+        "pts": 9.7,
+        "reb": 1.7,
+        "ast": 3.0,
+        "stl": 0.6,
+        "blk": 0.1,
+        "tov": 1.6,
+        "fg_pct": 0.413,
+        "fg3_pct": 0.37,
+        "ft_pct": 0.837,
+        "fgm": 3.5,
+        "fga": 8.5,
+        "fg3m": 1.3,
+        "fg3a": 3.4,
+        "ftm": 1.4,
+        "fta": 1.7,
+        "oreb": 0.4,
+        "dreb": 1.3,
+        "pf": 1.9
+      },
+      "careerPlayoffs": {
+        "gp": 40,
+        "gs": 13,
+        "min": 17.6,
+        "pts": 8.4,
+        "reb": 1.7,
+        "ast": 1.8,
+        "stl": 0.2,
+        "blk": 0.1,
+        "tov": 1.2,
+        "fg_pct": 0.416,
+        "fg3_pct": 0.33,
+        "ft_pct": 0.746,
+        "fgm": 3.1,
+        "fga": 7.4,
+        "fg3m": 0.9,
+        "fg3a": 2.8,
+        "ftm": 1.3,
+        "fta": 1.8,
+        "oreb": 0.3,
+        "dreb": 1.5,
+        "pf": 1.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2009-10"
+          ]
+        }
+      }
+    },
+    {
+      "id": 243,
+      "name": "Aaron McKie",
+      "slug": "aaron-mckie",
+      "position": "Guard",
+      "height": "6-5",
+      "weight": "209",
+      "country": "USA",
+      "birthdate": "1972-10-02",
+      "fromYear": 1994,
+      "toYear": 2006,
+      "active": false,
+      "lastTeam": "Philadelphia 76ers",
+      "draft": {
+        "year": "1994",
+        "round": "1",
+        "pick": "17"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/243.png",
+      "careerRegularSeason": {
+        "gp": 793,
+        "gs": 287,
+        "min": 24.2,
+        "pts": 7.4,
+        "reb": 3.3,
+        "ast": 2.7,
+        "stl": 1.2,
+        "blk": 0.2,
+        "tov": 1.3,
+        "fg_pct": 0.438,
+        "fg3_pct": 0.35,
+        "ft_pct": 0.779,
+        "fgm": 2.9,
+        "fga": 6.5,
+        "fg3m": 0.5,
+        "fg3a": 1.4,
+        "ftm": 1.2,
+        "fta": 1.5,
+        "oreb": 0.6,
+        "dreb": 2.7,
+        "pf": 2.0
+      },
+      "careerPlayoffs": {
+        "gp": 75,
+        "gs": 26,
+        "min": 28.5,
+        "pts": 9.5,
+        "reb": 3.6,
+        "ast": 3.2,
+        "stl": 1.1,
+        "blk": 0.1,
+        "tov": 1.3,
+        "fg_pct": 0.437,
+        "fg3_pct": 0.385,
+        "ft_pct": 0.801,
+        "fgm": 3.6,
+        "fga": 8.2,
+        "fg3m": 0.7,
+        "fg3a": 1.9,
+        "ftm": 1.6,
+        "fta": 1.9,
+        "oreb": 0.6,
+        "dreb": 3.0,
+        "pf": 2.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2000-01"
           ]
         }
       }
@@ -466,6 +676,106 @@
           ],
           "championships": [
             "2023-24"
+          ]
+        }
+      }
+    },
+    {
+      "id": 673,
+      "name": "Alan Henderson",
+      "slug": "alan-henderson",
+      "position": "Forward-Center",
+      "height": "6-9",
+      "weight": "240",
+      "country": "USA",
+      "birthdate": "1972-12-02",
+      "fromYear": 1995,
+      "toYear": 2006,
+      "active": false,
+      "lastTeam": "Atlanta Hawks",
+      "draft": {
+        "year": "1995",
+        "round": "1",
+        "pick": "16"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/673.png",
+      "careerRegularSeason": {
+        "gp": 652,
+        "gs": 220,
+        "min": 21.1,
+        "pts": 7.8,
+        "reb": 5.0,
+        "ast": 0.6,
+        "stl": 0.6,
+        "blk": 0.5,
+        "tov": 1.1,
+        "fg_pct": 0.469,
+        "fg3_pct": 0.192,
+        "ft_pct": 0.639,
+        "fgm": 3.0,
+        "fga": 6.5,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 1.7,
+        "fta": 2.7,
+        "oreb": 2.2,
+        "dreb": 2.8,
+        "pf": 2.2
+      },
+      "careerPlayoffs": {
+        "gp": 36,
+        "gs": 4,
+        "min": 14.2,
+        "pts": 5.0,
+        "reb": 2.8,
+        "ast": 0.3,
+        "stl": 0.2,
+        "blk": 0.3,
+        "tov": 0.7,
+        "fg_pct": 0.547,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.714,
+        "fgm": 1.9,
+        "fga": 3.6,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 1.1,
+        "fta": 1.6,
+        "oreb": 1.4,
+        "dreb": 1.4,
+        "pf": 2.1
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1997-98"
           ]
         }
       }
@@ -4178,6 +4488,109 @@
       }
     },
     {
+      "id": 2732,
+      "name": "Ben Gordon",
+      "slug": "ben-gordon",
+      "position": "Guard",
+      "height": "6-3",
+      "weight": "205",
+      "country": "USA",
+      "birthdate": "1983-04-04",
+      "fromYear": 2004,
+      "toYear": 2014,
+      "active": false,
+      "lastTeam": "Chicago Bulls",
+      "draft": {
+        "year": "2004",
+        "round": "1",
+        "pick": "3"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2732.png",
+      "careerRegularSeason": {
+        "gp": 744,
+        "gs": 269,
+        "min": 27.4,
+        "pts": 14.9,
+        "reb": 2.5,
+        "ast": 2.5,
+        "stl": 0.7,
+        "blk": 0.2,
+        "tov": 2.1,
+        "fg_pct": 0.432,
+        "fg3_pct": 0.401,
+        "ft_pct": 0.857,
+        "fgm": 5.3,
+        "fga": 12.2,
+        "fg3m": 1.6,
+        "fg3a": 3.9,
+        "ftm": 2.8,
+        "fta": 3.2,
+        "oreb": 0.4,
+        "dreb": 2.0,
+        "pf": 2.3
+      },
+      "careerPlayoffs": {
+        "gp": 29,
+        "gs": 24,
+        "min": 37.8,
+        "pts": 20.2,
+        "reb": 3.2,
+        "ast": 3.2,
+        "stl": 0.8,
+        "blk": 0.1,
+        "tov": 2.5,
+        "fg_pct": 0.403,
+        "fg3_pct": 0.384,
+        "ft_pct": 0.84,
+        "fgm": 6.4,
+        "fga": 15.9,
+        "fg3m": 2.2,
+        "fg3a": 5.7,
+        "ftm": 5.2,
+        "fta": 6.2,
+        "oreb": 0.8,
+        "dreb": 2.4,
+        "pf": 3.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2004-05"
+          ],
+          "sixthMan": [
+            "2004-05"
+          ]
+        }
+      }
+    },
+    {
       "id": 1627732,
       "name": "Ben Simmons",
       "slug": "ben-simmons",
@@ -7226,6 +7639,109 @@
       }
     },
     {
+      "id": 1517,
+      "name": "Bobby Jackson",
+      "slug": "bobby-jackson",
+      "position": "Guard",
+      "height": "6-1",
+      "weight": "185",
+      "country": "USA",
+      "birthdate": "1973-03-13",
+      "fromYear": 1997,
+      "toYear": 2008,
+      "active": false,
+      "lastTeam": "Sacramento Kings",
+      "draft": {
+        "year": "1997",
+        "round": "1",
+        "pick": "23"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1517.png",
+      "careerRegularSeason": {
+        "gp": 755,
+        "gs": 143,
+        "min": 22.2,
+        "pts": 9.7,
+        "reb": 3.1,
+        "ast": 2.6,
+        "stl": 0.9,
+        "blk": 0.1,
+        "tov": 1.3,
+        "fg_pct": 0.417,
+        "fg3_pct": 0.354,
+        "ft_pct": 0.793,
+        "fgm": 3.6,
+        "fga": 8.7,
+        "fg3m": 0.9,
+        "fg3a": 2.6,
+        "ftm": 1.5,
+        "fta": 1.9,
+        "oreb": 0.8,
+        "dreb": 2.3,
+        "pf": 1.8
+      },
+      "careerPlayoffs": {
+        "gp": 58,
+        "gs": 3,
+        "min": 21.8,
+        "pts": 9.2,
+        "reb": 2.8,
+        "ast": 2.1,
+        "stl": 0.7,
+        "blk": 0.1,
+        "tov": 1.1,
+        "fg_pct": 0.405,
+        "fg3_pct": 0.27,
+        "ft_pct": 0.807,
+        "fgm": 3.4,
+        "fga": 8.4,
+        "fg3m": 0.7,
+        "fg3a": 2.7,
+        "ftm": 1.7,
+        "fta": 2.1,
+        "oreb": 0.6,
+        "dreb": 2.2,
+        "pf": 1.7
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1997-98"
+          ],
+          "sixthMan": [
+            "2002-03"
+          ]
+        }
+      }
+    },
+    {
       "id": 77193,
       "name": "Bobby Jones",
       "slug": "bobby-jones",
@@ -7359,6 +7875,106 @@
       }
     },
     {
+      "id": 2250,
+      "name": "Bobby Simmons",
+      "slug": "bobby-simmons",
+      "position": "Forward",
+      "height": "6-6",
+      "weight": "235",
+      "country": "USA",
+      "birthdate": "1980-06-02",
+      "fromYear": 2001,
+      "toYear": 2011,
+      "active": false,
+      "lastTeam": "Los Angeles Clippers",
+      "draft": {
+        "year": "2001",
+        "round": "2",
+        "pick": "41"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2250.png",
+      "careerRegularSeason": {
+        "gp": 466,
+        "gs": 228,
+        "min": 24.7,
+        "pts": 9.0,
+        "reb": 3.8,
+        "ast": 1.5,
+        "stl": 0.8,
+        "blk": 0.2,
+        "tov": 1.1,
+        "fg_pct": 0.437,
+        "fg3_pct": 0.396,
+        "ft_pct": 0.823,
+        "fgm": 3.3,
+        "fga": 7.6,
+        "fg3m": 0.8,
+        "fg3a": 2.0,
+        "ftm": 1.5,
+        "fta": 1.8,
+        "oreb": 1.2,
+        "dreb": 2.6,
+        "pf": 2.5
+      },
+      "careerPlayoffs": {
+        "gp": 9,
+        "gs": 6,
+        "min": 21.1,
+        "pts": 4.9,
+        "reb": 2.1,
+        "ast": 1.1,
+        "stl": 1.0,
+        "blk": 0.1,
+        "tov": 0.8,
+        "fg_pct": 0.373,
+        "fg3_pct": 0.375,
+        "ft_pct": 0.0,
+        "fgm": 2.1,
+        "fga": 5.7,
+        "fg3m": 0.7,
+        "fg3a": 1.8,
+        "ftm": 0.0,
+        "fta": 0.0,
+        "oreb": 0.4,
+        "dreb": 1.7,
+        "pf": 2.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2004-05"
+          ]
+        }
+      }
+    },
+    {
       "id": 78453,
       "name": "Bobby Wanzer",
       "slug": "bobby-wanzer",
@@ -7474,6 +8090,109 @@
           ],
           "championships": [
             "1950-51"
+          ]
+        }
+      }
+    },
+    {
+      "id": 2564,
+      "name": "Boris Diaw",
+      "slug": "boris-diaw",
+      "position": "Center-Forward",
+      "height": "6-8",
+      "weight": "250",
+      "country": "France",
+      "birthdate": "1982-04-16",
+      "fromYear": 2003,
+      "toYear": 2016,
+      "active": false,
+      "lastTeam": "San Antonio Spurs",
+      "draft": {
+        "year": "2003",
+        "round": "1",
+        "pick": "21"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2564.png",
+      "careerRegularSeason": {
+        "gp": 1064,
+        "gs": 564,
+        "min": 27.0,
+        "pts": 8.6,
+        "reb": 4.4,
+        "ast": 3.5,
+        "stl": 0.6,
+        "blk": 0.5,
+        "tov": 1.8,
+        "fg_pct": 0.493,
+        "fg3_pct": 0.336,
+        "ft_pct": 0.717,
+        "fgm": 3.6,
+        "fga": 7.2,
+        "fg3m": 0.4,
+        "fg3a": 1.3,
+        "ftm": 1.0,
+        "fta": 1.4,
+        "oreb": 1.2,
+        "dreb": 3.2,
+        "pf": 2.1
+      },
+      "careerPlayoffs": {
+        "gp": 119,
+        "gs": 53,
+        "min": 26.4,
+        "pts": 9.2,
+        "reb": 4.4,
+        "ast": 3.2,
+        "stl": 0.6,
+        "blk": 0.4,
+        "tov": 1.5,
+        "fg_pct": 0.504,
+        "fg3_pct": 0.336,
+        "ft_pct": 0.736,
+        "fgm": 3.8,
+        "fga": 7.5,
+        "fg3m": 0.4,
+        "fg3a": 1.2,
+        "ftm": 1.3,
+        "fta": 1.7,
+        "oreb": 1.2,
+        "dreb": 3.2,
+        "pf": 2.2
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 1,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "championships": [
+            "2013-14"
+          ],
+          "mip": [
+            "2005-06"
           ]
         }
       }
@@ -8471,6 +9190,106 @@
           ],
           "championships": [
             "1974-75"
+          ]
+        }
+      }
+    },
+    {
+      "id": 203468,
+      "name": "CJ McCollum",
+      "slug": "cj-mccollum",
+      "position": "Guard",
+      "height": "6-3",
+      "weight": "190",
+      "country": "USA",
+      "birthdate": "1991-09-19",
+      "fromYear": 2013,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Atlanta Hawks",
+      "draft": {
+        "year": "2013",
+        "round": "1",
+        "pick": "10"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/203468.png",
+      "careerRegularSeason": {
+        "gp": 863,
+        "gs": 750,
+        "min": 31.9,
+        "pts": 19.5,
+        "reb": 3.6,
+        "ast": 3.8,
+        "stl": 0.9,
+        "blk": 0.4,
+        "tov": 1.8,
+        "fg_pct": 0.453,
+        "fg3_pct": 0.395,
+        "ft_pct": 0.796,
+        "fgm": 7.4,
+        "fga": 16.4,
+        "fg3m": 2.5,
+        "fg3a": 6.4,
+        "ftm": 2.2,
+        "fta": 2.7,
+        "oreb": 0.7,
+        "dreb": 3.0,
+        "pf": 2.1
+      },
+      "careerPlayoffs": {
+        "gp": 73,
+        "gs": 63,
+        "min": 35.2,
+        "pts": 20.0,
+        "reb": 4.3,
+        "ast": 3.0,
+        "stl": 0.9,
+        "blk": 0.5,
+        "tov": 2.2,
+        "fg_pct": 0.435,
+        "fg3_pct": 0.363,
+        "ft_pct": 0.742,
+        "fgm": 7.7,
+        "fga": 17.7,
+        "fg3m": 2.2,
+        "fg3a": 6.0,
+        "ftm": 2.4,
+        "fta": 3.2,
+        "oreb": 0.8,
+        "dreb": 3.5,
+        "pf": 2.4
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2015-16"
           ]
         }
       }
@@ -9563,6 +10382,110 @@
         "seasons": {
           "allStar": [
             "1994-95"
+          ]
+        }
+      }
+    },
+    {
+      "id": 77487,
+      "name": "Cedric Maxwell",
+      "slug": "cedric-maxwell",
+      "position": "Forward",
+      "height": "6-8",
+      "weight": "205",
+      "country": "USA",
+      "birthdate": "1955-11-21",
+      "fromYear": 1977,
+      "toYear": 1987,
+      "active": false,
+      "lastTeam": "Boston Celtics",
+      "draft": {
+        "year": "1977",
+        "round": "1",
+        "pick": "12"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77487.png",
+      "careerRegularSeason": {
+        "gp": 835,
+        "gs": 538,
+        "min": 28.5,
+        "pts": 12.5,
+        "reb": 6.3,
+        "ast": 2.2,
+        "stl": 0.8,
+        "blk": 0.5,
+        "tov": 2.2,
+        "fg_pct": 0.546,
+        "fg3_pct": null,
+        "ft_pct": 0.784,
+        "fgm": 4.1,
+        "fga": 7.5,
+        "fg3m": 0.0,
+        "fg3a": null,
+        "ftm": 4.3,
+        "fta": 5.5,
+        "oreb": 2.5,
+        "dreb": 3.8,
+        "pf": 2.7
+      },
+      "careerPlayoffs": {
+        "gp": 102,
+        "gs": 42,
+        "min": 24.8,
+        "pts": 10.9,
+        "reb": 5.4,
+        "ast": 1.9,
+        "stl": 0.7,
+        "blk": 0.5,
+        "tov": 1.7,
+        "fg_pct": 0.545,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.777,
+        "fgm": 3.7,
+        "fga": 6.7,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 3.6,
+        "fta": 4.6,
+        "oreb": 2.3,
+        "dreb": 3.1,
+        "pf": 2.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 2,
+        "mvp": 0,
+        "finalsMvp": 1,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "championships": [
+            "1980-81",
+            "1983-84"
+          ],
+          "finalsMvp": [
+            "1980-81"
           ]
         }
       }
@@ -11276,6 +12199,109 @@
       }
     },
     {
+      "id": 456,
+      "name": "Chuck Person",
+      "slug": "chuck-person",
+      "position": "Forward",
+      "height": "6-8",
+      "weight": "241",
+      "country": "USA",
+      "birthdate": "1964-06-27",
+      "fromYear": 1986,
+      "toYear": 1999,
+      "active": false,
+      "lastTeam": "Indiana Pacers",
+      "draft": {
+        "year": "1986",
+        "round": "1",
+        "pick": "4"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/456.png",
+      "careerRegularSeason": {
+        "gp": 943,
+        "gs": 622,
+        "min": 30.7,
+        "pts": 14.7,
+        "reb": 5.1,
+        "ast": 2.8,
+        "stl": 0.7,
+        "blk": 0.2,
+        "tov": 2.1,
+        "fg_pct": 0.458,
+        "fg3_pct": 0.362,
+        "ft_pct": 0.723,
+        "fgm": 5.9,
+        "fga": 12.9,
+        "fg3m": 1.3,
+        "fg3a": 3.6,
+        "ftm": 1.6,
+        "fta": 2.2,
+        "oreb": 1.2,
+        "dreb": 3.8,
+        "pf": 2.7
+      },
+      "careerPlayoffs": {
+        "gp": 51,
+        "gs": 15,
+        "min": 26.1,
+        "pts": 11.3,
+        "reb": 3.6,
+        "ast": 1.7,
+        "stl": 0.5,
+        "blk": 0.2,
+        "tov": 1.2,
+        "fg_pct": 0.448,
+        "fg3_pct": 0.391,
+        "ft_pct": 0.737,
+        "fgm": 4.1,
+        "fga": 9.1,
+        "fg3m": 1.5,
+        "fg3a": 3.9,
+        "ftm": 1.6,
+        "fta": 2.2,
+        "oreb": 0.5,
+        "dreb": 3.2,
+        "pf": 2.4
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1986-87"
+          ],
+          "roy": [
+            "1986-87"
+          ]
+        }
+      }
+    },
+    {
       "id": 76912,
       "name": "Cliff Hagan",
       "slug": "cliff-hagan",
@@ -11966,6 +12992,190 @@
       }
     },
     {
+      "id": 1642843,
+      "name": "Cooper Flagg",
+      "slug": "cooper-flagg",
+      "position": "Forward",
+      "height": "6-9",
+      "weight": "205",
+      "country": "USA",
+      "birthdate": "2006-12-21",
+      "fromYear": 2025,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Dallas Mavericks",
+      "draft": {
+        "year": "2025",
+        "round": "1",
+        "pick": "1"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1642843.png",
+      "careerRegularSeason": {
+        "gp": 70,
+        "gs": 70,
+        "min": 33.5,
+        "pts": 21.0,
+        "reb": 6.7,
+        "ast": 4.5,
+        "stl": 1.2,
+        "blk": 0.9,
+        "tov": 2.3,
+        "fg_pct": 0.468,
+        "fg3_pct": 0.295,
+        "ft_pct": 0.827,
+        "fgm": 8.0,
+        "fga": 17.1,
+        "fg3m": 1.0,
+        "fg3a": 3.5,
+        "ftm": 4.0,
+        "fta": 4.9,
+        "oreb": 1.2,
+        "dreb": 5.4,
+        "pf": 2.0
+      },
+      "careerPlayoffs": null,
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2025-26"
+          ],
+          "roy": [
+            "2025-26"
+          ]
+        }
+      }
+    },
+    {
+      "id": 722,
+      "name": "Corliss Williamson",
+      "slug": "corliss-williamson",
+      "position": "Forward",
+      "height": "6-7",
+      "weight": "245",
+      "country": "USA",
+      "birthdate": "1973-12-04",
+      "fromYear": 1995,
+      "toYear": 2006,
+      "active": false,
+      "lastTeam": "Sacramento Kings",
+      "draft": {
+        "year": "1995",
+        "round": "1",
+        "pick": "13"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/722.png",
+      "careerRegularSeason": {
+        "gp": 822,
+        "gs": 293,
+        "min": 22.8,
+        "pts": 11.1,
+        "reb": 3.9,
+        "ast": 1.2,
+        "stl": 0.6,
+        "blk": 0.3,
+        "tov": 1.6,
+        "fg_pct": 0.49,
+        "fg3_pct": 0.136,
+        "ft_pct": 0.714,
+        "fgm": 4.4,
+        "fga": 8.9,
+        "fg3m": 0.0,
+        "fg3a": 0.1,
+        "ftm": 2.4,
+        "fta": 3.3,
+        "oreb": 1.5,
+        "dreb": 2.4,
+        "pf": 2.7
+      },
+      "careerPlayoffs": {
+        "gp": 66,
+        "gs": 10,
+        "min": 16.7,
+        "pts": 7.5,
+        "reb": 2.6,
+        "ast": 0.8,
+        "stl": 0.3,
+        "blk": 0.2,
+        "tov": 1.2,
+        "fg_pct": 0.436,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.781,
+        "fgm": 2.7,
+        "fga": 6.1,
+        "fg3m": 0.0,
+        "fg3a": 0.1,
+        "ftm": 2.2,
+        "fta": 2.8,
+        "oreb": 1.0,
+        "dreb": 1.6,
+        "pf": 2.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 1,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "championships": [
+            "2003-04"
+          ],
+          "sixthMan": [
+            "2001-02"
+          ]
+        }
+      }
+    },
+    {
       "id": 78028,
       "name": "Curtis Rowe",
       "slug": "curtis-rowe",
@@ -12515,6 +13725,109 @@
           ],
           "olympicGold": [
             "2020"
+          ]
+        }
+      }
+    },
+    {
+      "id": 757,
+      "name": "Damon Stoudamire",
+      "slug": "damon-stoudamire",
+      "position": "Guard",
+      "height": "5-10",
+      "weight": "171",
+      "country": "USA",
+      "birthdate": "1973-09-03",
+      "fromYear": 1995,
+      "toYear": 2007,
+      "active": false,
+      "lastTeam": "Portland Trail Blazers",
+      "draft": {
+        "year": "1995",
+        "round": "1",
+        "pick": "7"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/757.png",
+      "careerRegularSeason": {
+        "gp": 878,
+        "gs": 793,
+        "min": 33.1,
+        "pts": 13.4,
+        "reb": 3.5,
+        "ast": 6.1,
+        "stl": 1.1,
+        "blk": 0.1,
+        "tov": 2.3,
+        "fg_pct": 0.406,
+        "fg3_pct": 0.357,
+        "ft_pct": 0.833,
+        "fgm": 4.9,
+        "fga": 12.1,
+        "fg3m": 1.4,
+        "fg3a": 3.9,
+        "ftm": 2.1,
+        "fta": 2.6,
+        "oreb": 0.8,
+        "dreb": 2.7,
+        "pf": 1.9
+      },
+      "careerPlayoffs": {
+        "gp": 53,
+        "gs": 45,
+        "min": 28.2,
+        "pts": 10.1,
+        "reb": 3.0,
+        "ast": 4.4,
+        "stl": 0.6,
+        "blk": 0.2,
+        "tov": 1.9,
+        "fg_pct": 0.399,
+        "fg3_pct": 0.389,
+        "ft_pct": 0.847,
+        "fgm": 3.7,
+        "fga": 9.2,
+        "fg3m": 0.9,
+        "fg3a": 2.4,
+        "ftm": 1.8,
+        "fta": 2.1,
+        "oreb": 0.6,
+        "dreb": 2.4,
+        "pf": 2.3
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1995-96"
+          ],
+          "roy": [
+            "1995-96"
           ]
         }
       }
@@ -13470,6 +14783,208 @@
         "seasons": {
           "allStar": [
             "1966-67"
+          ]
+        }
+      }
+    },
+    {
+      "id": 353,
+      "name": "Darrell Armstrong",
+      "slug": "darrell-armstrong",
+      "position": "Guard",
+      "height": "6-1",
+      "weight": "180",
+      "country": "USA",
+      "birthdate": "1968-06-22",
+      "fromYear": 1994,
+      "toYear": 2007,
+      "active": false,
+      "lastTeam": "Orlando Magic",
+      "draft": null,
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/353.png",
+      "careerRegularSeason": {
+        "gp": 840,
+        "gs": 337,
+        "min": 23.7,
+        "pts": 9.2,
+        "reb": 2.7,
+        "ast": 4.0,
+        "stl": 1.3,
+        "blk": 0.1,
+        "tov": 1.9,
+        "fg_pct": 0.409,
+        "fg3_pct": 0.334,
+        "ft_pct": 0.871,
+        "fgm": 3.2,
+        "fga": 7.7,
+        "fg3m": 1.1,
+        "fg3a": 3.3,
+        "ftm": 1.7,
+        "fta": 2.0,
+        "oreb": 0.8,
+        "dreb": 1.9,
+        "pf": 1.7
+      },
+      "careerPlayoffs": {
+        "gp": 51,
+        "gs": 13,
+        "min": 21.9,
+        "pts": 6.8,
+        "reb": 2.3,
+        "ast": 2.5,
+        "stl": 0.9,
+        "blk": 0.1,
+        "tov": 1.6,
+        "fg_pct": 0.398,
+        "fg3_pct": 0.287,
+        "ft_pct": 0.9,
+        "fgm": 2.2,
+        "fga": 5.6,
+        "fg3m": 0.8,
+        "fg3a": 2.7,
+        "ftm": 1.6,
+        "fta": 1.8,
+        "oreb": 0.7,
+        "dreb": 1.6,
+        "pf": 1.9
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1998-99"
+          ],
+          "sixthMan": [
+            "1998-99"
+          ]
+        }
+      }
+    },
+    {
+      "id": 76890,
+      "name": "Darrell Griffith",
+      "slug": "darrell-griffith",
+      "position": "Guard",
+      "height": "6-4",
+      "weight": "190",
+      "country": "USA",
+      "birthdate": "1958-06-16",
+      "fromYear": 1980,
+      "toYear": 1990,
+      "active": false,
+      "lastTeam": "Utah Jazz",
+      "draft": {
+        "year": "1980",
+        "round": "1",
+        "pick": "2"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76890.png",
+      "careerRegularSeason": {
+        "gp": 765,
+        "gs": 492,
+        "min": 28.0,
+        "pts": 16.2,
+        "reb": 3.3,
+        "ast": 2.1,
+        "stl": 1.2,
+        "blk": 0.3,
+        "tov": 2.1,
+        "fg_pct": 0.463,
+        "fg3_pct": 0.332,
+        "ft_pct": 0.707,
+        "fgm": 6.8,
+        "fga": 14.8,
+        "fg3m": 0.7,
+        "fg3a": 2.1,
+        "ftm": 1.8,
+        "fta": 2.6,
+        "oreb": 1.0,
+        "dreb": 2.3,
+        "pf": 2.2
+      },
+      "careerPlayoffs": {
+        "gp": 37,
+        "gs": 21,
+        "min": 28.1,
+        "pts": 15.1,
+        "reb": 3.8,
+        "ast": 2.1,
+        "stl": 1.3,
+        "blk": 0.3,
+        "tov": 2.1,
+        "fg_pct": 0.438,
+        "fg3_pct": 0.371,
+        "ft_pct": 0.711,
+        "fgm": 6.0,
+        "fga": 13.6,
+        "fg3m": 1.2,
+        "fg3a": 3.4,
+        "ftm": 1.9,
+        "fta": 2.6,
+        "oreb": 1.0,
+        "dreb": 2.8,
+        "pf": 1.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1980-81"
+          ],
+          "roy": [
+            "1980-81"
           ]
         }
       }
@@ -14980,6 +16495,106 @@
           ],
           "allStar": [
             "2021-22"
+          ]
+        }
+      }
+    },
+    {
+      "id": 209,
+      "name": "Dell Curry",
+      "slug": "dell-curry",
+      "position": "Guard-Forward",
+      "height": "6-5",
+      "weight": "205",
+      "country": "USA",
+      "birthdate": "1964-06-25",
+      "fromYear": 1986,
+      "toYear": 2001,
+      "active": false,
+      "lastTeam": "Charlotte Hornets",
+      "draft": {
+        "year": "1986",
+        "round": "1",
+        "pick": "15"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/209.png",
+      "careerRegularSeason": {
+        "gp": 1083,
+        "gs": 99,
+        "min": 21.7,
+        "pts": 11.7,
+        "reb": 2.4,
+        "ast": 1.8,
+        "stl": 0.9,
+        "blk": 0.2,
+        "tov": 1.2,
+        "fg_pct": 0.457,
+        "fg3_pct": 0.402,
+        "ft_pct": 0.843,
+        "fgm": 4.7,
+        "fga": 10.3,
+        "fg3m": 1.1,
+        "fg3a": 2.9,
+        "ftm": 1.1,
+        "fta": 1.4,
+        "oreb": 0.6,
+        "dreb": 1.9,
+        "pf": 1.7
+      },
+      "careerPlayoffs": {
+        "gp": 51,
+        "gs": 1,
+        "min": 17.5,
+        "pts": 6.7,
+        "reb": 1.7,
+        "ast": 1.1,
+        "stl": 0.8,
+        "blk": 0.1,
+        "tov": 0.8,
+        "fg_pct": 0.4,
+        "fg3_pct": 0.35,
+        "ft_pct": 0.87,
+        "fgm": 2.5,
+        "fga": 6.2,
+        "fg3m": 0.8,
+        "fg3a": 2.3,
+        "ftm": 0.9,
+        "fta": 1.1,
+        "oreb": 0.5,
+        "dreb": 1.2,
+        "pf": 1.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "1993-94"
           ]
         }
       }
@@ -17604,6 +19219,184 @@
       }
     },
     {
+      "id": 931,
+      "name": "Don MacLean",
+      "slug": "don-maclean",
+      "position": "Forward",
+      "height": null,
+      "weight": null,
+      "country": "USA",
+      "birthdate": "1970-01-16",
+      "fromYear": 1992,
+      "toYear": 2000,
+      "active": false,
+      "lastTeam": null,
+      "draft": {
+        "year": "1992",
+        "round": "1",
+        "pick": "19"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/931.png",
+      "careerRegularSeason": {
+        "gp": 319,
+        "gs": 111,
+        "min": 20.9,
+        "pts": 10.9,
+        "reb": 3.8,
+        "ast": 1.3,
+        "stl": 0.4,
+        "blk": 0.2,
+        "tov": 1.2,
+        "fg_pct": 0.455,
+        "fg3_pct": 0.284,
+        "ft_pct": 0.765,
+        "fgm": 4.1,
+        "fga": 9.1,
+        "fg3m": 0.2,
+        "fg3a": 0.6,
+        "ftm": 2.5,
+        "fta": 3.3,
+        "oreb": 1.1,
+        "dreb": 2.7,
+        "pf": 1.9
+      },
+      "careerPlayoffs": null,
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1993-94"
+          ]
+        }
+      }
+    },
+    {
+      "id": 77573,
+      "name": "Don Meineke",
+      "slug": "don-meineke",
+      "position": "Forward",
+      "height": "6-7",
+      "weight": "208",
+      "country": "USA",
+      "birthdate": "1930-10-30",
+      "fromYear": 1952,
+      "toYear": 1957,
+      "active": false,
+      "lastTeam": "Ft. Wayne Zollner Pistons",
+      "draft": {
+        "year": "1952",
+        "round": null,
+        "pick": null
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77573.png",
+      "careerRegularSeason": {
+        "gp": 343,
+        "gs": null,
+        "min": 19.8,
+        "pts": 6.8,
+        "reb": 4.7,
+        "ast": 1.3,
+        "stl": null,
+        "blk": null,
+        "tov": null,
+        "fg_pct": 0.367,
+        "fg3_pct": null,
+        "ft_pct": 0.756,
+        "fgm": 2.3,
+        "fga": 6.3,
+        "fg3m": null,
+        "fg3a": null,
+        "ftm": 2.2,
+        "fta": 2.9,
+        "oreb": null,
+        "dreb": null,
+        "pf": 3.1
+      },
+      "careerPlayoffs": {
+        "gp": 25,
+        "gs": null,
+        "min": 20.3,
+        "pts": 5.8,
+        "reb": 4.0,
+        "ast": 1.0,
+        "stl": null,
+        "blk": null,
+        "tov": null,
+        "fg_pct": 0.351,
+        "fg3_pct": null,
+        "ft_pct": 0.75,
+        "fgm": 1.6,
+        "fga": 4.6,
+        "fg3m": null,
+        "fg3a": null,
+        "ftm": 2.6,
+        "fta": 3.5,
+        "oreb": null,
+        "dreb": null,
+        "pf": 2.9
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "roy": [
+            "1952-53"
+          ]
+        }
+      }
+    },
+    {
       "id": 77751,
       "name": "Don Ohl",
       "slug": "don-ohl",
@@ -18479,6 +20272,116 @@
           ],
           "olympicGold": [
             "2008"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1630700,
+      "name": "Dyson Daniels",
+      "slug": "dyson-daniels",
+      "position": "Guard",
+      "height": "6-7",
+      "weight": "199",
+      "country": "Australia",
+      "birthdate": "2003-03-17",
+      "fromYear": 2021,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Atlanta Hawks",
+      "draft": {
+        "year": "2022",
+        "round": "1",
+        "pick": "8"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1630700.png",
+      "careerRegularSeason": {
+        "gp": 272,
+        "gs": 179,
+        "min": 27.5,
+        "pts": 9.4,
+        "reb": 5.1,
+        "ast": 4.0,
+        "stl": 1.9,
+        "blk": 0.4,
+        "tov": 1.5,
+        "fg_pct": 0.488,
+        "fg3_pct": 0.298,
+        "ft_pct": 0.614,
+        "fgm": 4.0,
+        "fga": 8.2,
+        "fg3m": 0.6,
+        "fg3a": 2.1,
+        "ftm": 0.8,
+        "fta": 1.3,
+        "oreb": 1.5,
+        "dreb": 3.6,
+        "pf": 2.0
+      },
+      "careerPlayoffs": {
+        "gp": 9,
+        "gs": 6,
+        "min": 20.2,
+        "pts": 5.3,
+        "reb": 4.3,
+        "ast": 3.3,
+        "stl": 1.4,
+        "blk": 0.2,
+        "tov": 1.3,
+        "fg_pct": 0.426,
+        "fg3_pct": 0.25,
+        "ft_pct": 0.667,
+        "fgm": 2.2,
+        "fga": 5.2,
+        "fg3m": 0.4,
+        "fg3a": 1.8,
+        "ftm": 0.4,
+        "fta": 0.7,
+        "oreb": 1.0,
+        "dreb": 3.3,
+        "pf": 1.3
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 2,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 1,
+          "2": 1
+        },
+        "seasons": {
+          "allDefensive": [
+            "2024-25",
+            "2025-26"
+          ],
+          "allDefensive1": [
+            "2024-25"
+          ],
+          "allDefensive2": [
+            "2025-26"
+          ],
+          "mip": [
+            "2024-25"
           ]
         }
       }
@@ -19464,6 +21367,315 @@
           ],
           "championships": [
             "1977-78"
+          ]
+        }
+      }
+    },
+    {
+      "id": 2731,
+      "name": "Emeka Okafor",
+      "slug": "emeka-okafor",
+      "position": "Center",
+      "height": "6-10",
+      "weight": "255",
+      "country": "USA",
+      "birthdate": "1982-09-28",
+      "fromYear": 2004,
+      "toYear": 2017,
+      "active": false,
+      "lastTeam": "Charlotte Bobcats",
+      "draft": {
+        "year": "2004",
+        "round": "1",
+        "pick": "2"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2731.png",
+      "careerRegularSeason": {
+        "gp": 616,
+        "gs": 603,
+        "min": 30.9,
+        "pts": 12.0,
+        "reb": 9.7,
+        "ast": 0.8,
+        "stl": 0.7,
+        "blk": 1.6,
+        "tov": 1.6,
+        "fg_pct": 0.512,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.586,
+        "fgm": 4.9,
+        "fga": 9.5,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 2.2,
+        "fta": 3.8,
+        "oreb": 3.2,
+        "dreb": 6.5,
+        "pf": 2.8
+      },
+      "careerPlayoffs": {
+        "gp": 7,
+        "gs": 6,
+        "min": 27.3,
+        "pts": 6.3,
+        "reb": 4.7,
+        "ast": 0.0,
+        "stl": 0.9,
+        "blk": 0.9,
+        "tov": 1.7,
+        "fg_pct": 0.625,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.364,
+        "fgm": 2.9,
+        "fga": 4.6,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 0.6,
+        "fta": 1.6,
+        "oreb": 2.4,
+        "dreb": 2.3,
+        "pf": 4.1
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2004-05"
+          ],
+          "roy": [
+            "2004-05"
+          ]
+        }
+      }
+    },
+    {
+      "id": 201569,
+      "name": "Eric Gordon",
+      "slug": "eric-gordon",
+      "position": "Guard",
+      "height": "6-3",
+      "weight": "215",
+      "country": "USA",
+      "birthdate": "1988-12-25",
+      "fromYear": 2008,
+      "toYear": 2025,
+      "active": false,
+      "lastTeam": null,
+      "draft": {
+        "year": "2008",
+        "round": "1",
+        "pick": "7"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/201569.png",
+      "careerRegularSeason": {
+        "gp": 931,
+        "gs": 665,
+        "min": 31.1,
+        "pts": 15.2,
+        "reb": 2.3,
+        "ast": 2.7,
+        "stl": 0.8,
+        "blk": 0.4,
+        "tov": 1.8,
+        "fg_pct": 0.43,
+        "fg3_pct": 0.373,
+        "ft_pct": 0.809,
+        "fgm": 5.2,
+        "fga": 12.1,
+        "fg3m": 2.2,
+        "fg3a": 6.0,
+        "ftm": 2.6,
+        "fta": 3.2,
+        "oreb": 0.4,
+        "dreb": 1.9,
+        "pf": 1.7
+      },
+      "careerPlayoffs": {
+        "gp": 64,
+        "gs": 36,
+        "min": 33.4,
+        "pts": 15.1,
+        "reb": 2.7,
+        "ast": 2.1,
+        "stl": 0.7,
+        "blk": 0.6,
+        "tov": 1.7,
+        "fg_pct": 0.41,
+        "fg3_pct": 0.361,
+        "ft_pct": 0.838,
+        "fgm": 5.1,
+        "fga": 12.5,
+        "fg3m": 2.6,
+        "fg3a": 7.2,
+        "ftm": 2.2,
+        "fta": 2.6,
+        "oreb": 0.5,
+        "dreb": 2.2,
+        "pf": 2.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2016-17"
+          ],
+          "allRookie": [
+            "2008-09"
+          ]
+        }
+      }
+    },
+    {
+      "id": 76568,
+      "name": "Ernie DiGregorio",
+      "slug": "ernie-digregorio",
+      "position": "Guard",
+      "height": "6-0",
+      "weight": "180",
+      "country": "USA",
+      "birthdate": "1951-01-15",
+      "fromYear": 1973,
+      "toYear": 1977,
+      "active": false,
+      "lastTeam": "Buffalo Braves",
+      "draft": {
+        "year": "1973",
+        "round": "1",
+        "pick": "3"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76568.png",
+      "careerRegularSeason": {
+        "gp": 312,
+        "gs": null,
+        "min": 25.2,
+        "pts": 9.6,
+        "reb": 2.0,
+        "ast": 5.1,
+        "stl": 0.6,
+        "blk": 0.0,
+        "tov": 1.8,
+        "fg_pct": 0.415,
+        "fg3_pct": null,
+        "ft_pct": 0.902,
+        "fgm": 4.1,
+        "fga": 9.8,
+        "fg3m": null,
+        "fg3a": null,
+        "ftm": 1.5,
+        "fta": 1.6,
+        "oreb": 0.4,
+        "dreb": 1.5,
+        "pf": 2.1
+      },
+      "careerPlayoffs": {
+        "gp": 15,
+        "gs": null,
+        "min": 30.5,
+        "pts": 10.0,
+        "reb": 1.9,
+        "ast": 6.5,
+        "stl": 0.4,
+        "blk": 0.1,
+        "tov": null,
+        "fg_pct": 0.453,
+        "fg3_pct": null,
+        "ft_pct": 0.941,
+        "fgm": 4.5,
+        "fga": 9.9,
+        "fg3m": null,
+        "fg3a": null,
+        "ftm": 1.1,
+        "fta": 1.1,
+        "oreb": 0.3,
+        "dreb": 1.7,
+        "pf": 2.9
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1973-74"
+          ],
+          "roy": [
+            "1973-74"
           ]
         }
       }
@@ -21399,6 +23611,106 @@
       }
     },
     {
+      "id": 49,
+      "name": "Gheorghe Muresan",
+      "slug": "gheorghe-muresan",
+      "position": "Center",
+      "height": "7-7",
+      "weight": "303",
+      "country": "Romania",
+      "birthdate": "1971-02-14",
+      "fromYear": 1993,
+      "toYear": 1999,
+      "active": false,
+      "lastTeam": "Washington Bullets",
+      "draft": {
+        "year": "1993",
+        "round": "2",
+        "pick": "30"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/49.png",
+      "careerRegularSeason": {
+        "gp": 307,
+        "gs": 207,
+        "min": 21.9,
+        "pts": 9.8,
+        "reb": 6.4,
+        "ast": 0.5,
+        "stl": 0.6,
+        "blk": 1.5,
+        "tov": 1.5,
+        "fg_pct": 0.573,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.644,
+        "fgm": 4.1,
+        "fga": 7.2,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 1.6,
+        "fta": 2.5,
+        "oreb": 2.1,
+        "dreb": 4.2,
+        "pf": 3.1
+      },
+      "careerPlayoffs": {
+        "gp": 3,
+        "gs": 3,
+        "min": 23.3,
+        "pts": 5.0,
+        "reb": 6.0,
+        "ast": 0.0,
+        "stl": 0.0,
+        "blk": 1.3,
+        "tov": 3.7,
+        "fg_pct": 0.444,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.875,
+        "fgm": 1.3,
+        "fga": 3.0,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 2.3,
+        "fta": 2.7,
+        "oreb": 0.7,
+        "dreb": 5.3,
+        "pf": 2.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1995-96"
+          ]
+        }
+      }
+    },
+    {
       "id": 203507,
       "name": "Giannis Antetokounmpo",
       "slug": "giannis-antetokounmpo",
@@ -23060,6 +25372,109 @@
       }
     },
     {
+      "id": 2045,
+      "name": "Hedo Turkoglu",
+      "slug": "hedo-turkoglu",
+      "position": "Forward",
+      "height": "6-10",
+      "weight": "220",
+      "country": "Turkey",
+      "birthdate": "1979-03-19",
+      "fromYear": 2000,
+      "toYear": 2014,
+      "active": false,
+      "lastTeam": "Orlando Magic",
+      "draft": {
+        "year": "2000",
+        "round": "1",
+        "pick": "16"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2045.png",
+      "careerRegularSeason": {
+        "gp": 997,
+        "gs": 571,
+        "min": 26.8,
+        "pts": 11.1,
+        "reb": 4.0,
+        "ast": 2.8,
+        "stl": 0.8,
+        "blk": 0.3,
+        "tov": 1.6,
+        "fg_pct": 0.426,
+        "fg3_pct": 0.384,
+        "ft_pct": 0.784,
+        "fgm": 3.9,
+        "fga": 9.1,
+        "fg3m": 1.2,
+        "fg3a": 3.3,
+        "ftm": 2.1,
+        "fta": 2.7,
+        "oreb": 0.6,
+        "dreb": 3.3,
+        "pf": 2.4
+      },
+      "careerPlayoffs": {
+        "gp": 109,
+        "gs": 72,
+        "min": 27.4,
+        "pts": 9.7,
+        "reb": 3.8,
+        "ast": 2.6,
+        "stl": 0.7,
+        "blk": 0.3,
+        "tov": 1.7,
+        "fg_pct": 0.403,
+        "fg3_pct": 0.341,
+        "ft_pct": 0.751,
+        "fgm": 3.5,
+        "fga": 8.6,
+        "fg3m": 0.9,
+        "fg3a": 2.7,
+        "ftm": 1.9,
+        "fta": 2.5,
+        "oreb": 0.6,
+        "dreb": 3.2,
+        "pf": 2.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2007-08"
+          ],
+          "allRookie": [
+            "2000-01"
+          ]
+        }
+      }
+    },
+    {
       "id": 765,
       "name": "Hersey Hawkins",
       "slug": "hersey-hawkins",
@@ -23276,6 +25691,106 @@
             "1991-92",
             "1992-93",
             "2000-01"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1134,
+      "name": "Ike Austin",
+      "slug": "ike-austin",
+      "position": "Center",
+      "height": "6-10",
+      "weight": "288",
+      "country": "USA",
+      "birthdate": "1969-08-18",
+      "fromYear": 1991,
+      "toYear": 2001,
+      "active": false,
+      "lastTeam": null,
+      "draft": {
+        "year": "1991",
+        "round": "2",
+        "pick": "48"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1134.png",
+      "careerRegularSeason": {
+        "gp": 432,
+        "gs": 166,
+        "min": 19.3,
+        "pts": 7.6,
+        "reb": 4.7,
+        "ast": 1.2,
+        "stl": 0.5,
+        "blk": 0.5,
+        "tov": 1.6,
+        "fg_pct": 0.446,
+        "fg3_pct": 0.176,
+        "ft_pct": 0.67,
+        "fgm": 3.0,
+        "fga": 6.7,
+        "fg3m": 0.0,
+        "fg3a": 0.1,
+        "ftm": 1.6,
+        "fta": 2.4,
+        "oreb": 1.4,
+        "dreb": 3.3,
+        "pf": 2.2
+      },
+      "careerPlayoffs": {
+        "gp": 19,
+        "gs": 4,
+        "min": 21.0,
+        "pts": 6.5,
+        "reb": 4.3,
+        "ast": 0.7,
+        "stl": 0.5,
+        "blk": 0.5,
+        "tov": 1.6,
+        "fg_pct": 0.433,
+        "fg3_pct": 0.167,
+        "ft_pct": 0.767,
+        "fgm": 2.4,
+        "fga": 5.5,
+        "fg3m": 0.1,
+        "fg3a": 0.3,
+        "ftm": 1.7,
+        "fta": 2.3,
+        "oreb": 1.2,
+        "dreb": 3.1,
+        "pf": 2.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1996-97"
           ]
         }
       }
@@ -23530,6 +26045,110 @@
           ],
           "finalsMvp": [
             "1989-90"
+          ]
+        }
+      }
+    },
+    {
+      "id": 2747,
+      "name": "JR Smith",
+      "slug": "jr-smith",
+      "position": "Guard",
+      "height": "6-6",
+      "weight": "220",
+      "country": "USA",
+      "birthdate": "1985-09-09",
+      "fromYear": 2004,
+      "toYear": 2019,
+      "active": false,
+      "lastTeam": "Denver Nuggets",
+      "draft": {
+        "year": "2004",
+        "round": "1",
+        "pick": "18"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2747.png",
+      "careerRegularSeason": {
+        "gp": 977,
+        "gs": 395,
+        "min": 26.9,
+        "pts": 12.4,
+        "reb": 3.1,
+        "ast": 2.1,
+        "stl": 1.0,
+        "blk": 0.2,
+        "tov": 1.3,
+        "fg_pct": 0.419,
+        "fg3_pct": 0.373,
+        "ft_pct": 0.733,
+        "fgm": 4.5,
+        "fga": 10.7,
+        "fg3m": 2.0,
+        "fg3a": 5.3,
+        "ftm": 1.5,
+        "fta": 2.0,
+        "oreb": 0.5,
+        "dreb": 2.6,
+        "pf": 2.2
+      },
+      "careerPlayoffs": {
+        "gp": 140,
+        "gs": 64,
+        "min": 27.9,
+        "pts": 10.7,
+        "reb": 3.0,
+        "ast": 1.3,
+        "stl": 0.9,
+        "blk": 0.3,
+        "tov": 1.0,
+        "fg_pct": 0.397,
+        "fg3_pct": 0.367,
+        "ft_pct": 0.706,
+        "fgm": 3.7,
+        "fga": 9.3,
+        "fg3m": 2.1,
+        "fg3a": 5.7,
+        "ftm": 1.2,
+        "fta": 1.6,
+        "oreb": 0.4,
+        "dreb": 2.6,
+        "pf": 2.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 2,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2012-13"
+          ],
+          "championships": [
+            "2015-16",
+            "2019-20"
           ]
         }
       }
@@ -24623,6 +27242,109 @@
       }
     },
     {
+      "id": 147,
+      "name": "Jalen Rose",
+      "slug": "jalen-rose",
+      "position": "Guard-Forward",
+      "height": "6-8",
+      "weight": "215",
+      "country": "USA",
+      "birthdate": "1973-01-30",
+      "fromYear": 1994,
+      "toYear": 2006,
+      "active": false,
+      "lastTeam": "Indiana Pacers",
+      "draft": {
+        "year": "1994",
+        "round": "1",
+        "pick": "13"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/147.png",
+      "careerRegularSeason": {
+        "gp": 923,
+        "gs": 572,
+        "min": 30.3,
+        "pts": 14.3,
+        "reb": 3.5,
+        "ast": 3.8,
+        "stl": 0.8,
+        "blk": 0.3,
+        "tov": 2.3,
+        "fg_pct": 0.443,
+        "fg3_pct": 0.355,
+        "ft_pct": 0.801,
+        "fgm": 5.3,
+        "fga": 11.9,
+        "fg3m": 0.8,
+        "fg3a": 2.3,
+        "ftm": 3.0,
+        "fta": 3.7,
+        "oreb": 0.5,
+        "dreb": 2.9,
+        "pf": 2.6
+      },
+      "careerPlayoffs": {
+        "gp": 59,
+        "gs": 30,
+        "min": 31.9,
+        "pts": 14.6,
+        "reb": 3.2,
+        "ast": 2.9,
+        "stl": 0.8,
+        "blk": 0.4,
+        "tov": 2.0,
+        "fg_pct": 0.438,
+        "fg3_pct": 0.385,
+        "ft_pct": 0.801,
+        "fgm": 5.5,
+        "fga": 12.5,
+        "fg3m": 0.8,
+        "fg3a": 2.2,
+        "ftm": 2.8,
+        "fta": 3.5,
+        "oreb": 0.5,
+        "dreb": 2.7,
+        "pf": 3.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1994-95"
+          ],
+          "mip": [
+            "1999-00"
+          ]
+        }
+      }
+    },
+    {
       "id": 1631114,
       "name": "Jalen Williams",
       "slug": "jalen-williams",
@@ -24960,6 +27682,108 @@
           ],
           "roy": [
             "1974-75"
+          ]
+        }
+      }
+    },
+    {
+      "id": 2037,
+      "name": "Jamal Crawford",
+      "slug": "jamal-crawford",
+      "position": "Guard",
+      "height": "6-5",
+      "weight": "200",
+      "country": "USA",
+      "birthdate": "1980-03-20",
+      "fromYear": 2000,
+      "toYear": 2019,
+      "active": false,
+      "lastTeam": "LA Clippers",
+      "draft": {
+        "year": "2000",
+        "round": "1",
+        "pick": "8"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2037.png",
+      "careerRegularSeason": {
+        "gp": 1327,
+        "gs": 433,
+        "min": 29.4,
+        "pts": 14.6,
+        "reb": 2.2,
+        "ast": 3.4,
+        "stl": 0.9,
+        "blk": 0.2,
+        "tov": 1.9,
+        "fg_pct": 0.41,
+        "fg3_pct": 0.348,
+        "ft_pct": 0.862,
+        "fgm": 5.1,
+        "fga": 12.4,
+        "fg3m": 1.7,
+        "fg3a": 4.8,
+        "ftm": 2.8,
+        "fta": 3.2,
+        "oreb": 0.4,
+        "dreb": 1.9,
+        "pf": 1.5
+      },
+      "careerPlayoffs": {
+        "gp": 74,
+        "gs": 1,
+        "min": 28.1,
+        "pts": 14.3,
+        "reb": 1.9,
+        "ast": 2.2,
+        "stl": 0.9,
+        "blk": 0.2,
+        "tov": 1.3,
+        "fg_pct": 0.386,
+        "fg3_pct": 0.307,
+        "ft_pct": 0.865,
+        "fgm": 5.0,
+        "fga": 13.0,
+        "fg3m": 1.4,
+        "fg3a": 4.7,
+        "ftm": 2.9,
+        "fta": 3.3,
+        "oreb": 0.3,
+        "dreb": 1.6,
+        "pf": 1.9
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 3,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2009-10",
+            "2013-14",
+            "2015-16"
           ]
         }
       }
@@ -26042,6 +28866,112 @@
           "olympicGold": [
             "2000",
             "2008"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1891,
+      "name": "Jason Terry",
+      "slug": "jason-terry",
+      "position": "Guard",
+      "height": "6-2",
+      "weight": "185",
+      "country": "USA",
+      "birthdate": "1977-09-15",
+      "fromYear": 1999,
+      "toYear": 2017,
+      "active": false,
+      "lastTeam": "Dallas Mavericks",
+      "draft": {
+        "year": "1999",
+        "round": "1",
+        "pick": "10"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1891.png",
+      "careerRegularSeason": {
+        "gp": 1410,
+        "gs": 679,
+        "min": 29.8,
+        "pts": 13.4,
+        "reb": 2.3,
+        "ast": 3.8,
+        "stl": 1.1,
+        "blk": 0.2,
+        "tov": 1.7,
+        "fg_pct": 0.444,
+        "fg3_pct": 0.38,
+        "ft_pct": 0.845,
+        "fgm": 4.9,
+        "fga": 11.1,
+        "fg3m": 1.6,
+        "fg3a": 4.3,
+        "ftm": 2.0,
+        "fta": 2.3,
+        "oreb": 0.4,
+        "dreb": 2.0,
+        "pf": 1.8
+      },
+      "careerPlayoffs": {
+        "gp": 124,
+        "gs": 64,
+        "min": 32.2,
+        "pts": 14.1,
+        "reb": 2.5,
+        "ast": 3.0,
+        "stl": 0.9,
+        "blk": 0.2,
+        "tov": 1.5,
+        "fg_pct": 0.441,
+        "fg3_pct": 0.385,
+        "ft_pct": 0.829,
+        "fgm": 5.1,
+        "fga": 11.6,
+        "fg3m": 1.8,
+        "fg3a": 4.6,
+        "ftm": 2.1,
+        "fta": 2.5,
+        "oreb": 0.4,
+        "dreb": 2.0,
+        "pf": 2.2
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 1,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1999-00"
+          ],
+          "championships": [
+            "2010-11"
+          ],
+          "sixthMan": [
+            "2008-09"
           ]
         }
       }
@@ -30448,6 +33378,112 @@
       }
     },
     {
+      "id": 203903,
+      "name": "Jordan Clarkson",
+      "slug": "jordan-clarkson",
+      "position": "Guard",
+      "height": "6-5",
+      "weight": "194",
+      "country": "USA",
+      "birthdate": "1992-06-07",
+      "fromYear": 2014,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "New York Knicks",
+      "draft": {
+        "year": "2014",
+        "round": "2",
+        "pick": "46"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/203903.png",
+      "careerRegularSeason": {
+        "gp": 825,
+        "gs": 232,
+        "min": 26.8,
+        "pts": 15.3,
+        "reb": 3.2,
+        "ast": 2.8,
+        "stl": 0.8,
+        "blk": 0.2,
+        "tov": 1.8,
+        "fg_pct": 0.437,
+        "fg3_pct": 0.336,
+        "ft_pct": 0.829,
+        "fgm": 5.7,
+        "fga": 13.1,
+        "fg3m": 1.8,
+        "fg3a": 5.3,
+        "ftm": 2.1,
+        "fta": 2.5,
+        "oreb": 0.9,
+        "dreb": 2.4,
+        "pf": 1.7
+      },
+      "careerPlayoffs": {
+        "gp": 61,
+        "gs": 0,
+        "min": 18.8,
+        "pts": 9.7,
+        "reb": 2.3,
+        "ast": 1.0,
+        "stl": 0.5,
+        "blk": 0.1,
+        "tov": 1.1,
+        "fg_pct": 0.419,
+        "fg3_pct": 0.319,
+        "ft_pct": 0.899,
+        "fgm": 3.7,
+        "fga": 8.8,
+        "fg3m": 1.2,
+        "fg3a": 3.9,
+        "ftm": 1.2,
+        "fta": 1.3,
+        "oreb": 0.7,
+        "dreb": 1.6,
+        "pf": 1.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 1,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2014-15"
+          ],
+          "championships": [
+            "2025-26"
+          ],
+          "sixthMan": [
+            "2020-21"
+          ]
+        }
+      }
+    },
+    {
       "id": 2572,
       "name": "Josh Howard",
       "slug": "josh-howard",
@@ -31724,6 +34760,109 @@
           "finalsMvp": [
             "2013-14",
             "2018-19"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1629640,
+      "name": "Keldon Johnson",
+      "slug": "keldon-johnson",
+      "position": "Forward-Guard",
+      "height": "6-6",
+      "weight": "220",
+      "country": "USA",
+      "birthdate": "1999-10-11",
+      "fromYear": 2019,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "San Antonio Spurs",
+      "draft": {
+        "year": "2019",
+        "round": "1",
+        "pick": "29"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629640.png",
+      "careerRegularSeason": {
+        "gp": 452,
+        "gs": 232,
+        "min": 27.7,
+        "pts": 15.1,
+        "reb": 5.4,
+        "ast": 2.0,
+        "stl": 0.7,
+        "blk": 0.2,
+        "tov": 1.2,
+        "fg_pct": 0.475,
+        "fg3_pct": 0.353,
+        "ft_pct": 0.767,
+        "fgm": 5.6,
+        "fga": 11.8,
+        "fg3m": 1.5,
+        "fg3a": 4.3,
+        "ftm": 2.4,
+        "fta": 3.1,
+        "oreb": 1.3,
+        "dreb": 4.1,
+        "pf": 1.9
+      },
+      "careerPlayoffs": {
+        "gp": 23,
+        "gs": 0,
+        "min": 17.8,
+        "pts": 7.7,
+        "reb": 3.3,
+        "ast": 0.9,
+        "stl": 0.7,
+        "blk": 0.1,
+        "tov": 1.0,
+        "fg_pct": 0.407,
+        "fg3_pct": 0.362,
+        "ft_pct": 0.581,
+        "fgm": 2.9,
+        "fga": 7.0,
+        "fg3m": 0.9,
+        "fg3a": 2.5,
+        "ftm": 1.1,
+        "fta": 1.9,
+        "oreb": 1.3,
+        "dreb": 2.0,
+        "pf": 2.3
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 1,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2025-26"
+          ],
+          "olympicGold": [
+            "2020"
           ]
         }
       }
@@ -34648,6 +37787,113 @@
       }
     },
     {
+      "id": 1885,
+      "name": "Lamar Odom",
+      "slug": "lamar-odom",
+      "position": "Forward",
+      "height": "6-10",
+      "weight": "230",
+      "country": "USA",
+      "birthdate": "1979-11-06",
+      "fromYear": 1999,
+      "toYear": 2013,
+      "active": false,
+      "lastTeam": "Los Angeles Lakers",
+      "draft": {
+        "year": "1999",
+        "round": "1",
+        "pick": "4"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1885.png",
+      "careerRegularSeason": {
+        "gp": 961,
+        "gs": 684,
+        "min": 33.4,
+        "pts": 13.3,
+        "reb": 8.4,
+        "ast": 3.7,
+        "stl": 0.9,
+        "blk": 0.9,
+        "tov": 2.3,
+        "fg_pct": 0.463,
+        "fg3_pct": 0.312,
+        "ft_pct": 0.693,
+        "fgm": 5.0,
+        "fga": 10.8,
+        "fg3m": 0.7,
+        "fg3a": 2.2,
+        "ftm": 2.6,
+        "fta": 3.7,
+        "oreb": 1.9,
+        "dreb": 6.5,
+        "pf": 3.0
+      },
+      "careerPlayoffs": {
+        "gp": 108,
+        "gs": 53,
+        "min": 33.3,
+        "pts": 13.0,
+        "reb": 8.8,
+        "ast": 2.4,
+        "stl": 0.7,
+        "blk": 1.0,
+        "tov": 2.0,
+        "fg_pct": 0.479,
+        "fg3_pct": 0.303,
+        "ft_pct": 0.643,
+        "fgm": 4.9,
+        "fga": 10.3,
+        "fg3m": 0.5,
+        "fg3a": 1.7,
+        "ftm": 2.6,
+        "fta": 4.1,
+        "oreb": 2.4,
+        "dreb": 6.5,
+        "pf": 3.4
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 2,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1999-00"
+          ],
+          "championships": [
+            "2008-09",
+            "2009-10"
+          ],
+          "sixthMan": [
+            "2010-11"
+          ]
+        }
+      }
+    },
+    {
       "id": 1449,
       "name": "Larry Bird",
       "slug": "larry-bird",
@@ -35811,6 +39057,109 @@
       }
     },
     {
+      "id": 2571,
+      "name": "Leandro Barbosa",
+      "slug": "leandro-barbosa",
+      "position": "Guard",
+      "height": "6-3",
+      "weight": "194",
+      "country": "Brazil",
+      "birthdate": "1982-11-28",
+      "fromYear": 2003,
+      "toYear": 2016,
+      "active": false,
+      "lastTeam": "Phoenix Suns",
+      "draft": {
+        "year": "2003",
+        "round": "1",
+        "pick": "28"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2571.png",
+      "careerRegularSeason": {
+        "gp": 850,
+        "gs": 112,
+        "min": 21.6,
+        "pts": 10.6,
+        "reb": 2.0,
+        "ast": 2.1,
+        "stl": 0.8,
+        "blk": 0.1,
+        "tov": 1.2,
+        "fg_pct": 0.459,
+        "fg3_pct": 0.387,
+        "ft_pct": 0.821,
+        "fgm": 4.0,
+        "fga": 8.7,
+        "fg3m": 1.2,
+        "fg3a": 3.0,
+        "ftm": 1.5,
+        "fta": 1.8,
+        "oreb": 0.4,
+        "dreb": 1.6,
+        "pf": 1.9
+      },
+      "careerPlayoffs": {
+        "gp": 119,
+        "gs": 5,
+        "min": 18.5,
+        "pts": 8.0,
+        "reb": 1.7,
+        "ast": 1.4,
+        "stl": 0.5,
+        "blk": 0.1,
+        "tov": 0.9,
+        "fg_pct": 0.437,
+        "fg3_pct": 0.332,
+        "ft_pct": 0.77,
+        "fgm": 3.0,
+        "fga": 6.9,
+        "fg3m": 0.7,
+        "fg3a": 2.2,
+        "ftm": 1.2,
+        "fta": 1.6,
+        "oreb": 0.4,
+        "dreb": 1.4,
+        "pf": 1.8
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 1,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "championships": [
+            "2014-15"
+          ],
+          "sixthMan": [
+            "2006-07"
+          ]
+        }
+      }
+    },
+    {
       "id": 78121,
       "name": "Lee Shaffer",
       "slug": "lee-shaffer",
@@ -36565,6 +39914,108 @@
       }
     },
     {
+      "id": 101150,
+      "name": "Lou Williams",
+      "slug": "lou-williams",
+      "position": "Guard",
+      "height": "6-2",
+      "weight": "175",
+      "country": "USA",
+      "birthdate": "1986-10-27",
+      "fromYear": 2005,
+      "toYear": 2021,
+      "active": false,
+      "lastTeam": "Atlanta Hawks",
+      "draft": {
+        "year": "2005",
+        "round": "2",
+        "pick": "45"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/101150.png",
+      "careerRegularSeason": {
+        "gp": 1123,
+        "gs": 122,
+        "min": 24.1,
+        "pts": 13.9,
+        "reb": 2.2,
+        "ast": 3.4,
+        "stl": 0.8,
+        "blk": 0.2,
+        "tov": 1.7,
+        "fg_pct": 0.419,
+        "fg3_pct": 0.351,
+        "ft_pct": 0.842,
+        "fgm": 4.5,
+        "fga": 10.7,
+        "fg3m": 1.3,
+        "fg3a": 3.7,
+        "ftm": 3.6,
+        "fta": 4.3,
+        "oreb": 0.4,
+        "dreb": 1.8,
+        "pf": 1.3
+      },
+      "careerPlayoffs": {
+        "gp": 89,
+        "gs": 2,
+        "min": 23.3,
+        "pts": 11.4,
+        "reb": 2.2,
+        "ast": 2.8,
+        "stl": 0.8,
+        "blk": 0.1,
+        "tov": 1.5,
+        "fg_pct": 0.4,
+        "fg3_pct": 0.276,
+        "ft_pct": 0.82,
+        "fgm": 4.0,
+        "fga": 9.9,
+        "fg3m": 0.8,
+        "fg3a": 3.0,
+        "ftm": 2.6,
+        "fta": 3.2,
+        "oreb": 0.4,
+        "dreb": 1.9,
+        "pf": 1.4
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 3,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2014-15",
+            "2017-18",
+            "2018-19"
+          ]
+        }
+      }
+    },
+    {
       "id": 77103,
       "name": "Lucious Jackson",
       "slug": "lucious-jackson",
@@ -37075,6 +40526,215 @@
       }
     },
     {
+      "id": 51,
+      "name": "Mahmoud Abdul-Rauf",
+      "slug": "mahmoud-abdul-rauf",
+      "position": "Guard",
+      "height": "6-1",
+      "weight": "162",
+      "country": "USA",
+      "birthdate": "1969-03-09",
+      "fromYear": 1990,
+      "toYear": 2000,
+      "active": false,
+      "lastTeam": "Denver Nuggets",
+      "draft": {
+        "year": "1990",
+        "round": "1",
+        "pick": "3"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/51.png",
+      "careerRegularSeason": {
+        "gp": 586,
+        "gs": 336,
+        "min": 26.7,
+        "pts": 14.6,
+        "reb": 1.9,
+        "ast": 3.5,
+        "stl": 0.8,
+        "blk": 0.1,
+        "tov": 1.6,
+        "fg_pct": 0.442,
+        "fg3_pct": 0.354,
+        "ft_pct": 0.905,
+        "fgm": 6.0,
+        "fga": 13.6,
+        "fg3m": 0.8,
+        "fg3a": 2.3,
+        "ftm": 1.8,
+        "fta": 2.0,
+        "oreb": 0.4,
+        "dreb": 1.5,
+        "pf": 1.9
+      },
+      "careerPlayoffs": {
+        "gp": 15,
+        "gs": 14,
+        "min": 27.7,
+        "pts": 13.0,
+        "reb": 1.5,
+        "ast": 2.3,
+        "stl": 0.5,
+        "blk": 0.1,
+        "tov": 1.5,
+        "fg_pct": 0.369,
+        "fg3_pct": 0.286,
+        "ft_pct": 0.956,
+        "fgm": 4.6,
+        "fga": 12.5,
+        "fg3m": 0.9,
+        "fg3a": 3.3,
+        "ftm": 2.9,
+        "fta": 3.0,
+        "oreb": 0.3,
+        "dreb": 1.2,
+        "pf": 2.5
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1990-91"
+          ],
+          "mip": [
+            "1992-93"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1627763,
+      "name": "Malcolm Brogdon",
+      "slug": "malcolm-brogdon",
+      "position": "Guard",
+      "height": "6-4",
+      "weight": "229",
+      "country": "USA",
+      "birthdate": "1992-12-11",
+      "fromYear": 2016,
+      "toYear": 2024,
+      "active": false,
+      "lastTeam": "Washington Wizards",
+      "draft": {
+        "year": "2016",
+        "round": "2",
+        "pick": "36"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1627763.png",
+      "careerRegularSeason": {
+        "gp": 463,
+        "gs": 296,
+        "min": 29.1,
+        "pts": 15.3,
+        "reb": 4.1,
+        "ast": 4.7,
+        "stl": 0.8,
+        "blk": 0.2,
+        "tov": 1.7,
+        "fg_pct": 0.463,
+        "fg3_pct": 0.388,
+        "ft_pct": 0.874,
+        "fgm": 5.6,
+        "fga": 12.1,
+        "fg3m": 1.6,
+        "fg3a": 4.2,
+        "ftm": 2.4,
+        "fta": 2.8,
+        "oreb": 0.8,
+        "dreb": 3.4,
+        "pf": 1.8
+      },
+      "careerPlayoffs": {
+        "gp": 43,
+        "gs": 17,
+        "min": 27.9,
+        "pts": 12.0,
+        "reb": 3.9,
+        "ast": 3.7,
+        "stl": 0.4,
+        "blk": 0.2,
+        "tov": 1.5,
+        "fg_pct": 0.421,
+        "fg3_pct": 0.378,
+        "ft_pct": 0.821,
+        "fgm": 4.4,
+        "fga": 10.4,
+        "fg3m": 1.7,
+        "fg3a": 4.4,
+        "ftm": 1.6,
+        "fta": 2.0,
+        "oreb": 0.6,
+        "dreb": 3.3,
+        "pf": 1.9
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2016-17"
+          ],
+          "roy": [
+            "2016-17"
+          ],
+          "sixthMan": [
+            "2022-23"
+          ]
+        }
+      }
+    },
+    {
       "id": 1938,
       "name": "Manu Ginobili",
       "slug": "manu-ginobili",
@@ -37321,6 +40981,236 @@
           ],
           "dpoy": [
             "2012-13"
+          ]
+        }
+      }
+    },
+    {
+      "id": 948,
+      "name": "Marcus Camby",
+      "slug": "marcus-camby",
+      "position": "Center-Forward",
+      "height": "6-11",
+      "weight": "240",
+      "country": "USA",
+      "birthdate": "1974-03-22",
+      "fromYear": 1996,
+      "toYear": 2012,
+      "active": false,
+      "lastTeam": "Denver Nuggets",
+      "draft": {
+        "year": "1996",
+        "round": "1",
+        "pick": "2"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/948.png",
+      "careerRegularSeason": {
+        "gp": 973,
+        "gs": 786,
+        "min": 29.5,
+        "pts": 9.5,
+        "reb": 9.8,
+        "ast": 1.9,
+        "stl": 1.0,
+        "blk": 2.4,
+        "tov": 1.4,
+        "fg_pct": 0.466,
+        "fg3_pct": 0.205,
+        "ft_pct": 0.67,
+        "fgm": 3.9,
+        "fga": 8.3,
+        "fg3m": 0.0,
+        "fg3a": 0.1,
+        "ftm": 1.8,
+        "fta": 2.6,
+        "oreb": 2.7,
+        "dreb": 7.1,
+        "pf": 2.8
+      },
+      "careerPlayoffs": {
+        "gp": 79,
+        "gs": 43,
+        "min": 28.4,
+        "pts": 7.5,
+        "reb": 9.0,
+        "ast": 1.2,
+        "stl": 0.8,
+        "blk": 1.9,
+        "tov": 1.0,
+        "fg_pct": 0.443,
+        "fg3_pct": 0.429,
+        "ft_pct": 0.578,
+        "fgm": 3.0,
+        "fga": 6.8,
+        "fg3m": 0.0,
+        "fg3a": 0.1,
+        "ftm": 1.4,
+        "fta": 2.4,
+        "oreb": 2.3,
+        "dreb": 6.7,
+        "pf": 3.3
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 1,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 4,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 2,
+          "2": 2
+        },
+        "seasons": {
+          "allDefensive": [
+            "2004-05",
+            "2005-06",
+            "2006-07",
+            "2007-08"
+          ],
+          "allDefensive2": [
+            "2004-05",
+            "2005-06"
+          ],
+          "allDefensive1": [
+            "2006-07",
+            "2007-08"
+          ],
+          "allRookie": [
+            "1996-97"
+          ],
+          "dpoy": [
+            "2006-07"
+          ]
+        }
+      }
+    },
+    {
+      "id": 203935,
+      "name": "Marcus Smart",
+      "slug": "marcus-smart",
+      "position": "Guard",
+      "height": "6-3",
+      "weight": "220",
+      "country": "USA",
+      "birthdate": "1994-03-06",
+      "fromYear": 2014,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Houston Rockets",
+      "draft": {
+        "year": "2014",
+        "round": "1",
+        "pick": "6"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/203935.png",
+      "careerRegularSeason": {
+        "gp": 697,
+        "gs": 441,
+        "min": 29.4,
+        "pts": 10.5,
+        "reb": 3.4,
+        "ast": 4.4,
+        "stl": 1.6,
+        "blk": 0.4,
+        "tov": 1.9,
+        "fg_pct": 0.389,
+        "fg3_pct": 0.324,
+        "ft_pct": 0.779,
+        "fgm": 3.5,
+        "fga": 9.1,
+        "fg3m": 1.6,
+        "fg3a": 4.9,
+        "ftm": 1.9,
+        "fta": 2.4,
+        "oreb": 0.8,
+        "dreb": 2.6,
+        "pf": 2.5
+      },
+      "careerPlayoffs": {
+        "gp": 118,
+        "gs": 83,
+        "min": 33.2,
+        "pts": 12.8,
+        "reb": 4.3,
+        "ast": 4.9,
+        "stl": 1.4,
+        "blk": 0.5,
+        "tov": 2.4,
+        "fg_pct": 0.396,
+        "fg3_pct": 0.335,
+        "ft_pct": 0.765,
+        "fgm": 4.2,
+        "fga": 10.5,
+        "fg3m": 1.9,
+        "fg3a": 5.7,
+        "ftm": 2.5,
+        "fta": 3.3,
+        "oreb": 1.0,
+        "dreb": 3.3,
+        "pf": 2.8
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 1,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 3,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 3,
+          "2": 0
+        },
+        "seasons": {
+          "allDefensive": [
+            "2018-19",
+            "2019-20",
+            "2021-22"
+          ],
+          "allDefensive1": [
+            "2018-19",
+            "2019-20",
+            "2021-22"
+          ],
+          "allRookie": [
+            "2014-15"
+          ],
+          "dpoy": [
+            "2021-22"
           ]
         }
       }
@@ -38802,6 +42692,238 @@
       }
     },
     {
+      "id": 203487,
+      "name": "Michael Carter-Williams",
+      "slug": "michael-carter-williams",
+      "position": "Guard",
+      "height": "6-5",
+      "weight": "190",
+      "country": "USA",
+      "birthdate": "1991-10-10",
+      "fromYear": 2013,
+      "toYear": 2022,
+      "active": false,
+      "lastTeam": "Orlando Magic",
+      "draft": {
+        "year": "2013",
+        "round": "1",
+        "pick": "11"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/203487.png",
+      "careerRegularSeason": {
+        "gp": 395,
+        "gs": 217,
+        "min": 25.2,
+        "pts": 10.2,
+        "reb": 4.3,
+        "ast": 4.3,
+        "stl": 1.3,
+        "blk": 0.5,
+        "tov": 2.3,
+        "fg_pct": 0.402,
+        "fg3_pct": 0.256,
+        "ft_pct": 0.705,
+        "fgm": 3.8,
+        "fga": 9.4,
+        "fg3m": 0.5,
+        "fg3a": 1.8,
+        "ftm": 2.2,
+        "fta": 3.1,
+        "oreb": 1.0,
+        "dreb": 3.4,
+        "pf": 2.4
+      },
+      "careerPlayoffs": {
+        "gp": 16,
+        "gs": 6,
+        "min": 20.9,
+        "pts": 7.5,
+        "reb": 3.2,
+        "ast": 2.9,
+        "stl": 0.8,
+        "blk": 0.4,
+        "tov": 1.9,
+        "fg_pct": 0.411,
+        "fg3_pct": 0.143,
+        "ft_pct": 0.667,
+        "fgm": 3.2,
+        "fga": 7.8,
+        "fg3m": 0.1,
+        "fg3a": 0.9,
+        "ftm": 1.0,
+        "fta": 1.5,
+        "oreb": 0.3,
+        "dreb": 2.9,
+        "pf": 2.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2013-14"
+          ],
+          "roy": [
+            "2013-14"
+          ]
+        }
+      }
+    },
+    {
+      "id": 76444,
+      "name": "Michael Cooper",
+      "slug": "michael-cooper",
+      "position": "Guard",
+      "height": "6-7",
+      "weight": "170",
+      "country": "USA",
+      "birthdate": "1956-04-15",
+      "fromYear": 1978,
+      "toYear": 1989,
+      "active": false,
+      "lastTeam": "Los Angeles Lakers",
+      "draft": {
+        "year": "1978",
+        "round": "3",
+        "pick": "60"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76444.png",
+      "careerRegularSeason": {
+        "gp": 873,
+        "gs": 141,
+        "min": 27.1,
+        "pts": 8.9,
+        "reb": 3.2,
+        "ast": 4.2,
+        "stl": 1.2,
+        "blk": 0.6,
+        "tov": 1.6,
+        "fg_pct": 0.469,
+        "fg3_pct": null,
+        "ft_pct": 0.833,
+        "fgm": 3.5,
+        "fga": 7.4,
+        "fg3m": 0.5,
+        "fg3a": null,
+        "ftm": 1.5,
+        "fta": 1.8,
+        "oreb": 0.8,
+        "dreb": 2.3,
+        "pf": 2.7
+      },
+      "careerPlayoffs": {
+        "gp": 168,
+        "gs": 26,
+        "min": 27.2,
+        "pts": 9.4,
+        "reb": 3.4,
+        "ast": 4.2,
+        "stl": 1.2,
+        "blk": 0.6,
+        "tov": 1.5,
+        "fg_pct": 0.468,
+        "fg3_pct": 0.392,
+        "ft_pct": 0.825,
+        "fgm": 3.5,
+        "fga": 7.4,
+        "fg3m": 0.7,
+        "fg3a": 1.9,
+        "ftm": 1.7,
+        "fta": 2.1,
+        "oreb": 0.9,
+        "dreb": 2.5,
+        "pf": 2.8
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 5,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 1,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 8,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 5,
+          "2": 3
+        },
+        "seasons": {
+          "allDefensive": [
+            "1980-81",
+            "1981-82",
+            "1982-83",
+            "1983-84",
+            "1984-85",
+            "1985-86",
+            "1986-87",
+            "1987-88"
+          ],
+          "allDefensive2": [
+            "1980-81",
+            "1982-83",
+            "1985-86"
+          ],
+          "allDefensive1": [
+            "1981-82",
+            "1983-84",
+            "1984-85",
+            "1986-87",
+            "1987-88"
+          ],
+          "championships": [
+            "1979-80",
+            "1981-82",
+            "1984-85",
+            "1986-87",
+            "1987-88"
+          ],
+          "dpoy": [
+            "1986-87"
+          ]
+        }
+      }
+    },
+    {
       "id": 714,
       "name": "Michael Finley",
       "slug": "michael-finley",
@@ -39442,6 +43564,116 @@
       }
     },
     {
+      "id": 2034,
+      "name": "Mike Miller",
+      "slug": "mike-miller",
+      "position": "Guard-Forward",
+      "height": "6-8",
+      "weight": "218",
+      "country": "USA",
+      "birthdate": "1980-02-19",
+      "fromYear": 2000,
+      "toYear": 2016,
+      "active": false,
+      "lastTeam": "Memphis Grizzlies",
+      "draft": {
+        "year": "2000",
+        "round": "1",
+        "pick": "5"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2034.png",
+      "careerRegularSeason": {
+        "gp": 1032,
+        "gs": 570,
+        "min": 26.9,
+        "pts": 10.6,
+        "reb": 4.2,
+        "ast": 2.6,
+        "stl": 0.6,
+        "blk": 0.2,
+        "tov": 1.5,
+        "fg_pct": 0.459,
+        "fg3_pct": 0.407,
+        "ft_pct": 0.769,
+        "fgm": 3.9,
+        "fga": 8.5,
+        "fg3m": 1.5,
+        "fg3a": 3.8,
+        "ftm": 1.3,
+        "fta": 1.7,
+        "oreb": 0.6,
+        "dreb": 3.6,
+        "pf": 2.0
+      },
+      "careerPlayoffs": {
+        "gp": 94,
+        "gs": 21,
+        "min": 16.5,
+        "pts": 4.9,
+        "reb": 2.5,
+        "ast": 0.9,
+        "stl": 0.4,
+        "blk": 0.1,
+        "tov": 0.6,
+        "fg_pct": 0.399,
+        "fg3_pct": 0.394,
+        "ft_pct": 0.841,
+        "fgm": 1.8,
+        "fga": 4.4,
+        "fg3m": 1.0,
+        "fg3a": 2.6,
+        "ftm": 0.4,
+        "fta": 0.5,
+        "oreb": 0.3,
+        "dreb": 2.2,
+        "pf": 1.7
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 2,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2000-01"
+          ],
+          "championships": [
+            "2011-12",
+            "2012-13"
+          ],
+          "roy": [
+            "2000-01"
+          ],
+          "sixthMan": [
+            "2005-06"
+          ]
+        }
+      }
+    },
+    {
       "id": 77615,
       "name": "Mike Mitchell",
       "slug": "mike-mitchell",
@@ -39779,6 +44011,206 @@
           ],
           "championships": [
             "2015-16"
+          ]
+        }
+      }
+    },
+    {
+      "id": 101145,
+      "name": "Monta Ellis",
+      "slug": "monta-ellis",
+      "position": "Guard",
+      "height": "6-3",
+      "weight": "185",
+      "country": "USA",
+      "birthdate": "1985-10-26",
+      "fromYear": 2005,
+      "toYear": 2016,
+      "active": false,
+      "lastTeam": "Golden State Warriors",
+      "draft": {
+        "year": "2005",
+        "round": "2",
+        "pick": "40"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/101145.png",
+      "careerRegularSeason": {
+        "gp": 833,
+        "gs": 713,
+        "min": 34.8,
+        "pts": 17.8,
+        "reb": 3.5,
+        "ast": 4.6,
+        "stl": 1.7,
+        "blk": 0.3,
+        "tov": 2.7,
+        "fg_pct": 0.451,
+        "fg3_pct": 0.314,
+        "ft_pct": 0.772,
+        "fgm": 6.9,
+        "fga": 15.2,
+        "fg3m": 0.9,
+        "fg3a": 2.8,
+        "ftm": 3.2,
+        "fta": 4.2,
+        "oreb": 0.6,
+        "dreb": 2.8,
+        "pf": 2.3
+      },
+      "careerPlayoffs": {
+        "gp": 38,
+        "gs": 31,
+        "min": 29.9,
+        "pts": 13.7,
+        "reb": 2.8,
+        "ast": 3.0,
+        "stl": 1.5,
+        "blk": 0.2,
+        "tov": 2.3,
+        "fg_pct": 0.427,
+        "fg3_pct": 0.298,
+        "ft_pct": 0.755,
+        "fgm": 5.3,
+        "fga": 12.4,
+        "fg3m": 0.9,
+        "fg3a": 3.2,
+        "ftm": 2.2,
+        "fta": 2.9,
+        "oreb": 0.7,
+        "dreb": 2.1,
+        "pf": 2.4
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2006-07"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1626149,
+      "name": "Montrezl Harrell",
+      "slug": "montrezl-harrell",
+      "position": "Forward-Center",
+      "height": "6-7",
+      "weight": "240",
+      "country": "USA",
+      "birthdate": "1994-01-26",
+      "fromYear": 2015,
+      "toYear": 2022,
+      "active": false,
+      "lastTeam": "Philadelphia 76ers",
+      "draft": {
+        "year": "2015",
+        "round": "2",
+        "pick": "32"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1626149.png",
+      "careerRegularSeason": {
+        "gp": 515,
+        "gs": 36,
+        "min": 20.5,
+        "pts": 12.1,
+        "reb": 5.0,
+        "ast": 1.3,
+        "stl": 0.5,
+        "blk": 0.8,
+        "tov": 1.1,
+        "fg_pct": 0.619,
+        "fg3_pct": 0.108,
+        "ft_pct": 0.664,
+        "fgm": 4.9,
+        "fga": 7.9,
+        "fg3m": 0.0,
+        "fg3a": 0.2,
+        "ftm": 2.3,
+        "fta": 3.5,
+        "oreb": 1.8,
+        "dreb": 3.2,
+        "pf": 2.1
+      },
+      "careerPlayoffs": {
+        "gp": 32,
+        "gs": 0,
+        "min": 15.0,
+        "pts": 8.7,
+        "reb": 2.8,
+        "ast": 0.6,
+        "stl": 0.3,
+        "blk": 0.3,
+        "tov": 0.8,
+        "fg_pct": 0.613,
+        "fg3_pct": 0.143,
+        "ft_pct": 0.631,
+        "fgm": 3.2,
+        "fga": 5.3,
+        "fg3m": 0.0,
+        "fg3a": 0.2,
+        "ftm": 2.2,
+        "fta": 3.5,
+        "oreb": 0.9,
+        "dreb": 1.9,
+        "pf": 1.8
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2019-20"
           ]
         }
       }
@@ -40409,6 +44841,102 @@
       }
     },
     {
+      "id": 1629675,
+      "name": "Naz Reid",
+      "slug": "naz-reid",
+      "position": "Center-Forward",
+      "height": "6-9",
+      "weight": "264",
+      "country": "USA",
+      "birthdate": "1999-08-26",
+      "fromYear": 2019,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Charlotte Hornets",
+      "draft": null,
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629675.png",
+      "careerRegularSeason": {
+        "gp": 483,
+        "gs": 77,
+        "min": 21.7,
+        "pts": 11.9,
+        "reb": 5.1,
+        "ast": 1.5,
+        "stl": 0.7,
+        "blk": 0.9,
+        "tov": 1.3,
+        "fg_pct": 0.481,
+        "fg3_pct": 0.371,
+        "ft_pct": 0.728,
+        "fgm": 4.5,
+        "fga": 9.4,
+        "fg3m": 1.5,
+        "fg3a": 4.1,
+        "ftm": 1.4,
+        "fta": 1.9,
+        "oreb": 1.1,
+        "dreb": 4.0,
+        "pf": 2.4
+      },
+      "careerPlayoffs": {
+        "gp": 48,
+        "gs": 0,
+        "min": 23.2,
+        "pts": 10.6,
+        "reb": 4.8,
+        "ast": 1.4,
+        "stl": 0.5,
+        "blk": 0.8,
+        "tov": 1.3,
+        "fg_pct": 0.478,
+        "fg3_pct": 0.387,
+        "ft_pct": 0.738,
+        "fgm": 3.9,
+        "fga": 8.1,
+        "fg3m": 1.6,
+        "fg3a": 4.0,
+        "ftm": 1.2,
+        "fta": 1.7,
+        "oreb": 0.9,
+        "dreb": 4.0,
+        "pf": 2.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "2023-24"
+          ]
+        }
+      }
+    },
+    {
       "id": 77169,
       "name": "Neil Johnston",
       "slug": "neil-johnston",
@@ -40627,6 +45155,106 @@
           ],
           "allRookie": [
             "1993-94"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1629638,
+      "name": "Nickeil Alexander-Walker",
+      "slug": "nickeil-alexander-walker",
+      "position": "Guard",
+      "height": "6-5",
+      "weight": "205",
+      "country": "Canada",
+      "birthdate": "1998-09-02",
+      "fromYear": 2019,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Atlanta Hawks",
+      "draft": {
+        "year": "2019",
+        "round": "1",
+        "pick": "17"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629638.png",
+      "careerRegularSeason": {
+        "gp": 459,
+        "gs": 139,
+        "min": 23.0,
+        "pts": 10.6,
+        "reb": 2.6,
+        "ast": 2.5,
+        "stl": 0.8,
+        "blk": 0.4,
+        "tov": 1.3,
+        "fg_pct": 0.427,
+        "fg3_pct": 0.372,
+        "ft_pct": 0.807,
+        "fgm": 3.8,
+        "fga": 8.8,
+        "fg3m": 1.8,
+        "fg3a": 4.8,
+        "ftm": 1.3,
+        "fta": 1.7,
+        "oreb": 0.5,
+        "dreb": 2.2,
+        "pf": 1.7
+      },
+      "careerPlayoffs": {
+        "gp": 43,
+        "gs": 11,
+        "min": 24.5,
+        "pts": 8.6,
+        "reb": 1.9,
+        "ast": 2.2,
+        "stl": 0.5,
+        "blk": 0.4,
+        "tov": 1.4,
+        "fg_pct": 0.387,
+        "fg3_pct": 0.349,
+        "ft_pct": 0.826,
+        "fgm": 3.0,
+        "fga": 7.7,
+        "fg3m": 1.7,
+        "fg3a": 4.9,
+        "ftm": 0.9,
+        "fta": 1.1,
+        "oreb": 0.4,
+        "dreb": 1.5,
+        "pf": 1.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2025-26"
           ]
         }
       }
@@ -43079,6 +47707,109 @@
       }
     },
     {
+      "id": 1630202,
+      "name": "Payton Pritchard",
+      "slug": "payton-pritchard",
+      "position": "Guard",
+      "height": "6-1",
+      "weight": "195",
+      "country": "USA",
+      "birthdate": "1998-01-28",
+      "fromYear": 2020,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "Boston Celtics",
+      "draft": {
+        "year": "2020",
+        "round": "1",
+        "pick": "26"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1630202.png",
+      "careerRegularSeason": {
+        "gp": 426,
+        "gs": 67,
+        "min": 22.4,
+        "pts": 10.6,
+        "reb": 3.0,
+        "ast": 3.0,
+        "stl": 0.6,
+        "blk": 0.1,
+        "tov": 0.9,
+        "fg_pct": 0.457,
+        "fg3_pct": 0.394,
+        "ft_pct": 0.869,
+        "fgm": 3.9,
+        "fga": 8.5,
+        "fg3m": 2.0,
+        "fg3a": 5.2,
+        "ftm": 0.7,
+        "fta": 0.8,
+        "oreb": 0.8,
+        "dreb": 2.2,
+        "pf": 1.3
+      },
+      "careerPlayoffs": {
+        "gp": 76,
+        "gs": 0,
+        "min": 17.4,
+        "pts": 6.8,
+        "reb": 2.0,
+        "ast": 2.0,
+        "stl": 0.3,
+        "blk": 0.0,
+        "tov": 0.6,
+        "fg_pct": 0.432,
+        "fg3_pct": 0.358,
+        "ft_pct": 0.84,
+        "fgm": 2.5,
+        "fga": 5.8,
+        "fg3m": 1.3,
+        "fg3a": 3.6,
+        "ftm": 0.6,
+        "fta": 0.7,
+        "oreb": 0.6,
+        "dreb": 1.4,
+        "pf": 1.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 1,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "championships": [
+            "2023-24"
+          ],
+          "sixthMan": [
+            "2024-25"
+          ]
+        }
+      }
+    },
+    {
       "id": 978,
       "name": "Peja Stojakovic",
       "slug": "peja-stojakovic",
@@ -43185,6 +47916,106 @@
           ],
           "championships": [
             "2010-11"
+          ]
+        }
+      }
+    },
+    {
+      "id": 442,
+      "name": "Pervis Ellison",
+      "slug": "pervis-ellison",
+      "position": "Center",
+      "height": null,
+      "weight": null,
+      "country": "USA",
+      "birthdate": "1967-04-03",
+      "fromYear": 1989,
+      "toYear": 2000,
+      "active": false,
+      "lastTeam": null,
+      "draft": {
+        "year": "1989",
+        "round": "1",
+        "pick": "1"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/442.png",
+      "careerRegularSeason": {
+        "gp": 474,
+        "gs": 245,
+        "min": 24.5,
+        "pts": 9.5,
+        "reb": 6.7,
+        "ast": 1.5,
+        "stl": 0.6,
+        "blk": 1.6,
+        "tov": 1.7,
+        "fg_pct": 0.51,
+        "fg3_pct": 0.05,
+        "ft_pct": 0.689,
+        "fgm": 3.9,
+        "fga": 7.6,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 1.8,
+        "fta": 2.6,
+        "oreb": 2.3,
+        "dreb": 4.4,
+        "pf": 3.1
+      },
+      "careerPlayoffs": {
+        "gp": 4,
+        "gs": 0,
+        "min": 17.0,
+        "pts": 6.0,
+        "reb": 4.3,
+        "ast": 0.5,
+        "stl": 0.5,
+        "blk": 1.3,
+        "tov": 1.0,
+        "fg_pct": 0.579,
+        "fg3_pct": 0.0,
+        "ft_pct": 1.0,
+        "fgm": 2.8,
+        "fga": 4.8,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 0.5,
+        "fta": 0.5,
+        "oreb": 2.8,
+        "dreb": 1.5,
+        "pf": 4.3
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1991-92"
           ]
         }
       }
@@ -43416,6 +48247,118 @@
             "1973-74",
             "1974-75",
             "1976-77"
+          ]
+        }
+      }
+    },
+    {
+      "id": 76736,
+      "name": "Phil Ford",
+      "slug": "phil-ford",
+      "position": "Guard",
+      "height": "6-2",
+      "weight": "175",
+      "country": "USA",
+      "birthdate": "1956-02-09",
+      "fromYear": 1978,
+      "toYear": 1984,
+      "active": false,
+      "lastTeam": "Kansas City Kings",
+      "draft": {
+        "year": "1978",
+        "round": "1",
+        "pick": "2"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76736.png",
+      "careerRegularSeason": {
+        "gp": 482,
+        "gs": 184,
+        "min": 28.0,
+        "pts": 11.6,
+        "reb": 1.8,
+        "ast": 6.4,
+        "stl": 1.2,
+        "blk": 0.1,
+        "tov": 2.8,
+        "fg_pct": 0.467,
+        "fg3_pct": null,
+        "ft_pct": 0.82,
+        "fgm": 4.4,
+        "fga": 9.5,
+        "fg3m": 0.1,
+        "fg3a": null,
+        "ftm": 2.7,
+        "fta": 3.3,
+        "oreb": 0.3,
+        "dreb": 1.4,
+        "pf": 2.6
+      },
+      "careerPlayoffs": {
+        "gp": 15,
+        "gs": 0,
+        "min": 31.6,
+        "pts": 9.1,
+        "reb": 1.7,
+        "ast": 5.7,
+        "stl": 1.5,
+        "blk": 0.0,
+        "tov": 2.9,
+        "fg_pct": 0.365,
+        "fg3_pct": null,
+        "ft_pct": 0.717,
+        "fgm": 3.3,
+        "fga": 9.1,
+        "fg3m": 0.2,
+        "fg3a": null,
+        "ftm": 2.2,
+        "fta": 3.1,
+        "oreb": 0.2,
+        "dreb": 1.5,
+        "pf": 2.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 1,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 1,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 1,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allNba": [
+            "1978-79"
+          ],
+          "allNba2": [
+            "1978-79"
+          ],
+          "allRookie": [
+            "1978-79"
+          ],
+          "roy": [
+            "1978-79"
+          ],
+          "olympicGold": [
+            "1976"
           ]
         }
       }
@@ -45885,6 +50828,106 @@
       }
     },
     {
+      "id": 915,
+      "name": "Rodney Rogers",
+      "slug": "rodney-rogers",
+      "position": "Forward",
+      "height": "6-7",
+      "weight": "270",
+      "country": "USA",
+      "birthdate": "1971-06-20",
+      "fromYear": 1993,
+      "toYear": 2004,
+      "active": false,
+      "lastTeam": "Los Angeles Clippers",
+      "draft": {
+        "year": "1993",
+        "round": "1",
+        "pick": "9"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/915.png",
+      "careerRegularSeason": {
+        "gp": 866,
+        "gs": 347,
+        "min": 25.3,
+        "pts": 10.9,
+        "reb": 4.5,
+        "ast": 2.0,
+        "stl": 1.0,
+        "blk": 0.5,
+        "tov": 1.9,
+        "fg_pct": 0.451,
+        "fg3_pct": 0.347,
+        "ft_pct": 0.69,
+        "fgm": 4.2,
+        "fga": 9.2,
+        "fg3m": 0.8,
+        "fg3a": 2.3,
+        "ftm": 1.8,
+        "fta": 2.6,
+        "oreb": 1.5,
+        "dreb": 3.0,
+        "pf": 3.1
+      },
+      "careerPlayoffs": {
+        "gp": 82,
+        "gs": 6,
+        "min": 21.0,
+        "pts": 7.9,
+        "reb": 3.9,
+        "ast": 1.4,
+        "stl": 0.7,
+        "blk": 0.5,
+        "tov": 1.3,
+        "fg_pct": 0.392,
+        "fg3_pct": 0.31,
+        "ft_pct": 0.734,
+        "fgm": 2.7,
+        "fga": 6.9,
+        "fg3m": 0.8,
+        "fg3a": 2.5,
+        "ftm": 1.6,
+        "fta": 2.2,
+        "oreb": 1.1,
+        "dreb": 2.8,
+        "pf": 2.8
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "sixthMan": [
+            "1999-00"
+          ]
+        }
+      }
+    },
+    {
       "id": 76176,
       "name": "Rolando Blackman",
       "slug": "rolando-blackman",
@@ -45982,6 +51025,106 @@
             "1984-85",
             "1985-86",
             "1986-87",
+            "1989-90"
+          ]
+        }
+      }
+    },
+    {
+      "id": 938,
+      "name": "Rony Seikaly",
+      "slug": "rony-seikaly",
+      "position": "Center",
+      "height": "6-11",
+      "weight": "253",
+      "country": "Lebanon",
+      "birthdate": "1965-05-10",
+      "fromYear": 1988,
+      "toYear": 1998,
+      "active": false,
+      "lastTeam": "Miami Heat",
+      "draft": {
+        "year": "1988",
+        "round": "1",
+        "pick": "9"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/938.png",
+      "careerRegularSeason": {
+        "gp": 678,
+        "gs": 607,
+        "min": 31.6,
+        "pts": 14.7,
+        "reb": 9.5,
+        "ast": 1.3,
+        "stl": 0.7,
+        "blk": 1.3,
+        "tov": 2.8,
+        "fg_pct": 0.484,
+        "fg3_pct": 0.188,
+        "ft_pct": 0.679,
+        "fgm": 5.4,
+        "fga": 11.1,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 4.0,
+        "fta": 5.8,
+        "oreb": 3.2,
+        "dreb": 6.3,
+        "pf": 3.5
+      },
+      "careerPlayoffs": {
+        "gp": 14,
+        "gs": 9,
+        "min": 28.9,
+        "pts": 10.0,
+        "reb": 7.3,
+        "ast": 0.9,
+        "stl": 0.5,
+        "blk": 1.1,
+        "tov": 2.0,
+        "fg_pct": 0.48,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.676,
+        "fgm": 3.4,
+        "fga": 7.0,
+        "fg3m": 0.0,
+        "fg3a": 0.0,
+        "ftm": 3.3,
+        "fta": 4.9,
+        "oreb": 2.7,
+        "dreb": 4.6,
+        "pf": 3.6
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
             "1989-90"
           ]
         }
@@ -46090,6 +51233,109 @@
           "allStar": [
             "2011-12",
             "2013-14"
+          ]
+        }
+      }
+    },
+    {
+      "id": 78293,
+      "name": "Roy Tarpley",
+      "slug": "roy-tarpley",
+      "position": "Forward",
+      "height": "7-0",
+      "weight": "230",
+      "country": "USA",
+      "birthdate": "1964-11-28",
+      "fromYear": 1986,
+      "toYear": 1994,
+      "active": false,
+      "lastTeam": "Dallas Mavericks",
+      "draft": {
+        "year": "1986",
+        "round": "1",
+        "pick": "7"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78293.png",
+      "careerRegularSeason": {
+        "gp": 280,
+        "gs": 57,
+        "min": 26.7,
+        "pts": 12.6,
+        "reb": 10.0,
+        "ast": 1.0,
+        "stl": 1.1,
+        "blk": 1.2,
+        "tov": 2.0,
+        "fg_pct": 0.483,
+        "fg3_pct": 0.176,
+        "ft_pct": 0.744,
+        "fgm": 5.2,
+        "fga": 10.8,
+        "fg3m": 0.0,
+        "fg3a": 0.1,
+        "ftm": 2.2,
+        "fta": 2.9,
+        "oreb": 3.4,
+        "dreb": 6.6,
+        "pf": 3.4
+      },
+      "careerPlayoffs": {
+        "gp": 24,
+        "gs": 4,
+        "min": 33.6,
+        "pts": 17.0,
+        "reb": 12.8,
+        "ast": 1.3,
+        "stl": 1.2,
+        "blk": 1.8,
+        "tov": 2.0,
+        "fg_pct": 0.51,
+        "fg3_pct": 0.0,
+        "ft_pct": 0.707,
+        "fgm": 7.1,
+        "fga": 14.0,
+        "fg3m": 0.0,
+        "fg3a": 0.2,
+        "ftm": 2.7,
+        "fta": 3.8,
+        "oreb": 4.8,
+        "dreb": 8.0,
+        "pf": 4.1
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1986-87"
+          ],
+          "sixthMan": [
+            "1987-88"
           ]
         }
       }
@@ -46601,6 +51847,106 @@
       }
     },
     {
+      "id": 201583,
+      "name": "Ryan Anderson",
+      "slug": "ryan-anderson",
+      "position": "Forward",
+      "height": "6-9",
+      "weight": "240",
+      "country": "USA",
+      "birthdate": "1988-05-06",
+      "fromYear": 2008,
+      "toYear": 2019,
+      "active": false,
+      "lastTeam": null,
+      "draft": {
+        "year": "2008",
+        "round": "1",
+        "pick": "21"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/201583.png",
+      "careerRegularSeason": {
+        "gp": 649,
+        "gs": 289,
+        "min": 25.8,
+        "pts": 12.3,
+        "reb": 5.3,
+        "ast": 0.9,
+        "stl": 0.5,
+        "blk": 0.3,
+        "tov": 0.9,
+        "fg_pct": 0.422,
+        "fg3_pct": 0.38,
+        "ft_pct": 0.854,
+        "fgm": 4.2,
+        "fga": 10.1,
+        "fg3m": 2.0,
+        "fg3a": 5.4,
+        "ftm": 1.8,
+        "fta": 2.1,
+        "oreb": 1.9,
+        "dreb": 3.3,
+        "pf": 1.9
+      },
+      "careerPlayoffs": {
+        "gp": 46,
+        "gs": 14,
+        "min": 20.3,
+        "pts": 5.7,
+        "reb": 3.7,
+        "ast": 0.7,
+        "stl": 0.4,
+        "blk": 0.2,
+        "tov": 0.7,
+        "fg_pct": 0.363,
+        "fg3_pct": 0.325,
+        "ft_pct": 0.917,
+        "fgm": 2.0,
+        "fga": 5.5,
+        "fg3m": 1.1,
+        "fg3a": 3.3,
+        "ftm": 0.7,
+        "fta": 0.8,
+        "oreb": 1.2,
+        "dreb": 2.5,
+        "pf": 2.1
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "2011-12"
+          ]
+        }
+      }
+    },
+    {
       "id": 208,
       "name": "Sam Cassell",
       "slug": "sam-cassell",
@@ -46936,6 +52282,106 @@
         "seasons": {
           "allStar": [
             "1974-75"
+          ]
+        }
+      }
+    },
+    {
+      "id": 101,
+      "name": "Scott Skiles",
+      "slug": "scott-skiles",
+      "position": "Guard",
+      "height": "6-1",
+      "weight": "180",
+      "country": "USA",
+      "birthdate": "1964-03-05",
+      "fromYear": 1986,
+      "toYear": 1995,
+      "active": false,
+      "lastTeam": "Orlando Magic",
+      "draft": {
+        "year": "1986",
+        "round": "1",
+        "pick": "22"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/101.png",
+      "careerRegularSeason": {
+        "gp": 600,
+        "gs": 371,
+        "min": 28.0,
+        "pts": 11.1,
+        "reb": 2.5,
+        "ast": 6.5,
+        "stl": 0.8,
+        "blk": 0.0,
+        "tov": 2.5,
+        "fg_pct": 0.435,
+        "fg3_pct": 0.379,
+        "ft_pct": 0.889,
+        "fgm": 3.8,
+        "fga": 8.8,
+        "fg3m": 0.9,
+        "fg3a": 2.3,
+        "ftm": 2.6,
+        "fta": 2.9,
+        "oreb": 0.5,
+        "dreb": 2.1,
+        "pf": 2.2
+      },
+      "careerPlayoffs": {
+        "gp": 2,
+        "gs": 0,
+        "min": 11.5,
+        "pts": 4.5,
+        "reb": 0.5,
+        "ast": 1.5,
+        "stl": 0.0,
+        "blk": 0.0,
+        "tov": 2.5,
+        "fg_pct": 0.5,
+        "fg3_pct": 0.0,
+        "ft_pct": 1.0,
+        "fgm": 2.0,
+        "fga": 4.0,
+        "fg3m": 0.0,
+        "fg3a": 1.0,
+        "ftm": 0.5,
+        "fta": 0.5,
+        "oreb": 0.5,
+        "dreb": 0.0,
+        "pf": 1.0
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 0,
+        "mip": 1,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 0,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "mip": [
+            "1990-91"
           ]
         }
       }
@@ -48876,6 +54322,109 @@
           ],
           "conferenceFinalsMvp": [
             "2021-22"
+          ]
+        }
+      }
+    },
+    {
+      "id": 1642264,
+      "name": "Stephon Castle",
+      "slug": "stephon-castle",
+      "position": "Guard",
+      "height": "6-6",
+      "weight": "215",
+      "country": "USA",
+      "birthdate": "2004-11-01",
+      "fromYear": 2024,
+      "toYear": 2026,
+      "active": true,
+      "lastTeam": "San Antonio Spurs",
+      "draft": {
+        "year": "2024",
+        "round": "1",
+        "pick": "4"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1642264.png",
+      "careerRegularSeason": {
+        "gp": 149,
+        "gs": 114,
+        "min": 28.2,
+        "pts": 15.6,
+        "reb": 4.4,
+        "ast": 5.6,
+        "stl": 1.0,
+        "blk": 0.3,
+        "tov": 2.6,
+        "fg_pct": 0.448,
+        "fg3_pct": 0.305,
+        "ft_pct": 0.729,
+        "fgm": 5.4,
+        "fga": 12.1,
+        "fg3m": 1.2,
+        "fg3a": 3.9,
+        "ftm": 3.6,
+        "fta": 4.9,
+        "oreb": 1.3,
+        "dreb": 3.2,
+        "pf": 2.6
+      },
+      "careerPlayoffs": {
+        "gp": 23,
+        "gs": 23,
+        "min": 33.0,
+        "pts": 18.2,
+        "reb": 5.0,
+        "ast": 6.1,
+        "stl": 0.9,
+        "blk": 0.3,
+        "tov": 3.5,
+        "fg_pct": 0.459,
+        "fg3_pct": 0.35,
+        "ft_pct": 0.816,
+        "fgm": 5.9,
+        "fga": 12.9,
+        "fg3m": 1.5,
+        "fg3a": 4.3,
+        "ftm": 4.8,
+        "fta": 5.9,
+        "oreb": 1.4,
+        "dreb": 3.6,
+        "pf": 3.9
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2024-25"
+          ],
+          "roy": [
+            "2024-25"
           ]
         }
       }
@@ -51178,6 +56727,114 @@
       }
     },
     {
+      "id": 389,
+      "name": "Toni Kukoc",
+      "slug": "toni-kukoc",
+      "position": "Forward",
+      "height": "6-11",
+      "weight": "235",
+      "country": "Croatia",
+      "birthdate": "1968-09-18",
+      "fromYear": 1993,
+      "toYear": 2005,
+      "active": false,
+      "lastTeam": "Chicago Bulls",
+      "draft": {
+        "year": "1990",
+        "round": "2",
+        "pick": "29"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/389.png",
+      "careerRegularSeason": {
+        "gp": 846,
+        "gs": 259,
+        "min": 26.3,
+        "pts": 11.6,
+        "reb": 4.2,
+        "ast": 3.7,
+        "stl": 1.0,
+        "blk": 0.3,
+        "tov": 1.8,
+        "fg_pct": 0.447,
+        "fg3_pct": 0.335,
+        "ft_pct": 0.729,
+        "fgm": 4.3,
+        "fga": 9.6,
+        "fg3m": 0.9,
+        "fg3a": 2.6,
+        "ftm": 2.1,
+        "fta": 2.9,
+        "oreb": 1.2,
+        "dreb": 3.0,
+        "pf": 1.7
+      },
+      "careerPlayoffs": {
+        "gp": 99,
+        "gs": 32,
+        "min": 26.9,
+        "pts": 10.7,
+        "reb": 3.9,
+        "ast": 3.2,
+        "stl": 1.0,
+        "blk": 0.3,
+        "tov": 1.4,
+        "fg_pct": 0.44,
+        "fg3_pct": 0.342,
+        "ft_pct": 0.697,
+        "fgm": 3.9,
+        "fga": 8.9,
+        "fg3m": 1.1,
+        "fg3a": 3.2,
+        "ftm": 1.9,
+        "fta": 2.7,
+        "oreb": 1.1,
+        "dreb": 2.9,
+        "pf": 2.2
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 3,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 0,
+        "sixthMan": 1,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "1993-94"
+          ],
+          "championships": [
+            "1995-96",
+            "1996-97",
+            "1997-98"
+          ],
+          "sixthMan": [
+            "1995-96"
+          ]
+        }
+      }
+    },
+    {
       "id": 2225,
       "name": "Tony Parker",
       "slug": "tony-parker",
@@ -51763,6 +57420,109 @@
           ],
           "sixthMan": [
             "2021-22"
+          ]
+        }
+      }
+    },
+    {
+      "id": 201936,
+      "name": "Tyreke Evans",
+      "slug": "tyreke-evans",
+      "position": "Guard",
+      "height": "6-6",
+      "weight": "220",
+      "country": "USA",
+      "birthdate": "1989-09-19",
+      "fromYear": 2009,
+      "toYear": 2018,
+      "active": false,
+      "lastTeam": null,
+      "draft": {
+        "year": "2009",
+        "round": "1",
+        "pick": "4"
+      },
+      "greatest75": false,
+      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/201936.png",
+      "careerRegularSeason": {
+        "gp": 594,
+        "gs": 426,
+        "min": 30.7,
+        "pts": 15.7,
+        "reb": 4.6,
+        "ast": 4.8,
+        "stl": 1.2,
+        "blk": 0.4,
+        "tov": 2.5,
+        "fg_pct": 0.44,
+        "fg3_pct": 0.323,
+        "ft_pct": 0.757,
+        "fgm": 5.9,
+        "fga": 13.4,
+        "fg3m": 0.8,
+        "fg3a": 2.6,
+        "ftm": 3.1,
+        "fta": 4.1,
+        "oreb": 0.8,
+        "dreb": 3.7,
+        "pf": 2.2
+      },
+      "careerPlayoffs": {
+        "gp": 8,
+        "gs": 4,
+        "min": 26.1,
+        "pts": 12.6,
+        "reb": 4.6,
+        "ast": 2.9,
+        "stl": 1.0,
+        "blk": 0.3,
+        "tov": 1.5,
+        "fg_pct": 0.385,
+        "fg3_pct": 0.419,
+        "ft_pct": 0.581,
+        "fgm": 4.4,
+        "fga": 11.4,
+        "fg3m": 1.6,
+        "fg3a": 3.9,
+        "ftm": 2.3,
+        "fta": 3.9,
+        "oreb": 0.4,
+        "dreb": 4.3,
+        "pf": 2.3
+      },
+      "accolades": {
+        "allStar": 0,
+        "championships": 0,
+        "mvp": 0,
+        "finalsMvp": 0,
+        "dpoy": 0,
+        "roy": 1,
+        "sixthMan": 0,
+        "mip": 0,
+        "clutchPoy": 0,
+        "allStarMvp": 0,
+        "allNba": 0,
+        "allDefensive": 0,
+        "allRookie": 1,
+        "nbaCupMvp": 0,
+        "olympicGold": 0,
+        "conferenceFinalsMvp": 0,
+        "hallOfFame": 0,
+        "allNbaByTeam": {
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "allDefensiveByTeam": {
+          "1": 0,
+          "2": 0
+        },
+        "seasons": {
+          "allRookie": [
+            "2009-10"
+          ],
+          "roy": [
+            "2009-10"
           ]
         }
       }

@@ -1,7 +1,10 @@
-"""Build data/players.json: every NBA All-Star with career averages and accolades.
+"""Build data/players.json: every NBA All-Star and individual award winner, with
+career averages and accolades.
 
-Candidates come from Wikipedia's "List of NBA All-Stars"; bio, stats and awards
-come from stats.nba.com via nba_api. Responses are cached in scripts/.cache so
+Candidates come from Wikipedia's "List of NBA All-Stars" plus the winners tables
+on each individual award's Wikipedia page; bio, stats and awards come from
+stats.nba.com via nba_api. Award-only candidates are kept only if NBA.com
+confirms the award. Responses are cached in scripts/.cache so
 the run can be interrupted and resumed. Run from a residential connection:
 stats.nba.com tends to block cloud/datacenter IPs.
 
@@ -31,6 +34,17 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 OUTPUT = ROOT / "data" / "players.json"
 WIKI_URL = "https://en.wikipedia.org/wiki/List_of_NBA_All-Stars"
+# Individual awards whose winners join the pool even without an All-Star selection.
+AWARD_PAGES = {
+    "mvp": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player_Award",
+    "finalsMvp": "https://en.wikipedia.org/wiki/Bill_Russell_NBA_Finals_Most_Valuable_Player_Award",
+    "dpoy": "https://en.wikipedia.org/wiki/NBA_Defensive_Player_of_the_Year_Award",
+    "roy": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year_Award",
+    "sixthMan": "https://en.wikipedia.org/wiki/NBA_Sixth_Man_of_the_Year_Award",
+    "mip": "https://en.wikipedia.org/wiki/NBA_Most_Improved_Player_Award",
+    "allStarMvp": "https://en.wikipedia.org/wiki/NBA_All-Star_Game_Most_Valuable_Player_Award",
+    "conferenceFinalsMvp": "https://en.wikipedia.org/wiki/NBA_Conference_Finals_Most_Valuable_Player",
+}
 USER_AGENT = "nba-ranker/0.1 (https://github.com/zateutsch/nba-ranker)"
 HEADSHOT_URL = "https://cdn.nba.com/headshots/nba/latest/1040x760/{id}.png"
 
@@ -46,6 +60,12 @@ MANUAL_IDS: dict[str, int] = {
     "Nathaniel Clifton": 76404,
     "World B. Free": 76753,
     "Steve Smith": 120,
+    "Lew Alcindor": 76003,       # Kareem Abdul-Jabbar
+    "Ron Artest": 1897,          # Metta World Peace
+    "Chris Jackson": 51,         # Mahmoud Abdul-Rauf
+    "J. R. Smith": 2747,
+    "Isaac Austin": 1134,
+    "Paul Hoffman": 77036,
 }
 
 # Awards missing from NBA.com's PlayerAwards data, keyed by NBA.com player ID.
@@ -83,6 +103,11 @@ AWARD_KEYS = {
     "Hall of Fame Inductee": "hallOfFame",
 }
 
+# NBA.com descriptions that qualify a player for the pool.
+QUALIFYING_DESCRIPTIONS = {
+    desc for desc, key in AWARD_KEYS.items() if key == "allStar" or key in AWARD_PAGES
+}
+
 
 def normalize(name: str) -> str:
     name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
@@ -92,16 +117,39 @@ def normalize(name: str) -> str:
 
 def clean_wiki_name(raw: str) -> str:
     name = re.sub(r"\[.*?\]", "", str(raw))  # footnotes like [a]
+    name = re.sub(r"\(\d+\)", "", name)  # win counts like (2)
     return re.sub(r"[*^†‡§#+~]", "", name).strip()
 
 
-def fetch_all_star_names() -> list[str]:
-    resp = requests.get(WIKI_URL, headers={"User-Agent": USER_AGENT}, timeout=30)
+def read_wiki_tables(url: str) -> list[pd.DataFrame]:
+    resp = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=30)
     resp.raise_for_status()
-    tables = pd.read_html(io.StringIO(resp.text))
-    table = next(t for t in tables if "Player" in t.columns and len(t) > 100)
+    return pd.read_html(io.StringIO(resp.text))
+
+
+def fetch_all_star_names() -> list[str]:
+    table = next(t for t in read_wiki_tables(WIKI_URL) if "Player" in t.columns and len(t) > 100)
     names = [clean_wiki_name(n) for n in table["Player"].dropna()]
     return list(dict.fromkeys(n for n in names if n))
+
+
+def fetch_award_winner_names() -> list[str]:
+    """Names from every winners table (Season/Year + Player columns) on the award pages."""
+    names: list[str] = []
+    for key, url in AWARD_PAGES.items():
+        found = 0
+        for t in read_wiki_tables(url):
+            cols = {str(c) for c in t.columns}
+            if "Player" not in cols or not cols & {"Season", "Year"}:
+                continue
+            for raw in t["Player"].dropna():
+                name = clean_wiki_name(raw)
+                # Skip blanks and notes like "Not awarded as the game was canceled..."
+                if name and name.lower() != "nan" and len(name.split()) <= 5:
+                    names.append(name)
+                    found += 1
+        print(f"  {key}: {found} winners")
+    return list(dict.fromkeys(names))
 
 
 def cached_call(key: str, fetch, refresh: bool, delay: float, retries: int = 4):
@@ -165,10 +213,10 @@ def resolve_ids(names: list[str], refresh: bool, delay: float) -> tuple[dict[str
         if len(matches) == 1:
             resolved[name] = matches[0]["id"]
         elif len(matches) > 1:
-            # Same-name players: pick the one with an All-Star selection.
+            # Same-name players: pick the one with an All-Star selection or qualifying award.
             stars = [
                 m["id"] for m in matches
-                if any(a["DESCRIPTION"] == "NBA All-Star" for a in get_awards(m["id"], refresh, delay))
+                if any(a["DESCRIPTION"] in QUALIFYING_DESCRIPTIONS for a in get_awards(m["id"], refresh, delay))
             ]
             if len(stars) == 1:
                 resolved[name] = stars[0]
@@ -245,7 +293,7 @@ def build_player(pid: int, refresh: bool, delay: float) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--limit", type=int, help="only process the first N All-Stars (for testing)")
+    parser.add_argument("--limit", type=int, help="only process the first N candidates (for testing)")
     parser.add_argument("--refresh", action="store_true", help="ignore cached responses")
     parser.add_argument("--delay", type=float, default=0.6, help="seconds between stats.nba.com calls")
     args = parser.parse_args()
@@ -255,16 +303,23 @@ def main() -> int:
     OUTPUT.parent.mkdir(exist_ok=True)
 
     print("Fetching All-Star list from Wikipedia...")
-    names = fetch_all_star_names()
+    all_stars = fetch_all_star_names()
+    print(f"  {len(all_stars)} All-Stars")
+    print("Fetching individual award winners from Wikipedia...")
+    names = list(dict.fromkeys(all_stars + fetch_award_winner_names()))
     if args.limit:
         names = names[: args.limit]
-    print(f"  {len(names)} All-Stars")
+    all_stars = set(all_stars)
+    print(f"  {len(names)} candidates")
 
     ids, unmatched = resolve_ids(names, args.refresh, args.delay)
     print(f"  matched {len(ids)} to NBA.com IDs, {len(unmatched)} unmatched")
 
-    output, failed = [], []
+    output, failed, dropped, seen_ids = [], [], [], set()
     for i, (name, pid) in enumerate(ids.items(), 1):
+        if pid in seen_ids:  # same player listed under two spellings
+            continue
+        seen_ids.add(pid)
         print(f"[{i}/{len(ids)}] {name}")
         try:
             player = build_player(pid, args.refresh, args.delay)
@@ -272,7 +327,12 @@ def main() -> int:
             print(f"    FAILED: {exc}")
             failed.append(name)
             continue
-        if player["accolades"]["allStar"] == 0:
+        acc = player["accolades"]
+        if acc["allStar"] == 0 and not any(acc[k] > 0 for k in AWARD_PAGES):
+            if name not in all_stars:
+                print("    skipped: NBA.com lists no qualifying award")
+                dropped.append(name)
+                continue
             print("    note: NBA.com lists no All-Star selection for this player")
         output.append(player)
 
@@ -282,7 +342,7 @@ def main() -> int:
             {
                 "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "sources": {
-                    "players": WIKI_URL,
+                    "players": [WIKI_URL, *AWARD_PAGES.values()],
                     "stats": "stats.nba.com (via nba_api)",
                 },
                 "count": len(output),
@@ -296,6 +356,8 @@ def main() -> int:
     print(f"\nWrote {len(output)} players to {OUTPUT.relative_to(ROOT)}")
     if unmatched:
         print("Unmatched (add to MANUAL_IDS):\n  " + "\n  ".join(unmatched))
+    if dropped:
+        print("Skipped (no qualifying award on NBA.com):\n  " + "\n  ".join(dropped))
     if failed:
         print("Failed (re-run to retry):\n  " + "\n  ".join(failed))
     return 1 if failed else 0

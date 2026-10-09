@@ -12,7 +12,7 @@ const SETS = [
     id: "active-all-stars",
     name: "Active NBA All-Stars",
     description: "Current players with at least one All-Star selection",
-    filter: (p) => p.active,
+    filter: (p) => p.active && p.accolades.allStar > 0,
   },
   {
     id: "mvps",
