@@ -34,11 +34,6 @@ export const defaultFilter = () => ({
   rules: [defaultRule()],
   status: "any",
   positions: [],
-  playedFrom: null,
-  playedTo: null,
-  minPpg: null,
-  top75: false,
-  hof: false,
 });
 
 export const EXAMPLES = [
@@ -57,7 +52,12 @@ export const EXAMPLES = [
 
 export const withDefaults = (f) => {
   const base = defaultFilter();
-  return { ...base, ...f, rules: (f.rules ?? base.rules).map((r) => ({ ...defaultRule(), ...r })) };
+  return {
+    match: f.match ?? base.match,
+    rules: (f.rules ?? base.rules).map((r) => ({ ...defaultRule(), ...r })),
+    status: f.status ?? base.status,
+    positions: f.positions ?? base.positions,
+  };
 };
 
 // "2006-07" -> 2007: seasons are identified by the year they end in (the All-Star Game year).
@@ -81,12 +81,6 @@ export function matches(p, f) {
   if (f.status === "active" && !p.active) return false;
   if (f.status === "retired" && p.active) return false;
   if (f.positions.length && !f.positions.some((pos) => (p.position || "").includes(pos))) return false;
-  // Career must overlap the chosen era.
-  if (f.playedFrom && p.toYear < f.playedFrom) return false;
-  if (f.playedTo && p.fromYear > f.playedTo) return false;
-  if (f.minPpg && (p.careerRegularSeason?.pts ?? 0) < f.minPpg) return false;
-  if (f.top75 && !p.greatest75) return false;
-  if (f.hof && !p.accolades.hallOfFame) return false;
   return true;
 }
 
@@ -104,9 +98,5 @@ export function describe(f) {
   const parts = [f.rules.map(describeRule).join(f.match === "any" ? " or " : ", ")];
   if (f.status !== "any") parts.push(f.status);
   if (f.positions.length) parts.push(f.positions.map((p) => `${p}s`).join("/"));
-  if (f.playedFrom || f.playedTo) parts.push(`played ${f.playedFrom || "…"}–${f.playedTo || "now"}`);
-  if (f.minPpg) parts.push(`${f.minPpg}+ PPG`);
-  if (f.top75) parts.push("Top 75");
-  if (f.hof) parts.push("Hall of Famers");
   return parts.filter(Boolean).join(" · ");
 }

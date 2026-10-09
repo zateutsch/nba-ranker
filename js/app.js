@@ -195,6 +195,15 @@ function renderSetup() {
     else if (action === "remove") filter.rules.splice(Number(btn.dataset.index), 1);
     else if (action === "example") filter = withDefaults(EXAMPLES[Number(btn.dataset.index)].filter);
     else if (action === "reset") filter = defaultFilter();
+    else if (action === "apply-years") {
+      const year = (input) => {
+        const v = Math.round(parseFloat(input.value));
+        return v >= FIRST_YEAR && v <= thisYear ? v : null;
+      };
+      const from = year(builder.querySelector("[data-bulk=from]"));
+      const to = year(builder.querySelector("[data-bulk=to]"));
+      filter.rules = filter.rules.map((r) => ({ ...r, from, to }));
+    }
     localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
     rebuild();
   });
@@ -294,6 +303,19 @@ function renderCustomBuilder(el, f) {
           .join("")}
       </div>
       <button type="button" class="btn ghost small" data-builder="add">+ Add rule</button>
+      ${
+        f.rules.length > 1
+          ? `<div class="bulk-years">
+              <span class="rule-word">Same years for every rule:</span>
+              <span class="rule-line">
+                <input type="number" inputmode="numeric" class="year" data-bulk="from" min="${FIRST_YEAR}" max="${thisYear}" placeholder="any year" aria-label="From season for all rules" />
+                <span class="rule-word">to</span>
+                <input type="number" inputmode="numeric" class="year" data-bulk="to" min="${FIRST_YEAR}" max="${thisYear}" placeholder="now" aria-label="To season for all rules" />
+                <button type="button" class="btn ghost small" data-builder="apply-years">Apply to all</button>
+              </span>
+            </div>`
+          : ""
+      }
       <p class="hint">Years are seasons by the year they end, so 2015 means the 2014–15 season.</p>
     </div>
 
@@ -320,20 +342,6 @@ function renderCustomBuilder(el, f) {
             ).join("")}
           </span>
         </div>
-        <div class="extra">
-          <span class="extra-label">Played between</span>
-          <span class="rule-line">
-            ${yearInput("playedFrom", f.playedFrom, "any", 'aria-label="Played from"')}
-            <span class="rule-word">and</span>
-            ${yearInput("playedTo", f.playedTo, "now", 'aria-label="Played to"')}
-          </span>
-        </div>
-        <div class="extra">
-          <span class="extra-label">Career PPG at least</span>
-          <input type="number" inputmode="decimal" class="year" data-f="minPpg" min="0" max="40" step="0.5" placeholder="any" value="${f.minPpg ?? ""}" />
-        </div>
-        <label class="toggle"><input type="checkbox" data-f="top75" ${f.top75 ? "checked" : ""} /> Top 75 only</label>
-        <label class="toggle"><input type="checkbox" data-f="hof" ${f.hof ? "checked" : ""} /> Hall of Famers only</label>
       </div>
     </details>
 
@@ -341,8 +349,7 @@ function renderCustomBuilder(el, f) {
     <button type="button" class="btn ghost small" data-builder="reset">Reset filters</button>`;
 }
 
-const hasExtras = (f) =>
-  f.status !== "any" || f.positions.length || f.playedFrom || f.playedTo || f.minPpg || f.top75 || f.hof;
+const hasExtras = (f) => f.status !== "any" || f.positions.length;
 
 function readCustomBuilder(el, prev) {
   const num = (input) => {
@@ -364,11 +371,6 @@ function readCustomBuilder(el, prev) {
     })),
     status: q("[data-f=status]:checked")?.value ?? "any",
     positions: [...el.querySelectorAll("[data-f=positions]:checked")].map((i) => i.value),
-    playedFrom: year(q("[data-f=playedFrom]")),
-    playedTo: year(q("[data-f=playedTo]")),
-    minPpg: num(q("[data-f=minPpg]")) || null,
-    top75: q("[data-f=top75]").checked,
-    hof: q("[data-f=hof]").checked,
   };
 }
 
