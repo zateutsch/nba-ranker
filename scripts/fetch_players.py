@@ -198,10 +198,9 @@ def summarize_awards(awards: list[dict]) -> dict:
         counts[key] += 1
         seasons.setdefault(key, []).append(a["SEASON"])
         team_no = str(a.get("ALL_NBA_TEAM_NUMBER") or "").strip()
-        if key == "allNba" and team_no:
-            all_nba_teams[team_no] += 1
-        if key == "allDefensive" and team_no:
-            all_def_teams[team_no] += 1
+        if key in ("allNba", "allDefensive") and team_no:
+            (all_nba_teams if key == "allNba" else all_def_teams)[team_no] += 1
+            seasons.setdefault(f"{key}{team_no}", []).append(a["SEASON"])  # e.g. allNba1
     summary = {key: counts.get(key, 0) for key in AWARD_KEYS.values()}
     summary["allNbaByTeam"] = {t: all_nba_teams.get(t, 0) for t in ("1", "2", "3")}
     summary["allDefensiveByTeam"] = {t: all_def_teams.get(t, 0) for t in ("1", "2")}

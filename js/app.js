@@ -1,7 +1,11 @@
 import { runSort, maxPicks, shuffle, pairKey } from "./sorter.js";
+import { AWARDS, POSITIONS, EXAMPLES, defaultRule, defaultFilter, withDefaults, matches, describe } from "./custom.js";
 
 const TOP_K = 10;
 const STORAGE_KEY = "nba-ranker:session";
+const CUSTOM_KEY = "nba-ranker:custom";
+const FIRST_YEAR = 1947;
+const thisYear = new Date().getFullYear();
 
 const SETS = [
   {
@@ -26,14 +30,36 @@ const SETS = [
 
 const app = document.getElementById("app");
 let players = new Map();
-let session = null; // { setId, mode, seed, answers: [{ a, b, winner }] }
+let session = null; // { setId, filter?, mode, seed, answers: [{ a, b, winner }] }
 let keyHandler = null;
 
 const escapeHtml = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-const setById = (id) => SETS.find((s) => s.id === id);
+const customSet = (filter) => {
+  const f = withDefaults(filter ?? {});
+  return { id: "custom", custom: true, name: describe(f), filter: (p) => matches(p, f) };
+};
+const setById = (id, filter) => (id === "custom" ? customSet(filter) : SETS.find((s) => s.id === id));
+const sessionSet = (s) => setById(s.setId, s.filter);
 const idsForSet = (set) => [...players.values()].filter(set.filter).map((p) => p.id);
+
+function rankingTitle(s) {
+  const set = sessionSet(s);
+  const top = s.mode === "top" ? `Top ${TOP_K}` : "";
+  if (set.custom) return `My ${top || "ranking"}: ${set.name}`;
+  return `My ${top ? `${top} ` : ""}${set.name}`;
+}
+
+function loadCustomFilter() {
+  try {
+    const f = JSON.parse(localStorage.getItem(CUSTOM_KEY));
+    if (f && Array.isArray(f.rules)) return withDefaults(f);
+  } catch {
+    /* ignore */
+  }
+  return defaultFilter();
+}
 
 function save() {
   if (session) localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
@@ -43,7 +69,7 @@ function save() {
 function loadSaved() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && setById(saved.setId) && Array.isArray(saved.answers)) return saved;
+    if (saved && sessionSet(saved) && Array.isArray(saved.answers)) return saved;
   } catch {
     /* ignore corrupt state */
   }
@@ -51,7 +77,7 @@ function loadSaved() {
 }
 
 function sessionIds(s) {
-  return shuffle(idsForSet(setById(s.setId)), s.seed);
+  return shuffle(idsForSet(sessionSet(s)), s.seed);
 }
 
 function setKeys(handler) {
@@ -65,7 +91,8 @@ function setKeys(handler) {
 function renderSetup() {
   setKeys(null);
   const saved = loadSaved();
-  const savedSet = saved && setById(saved.setId);
+  const savedSet = saved && sessionSet(saved);
+  let filter = loadCustomFilter();
   app.innerHTML = `
     <section class="setup">
       <h1>Rank the legends.</h1>
@@ -76,8 +103,8 @@ function renderSetup() {
               <span>You have a ranking in progress: <strong>${escapeHtml(savedSet.name)}</strong>
               (${saved.mode === "top" ? `Top ${TOP_K}` : "full"}, ${saved.answers.length} picks made)</span>
               <span class="resume-actions">
-                <button class="btn" data-action="resume">Resume</button>
-                <button class="btn ghost" data-action="discard">Discard</button>
+                <button type="button" class="btn" data-action="resume">Resume</button>
+                <button type="button" class="btn ghost" data-action="discard">Discard</button>
               </span>
             </div>`
           : ""
@@ -95,7 +122,14 @@ function renderSetup() {
                 <span class="set-count">${n} players</span>
               </label>`;
             }).join("")}
+            <label class="set-card custom-card">
+              <input type="radio" name="set" value="custom" />
+              <span class="set-name">Custom</span>
+              <span class="set-desc">Build your own group from awards, eras and more</span>
+              <span class="set-count" data-custom-count></span>
+            </label>
           </div>
+          <div class="custom-builder" hidden></div>
         </fieldset>
         <fieldset>
           <legend>2. Choose a mode</legend>
@@ -119,20 +153,59 @@ function renderSetup() {
     </section>`;
 
   const form = app.querySelector("#setup-form");
-  const updatePicks = () => {
-    const set = setById(form.set.value);
-    const n = idsForSet(set).length;
+  const builder = form.querySelector(".custom-builder");
+  const startBtn = form.querySelector("[type=submit]");
+
+  const currentSet = () => (form.set.value === "custom" ? customSet(filter) : setById(form.set.value));
+
+  const update = () => {
+    const isCustom = form.set.value === "custom";
+    builder.hidden = !isCustom;
+    const customIds = idsForSet(customSet(filter));
+    form.querySelector("[data-custom-count]").textContent = `${customIds.length} players`;
+    if (isCustom) renderCustomPreview(builder, customIds);
+    const n = idsForSet(currentSet()).length;
     for (const el of form.querySelectorAll("[data-picks]")) {
-      el.textContent = `Up to ${maxPicks(n, el.dataset.picks, TOP_K)} picks`;
+      el.textContent = n < 2 ? "Need at least 2 players" : `Up to ${maxPicks(n, el.dataset.picks, TOP_K)} picks`;
     }
+    startBtn.disabled = n < 2;
   };
-  form.addEventListener("change", updatePicks);
-  updatePicks();
+
+  const rebuild = () => {
+    renderCustomBuilder(builder, filter);
+    update();
+  };
+
+  const onFilterChange = () => {
+    filter = readCustomBuilder(builder, filter);
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
+    update();
+  };
+
+  form.addEventListener("change", (e) => {
+    if (builder.contains(e.target)) onFilterChange();
+    else update();
+  });
+  builder.addEventListener("input", onFilterChange);
+  builder.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-builder]");
+    if (!btn) return;
+    const action = btn.dataset.builder;
+    if (action === "add") filter.rules.push(defaultRule());
+    else if (action === "remove") filter.rules.splice(Number(btn.dataset.index), 1);
+    else if (action === "example") filter = withDefaults(EXAMPLES[Number(btn.dataset.index)].filter);
+    else if (action === "reset") filter = defaultFilter();
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
+    rebuild();
+  });
+  rebuild();
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    const isCustom = form.set.value === "custom";
     session = {
       setId: form.set.value,
+      ...(isCustom ? { filter: structuredClone(filter) } : {}),
       mode: form.mode.value,
       seed: Math.floor(Math.random() * 2 ** 31),
       answers: [],
@@ -150,6 +223,171 @@ function renderSetup() {
     save();
     renderSetup();
   });
+}
+
+// ---------- Custom builder ----------
+
+const yearInput = (name, value, placeholder, extra = "") =>
+  `<input type="number" inputmode="numeric" class="year" data-f="${name}" min="${FIRST_YEAR}" max="${thisYear}"
+    placeholder="${placeholder}" value="${value ?? ""}" ${extra} />`;
+
+function awardSelect(selected) {
+  const groups = [...new Set(AWARDS.map((a) => a.group))];
+  return `<select data-f="award" aria-label="Award">
+    ${groups
+      .map(
+        (g) => `<optgroup label="${g}">
+          ${AWARDS.filter((a) => a.group === g)
+            .map((a) => `<option value="${a.key}" ${a.key === selected ? "selected" : ""}>${escapeHtml(a.many)}</option>`)
+            .join("")}
+        </optgroup>`
+      )
+      .join("")}
+  </select>`;
+}
+
+function renderCustomBuilder(el, f) {
+  el.innerHTML = `
+    <div class="examples">
+      <span class="builder-label">Try one:</span>
+      ${EXAMPLES.map(
+        (ex, i) => `<button type="button" class="chip-btn" data-builder="example" data-index="${i}">${escapeHtml(ex.label)}</button>`
+      ).join("")}
+    </div>
+
+    <div class="builder-section">
+      <div class="builder-head">
+        <span class="builder-label">Players with…</span>
+        ${
+          f.rules.length > 1
+            ? `<label class="match-select">Match
+                <select data-f="match">
+                  <option value="all" ${f.match === "all" ? "selected" : ""}>all rules</option>
+                  <option value="any" ${f.match === "any" ? "selected" : ""}>any rule</option>
+                </select>
+              </label>`
+            : ""
+        }
+      </div>
+      <div class="rules">
+        ${f.rules
+          .map(
+            (r, i) => `<div class="rule" data-rule="${i}">
+              <span class="rule-line">
+                <span class="rule-word">At least</span>
+                <input type="number" inputmode="numeric" class="count" data-f="min" min="1" max="30" value="${r.min ?? 1}" aria-label="Minimum count" />
+                ${awardSelect(r.award)}
+              </span>
+              <span class="rule-line">
+                <span class="rule-word">from</span>
+                ${yearInput("from", r.from, "any year", 'aria-label="From season"')}
+                <span class="rule-word">to</span>
+                ${yearInput("to", r.to, "now", 'aria-label="To season"')}
+                ${
+                  f.rules.length > 1
+                    ? `<button type="button" class="icon-btn" data-builder="remove" data-index="${i}" aria-label="Remove rule">✕</button>`
+                    : ""
+                }
+              </span>
+            </div>`
+          )
+          .join("")}
+      </div>
+      <button type="button" class="btn ghost small" data-builder="add">+ Add rule</button>
+      <p class="hint">Years are seasons by the year they end, so 2015 means the 2014–15 season.</p>
+    </div>
+
+    <details class="builder-section more" ${hasExtras(f) ? "open" : ""}>
+      <summary class="builder-label">More filters</summary>
+      <div class="extra-grid">
+        <div class="extra">
+          <span class="extra-label">Status</span>
+          <span class="segmented">
+            ${["any", "active", "retired"]
+              .map(
+                (s) => `<label><input type="radio" name="status" data-f="status" value="${s}" ${f.status === s ? "checked" : ""} />
+                  <span>${s[0].toUpperCase() + s.slice(1)}</span></label>`
+              )
+              .join("")}
+          </span>
+        </div>
+        <div class="extra">
+          <span class="extra-label">Position</span>
+          <span class="segmented">
+            ${POSITIONS.map(
+              (p) => `<label><input type="checkbox" data-f="positions" value="${p}" ${f.positions.includes(p) ? "checked" : ""} />
+                <span>${p}</span></label>`
+            ).join("")}
+          </span>
+        </div>
+        <div class="extra">
+          <span class="extra-label">Played between</span>
+          <span class="rule-line">
+            ${yearInput("playedFrom", f.playedFrom, "any", 'aria-label="Played from"')}
+            <span class="rule-word">and</span>
+            ${yearInput("playedTo", f.playedTo, "now", 'aria-label="Played to"')}
+          </span>
+        </div>
+        <div class="extra">
+          <span class="extra-label">Career PPG at least</span>
+          <input type="number" inputmode="decimal" class="year" data-f="minPpg" min="0" max="40" step="0.5" placeholder="any" value="${f.minPpg ?? ""}" />
+        </div>
+        <label class="toggle"><input type="checkbox" data-f="top75" ${f.top75 ? "checked" : ""} /> Top 75 only</label>
+        <label class="toggle"><input type="checkbox" data-f="hof" ${f.hof ? "checked" : ""} /> Hall of Famers only</label>
+      </div>
+    </details>
+
+    <div class="custom-preview" aria-live="polite"></div>
+    <button type="button" class="btn ghost small" data-builder="reset">Reset filters</button>`;
+}
+
+const hasExtras = (f) =>
+  f.status !== "any" || f.positions.length || f.playedFrom || f.playedTo || f.minPpg || f.top75 || f.hof;
+
+function readCustomBuilder(el, prev) {
+  const num = (input) => {
+    const v = parseFloat(input?.value);
+    return Number.isFinite(v) ? v : null;
+  };
+  const year = (input) => {
+    const v = num(input);
+    return v && v >= FIRST_YEAR && v <= thisYear ? Math.round(v) : null;
+  };
+  const q = (sel) => el.querySelector(sel);
+  return {
+    match: q("[data-f=match]")?.value ?? prev.match,
+    rules: [...el.querySelectorAll("[data-rule]")].map((row) => ({
+      award: row.querySelector("[data-f=award]").value,
+      min: Math.max(1, Math.round(num(row.querySelector("[data-f=min]")) || 1)),
+      from: year(row.querySelector("[data-f=from]")),
+      to: year(row.querySelector("[data-f=to]")),
+    })),
+    status: q("[data-f=status]:checked")?.value ?? "any",
+    positions: [...el.querySelectorAll("[data-f=positions]:checked")].map((i) => i.value),
+    playedFrom: year(q("[data-f=playedFrom]")),
+    playedTo: year(q("[data-f=playedTo]")),
+    minPpg: num(q("[data-f=minPpg]")) || null,
+    top75: q("[data-f=top75]").checked,
+    hof: q("[data-f=hof]").checked,
+  };
+}
+
+function renderCustomPreview(el, ids) {
+  const preview = el.querySelector(".custom-preview");
+  if (!preview) return;
+  if (!ids.length) {
+    preview.innerHTML = `<strong>No players match.</strong> Try loosening a rule.`;
+    return;
+  }
+  const sample = ids
+    .map((id) => players.get(id))
+    .sort((a, b) => b.accolades.allStar - a.accolades.allStar || b.careerRegularSeason.pts - a.careerRegularSeason.pts);
+  const shown = sample.slice(0, 12);
+  preview.innerHTML = `<strong>${ids.length} ${ids.length === 1 ? "player matches" : "players match"}</strong>
+    ${ids.length < 2 ? " (need at least 2)" : ""}
+    <span class="preview-names">${shown.map((p) => escapeHtml(p.name)).join(", ")}${
+      sample.length > shown.length ? `, +${sample.length - shown.length} more` : ""
+    }</span>`;
 }
 
 // ---------- Compare ----------
@@ -218,7 +456,7 @@ function renderCompare() {
     return;
   }
 
-  const set = setById(session.setId);
+  const set = sessionSet(session);
   const total = maxPicks(ids.length, session.mode, TOP_K);
   const done = session.answers.length;
   const pct = Math.min(99, Math.round((done / total) * 100));
@@ -287,12 +525,11 @@ function renderCompare() {
 
 function renderResults(ranking) {
   setKeys(null);
-  const set = setById(session.setId);
   const ranked = ranking.map((id) => players.get(id));
   const podium = ranked.slice(0, 3);
   const featured = ranked.slice(3, 10);
   const rest = ranked.slice(10);
-  const title = `My ${session.mode === "top" ? `Top ${TOP_K} ` : ""}${set.name}`;
+  const title = rankingTitle(session);
 
   const statLine = (p) => {
     const s = p.careerRegularSeason || {};
