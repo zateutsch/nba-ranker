@@ -1,5 +1,6 @@
 import { runSort, maxPicks, shuffle, pairKey } from "./sorter.js";
 import { AWARDS, POSITIONS, EXAMPLES, defaultRule, defaultFilter, withDefaults, matches, describe } from "./custom.js";
+import { renderRankingImage } from "./share-image.js";
 
 const TOP_K = 10;
 const STORAGE_KEY = "nba-ranker:session";
@@ -566,12 +567,52 @@ function renderResults(ranking) {
           : ""
       }
       <div class="results-actions">
-        <button class="btn primary" data-action="copy">Copy ranking</button>
+        <button class="btn primary" data-action="image">Save image</button>
+        <button class="btn" data-action="copy">Copy as text</button>
         <button class="btn" data-action="undo">↶ Undo last pick</button>
         <button class="btn ghost" data-action="new">Rank again</button>
       </div>
     </section>`;
 
+  app.querySelector("[data-action=image]").addEventListener("click", async (e) => {
+    const btn = e.currentTarget;
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Creating…";
+    try {
+      const set = sessionSet(session);
+      const heading = session.mode === "top" ? `My Top ${TOP_K}` : "My ranking";
+      const blob = await renderRankingImage({
+        title: set.custom ? heading : title,
+        subtitle: set.custom ? set.name : "",
+        ranked,
+        footer: "zateutsch.github.io/nba-ranker",
+      });
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+      const file = new File([blob], `${slug || "nba-ranking"}.png`, { type: "image/png" });
+      // Phones: the share sheet lets people save to Photos or post directly.
+      const touch = matchMedia("(pointer: coarse)").matches;
+      if (touch && navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title });
+        } catch (err) {
+          if (err.name !== "AbortError") throw err;
+        }
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement("a"), { href: url, download: file.name });
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      }
+      btn.textContent = label;
+    } catch {
+      btn.textContent = "Couldn't save image";
+    } finally {
+      btn.disabled = false;
+    }
+  });
   app.querySelector("[data-action=copy]").addEventListener("click", async (e) => {
     const text = `${title}\n${ranked.map((p, i) => `${i + 1}. ${p.name}`).join("\n")}`;
     try {

@@ -19,6 +19,9 @@ It's hosted on GitHub Pages straight from the root of `main`.
   sort; Top 10 uses a knockout tournament where each later pick only replays
   the previous winner's path. The sort is re-run against the saved list of
   picks, so progress (in `localStorage`) and undo come for free.
+- `js/share-image.js` — draws the finished ranking onto a canvas as a
+  shareable PNG. It's text only because cdn.nba.com headshots don't send CORS
+  headers, so they can't be drawn onto an exportable canvas.
 
 ## Player data
 
