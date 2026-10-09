@@ -56,14 +56,27 @@ const customSet = (filter) => {
   const f = withDefaults(filter ?? {});
   return { id: "custom", custom: true, name: describe(f), filter: (p) => matches(p, f) };
 };
-const setById = (id, filter) => (id === "custom" ? customSet(filter) : SETS.find((s) => s.id === id));
-const sessionSet = (s) => setById(s.setId, s.filter);
+const RANDOM_N = 10;
+// The drawn players are stored on the session so resume and undo see the same 10.
+const randomSet = (ids = []) => ({
+  id: "random",
+  random: true,
+  name: `${RANDOM_N} Random Players`,
+  filter: (p) => ids.includes(p.id),
+});
+const setById = (id, filter, ids) => {
+  if (id === "custom") return customSet(filter);
+  if (id === "random") return Array.isArray(ids) ? randomSet(ids) : undefined;
+  return SETS.find((s) => s.id === id);
+};
+const sessionSet = (s) => setById(s.setId, s.filter, s.ids);
 const idsForSet = (set) => [...players.values()].filter(set.filter).map((p) => p.id);
 
 function rankingTitle(s) {
   const set = sessionSet(s);
   const top = s.mode === "top" ? `Top ${TOP_K}` : "";
   if (set.custom) return `My ${top || "ranking"}: ${set.name}`;
+  if (set.random) return `My ranking: ${RANDOM_N} random players`;
   return `My ${top ? `${top} ` : ""}${set.name}`;
 }
 
@@ -138,6 +151,12 @@ function renderSetup() {
                 <span class="set-count">${n} players</span>
               </label>`;
             }).join("")}
+            <label class="set-card">
+              <input type="radio" name="set" value="random" />
+              <span class="set-name">Rank ${RANDOM_N} Random Players</span>
+              <span class="set-desc">A fresh draw of ${RANDOM_N} from all ${players.size} players every time</span>
+              <span class="set-count">${RANDOM_N} players</span>
+            </label>
             <label class="set-card custom-card">
               <input type="radio" name="set" value="custom" />
               <span class="set-name">Custom</span>
@@ -172,7 +191,11 @@ function renderSetup() {
   const builder = form.querySelector(".custom-builder");
   const startBtn = form.querySelector("[type=submit]");
 
-  const currentSet = () => (form.set.value === "custom" ? customSet(filter) : setById(form.set.value));
+  const currentSet = () => {
+    if (form.set.value === "custom") return customSet(filter);
+    if (form.set.value === "random") return randomSet([...players.keys()].slice(0, RANDOM_N));
+    return setById(form.set.value);
+  };
 
   const update = () => {
     const isCustom = form.set.value === "custom";
@@ -219,9 +242,11 @@ function renderSetup() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const isCustom = form.set.value === "custom";
+    const isRandom = form.set.value === "random";
     session = {
       setId: form.set.value,
       ...(isCustom ? { filter: structuredClone(filter) } : {}),
+      ...(isRandom ? { ids: shuffle([...players.keys()], Math.floor(Math.random() * 2 ** 31)).slice(0, RANDOM_N) } : {}),
       mode: form.mode.value,
       seed: Math.floor(Math.random() * 2 ** 31),
       answers: [],
