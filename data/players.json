@@ -35,7 +35,7 @@
         "pick": "23"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/920.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1278,
         "gs": 832,
@@ -246,7 +246,7 @@
         "pick": "17"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/243.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 793,
         "gs": 287,
@@ -471,7 +471,7 @@
         "pick": "85"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78178.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 719,
         "gs": null,
@@ -699,7 +699,7 @@
         "pick": "16"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/673.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 652,
         "gs": 220,
@@ -799,7 +799,7 @@
         "pick": "23"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76673.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1193,
         "gs": 952,
@@ -919,7 +919,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76897.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 130,
         "gs": null,
@@ -1520,7 +1520,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76011.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 988,
         "gs": 744,
@@ -1626,7 +1626,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/926.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 779,
         "gs": 680,
@@ -2124,7 +2124,7 @@
         "pick": "24"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1905.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 797,
         "gs": 546,
@@ -2239,7 +2239,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/101115.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 418,
         "gs": 319,
@@ -2349,7 +2349,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78351.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 468,
         "gs": 246,
@@ -2562,7 +2562,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77853.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 701,
         "gs": null,
@@ -2801,7 +2801,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1712.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1083,
         "gs": 864,
@@ -3405,7 +3405,7 @@
         "pick": "45"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/213.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 903,
         "gs": 524,
@@ -3617,7 +3617,7 @@
         "pick": "37"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76397.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 725,
         "gs": null,
@@ -3720,7 +3720,7 @@
       "lastTeam": "Rochester Royals",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77967.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 637,
         "gs": null,
@@ -3949,7 +3949,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76348.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 682,
         "gs": null,
@@ -4052,7 +4052,7 @@
         "pick": "18"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/769.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 747,
         "gs": 341,
@@ -4157,7 +4157,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77070.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 950,
         "gs": null,
@@ -4998,7 +4998,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76233.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 742,
         "gs": null,
@@ -5108,7 +5108,7 @@
         "pick": "32"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76253.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 926,
         "gs": null,
@@ -5221,7 +5221,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76362.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 963,
         "gs": 839,
@@ -5329,7 +5329,7 @@
         "pick": "65"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/100263.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1068,
         "gs": 931,
@@ -6010,7 +6010,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76768.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 307,
         "gs": null,
@@ -6110,7 +6110,7 @@
         "pick": "21"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77290.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 671,
         "gs": 113,
@@ -6337,7 +6337,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76206.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 874,
         "gs": null,
@@ -6603,7 +6603,7 @@
         "pick": "45"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76500.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 839,
         "gs": 0,
@@ -6721,7 +6721,7 @@
       "lastTeam": "Rochester Royals",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76514.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 462,
         "gs": null,
@@ -6846,7 +6846,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76962.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 615,
         "gs": null,
@@ -6951,7 +6951,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77227.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 525,
         "gs": null,
@@ -7169,7 +7169,7 @@
         "pick": "33"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77412.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 789,
         "gs": null,
@@ -7576,7 +7576,7 @@
         "pick": "19"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78042.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 403,
         "gs": null,
@@ -7657,7 +7657,7 @@
         "pick": "23"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1517.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 755,
         "gs": 143,
@@ -7760,7 +7760,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77193.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 774,
         "gs": 123,
@@ -7993,7 +7993,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78453.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 568,
         "gs": null,
@@ -8216,7 +8216,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/921.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 548,
         "gs": 546,
@@ -8644,7 +8644,7 @@
         "pick": "6"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/200750.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 326,
         "gs": 300,
@@ -8762,7 +8762,7 @@
         "pick": "12"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78600.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 650,
         "gs": 25,
@@ -8982,7 +8982,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/433.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1307,
         "gs": 1140,
@@ -9110,7 +9110,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76130.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 605,
         "gs": null,
@@ -9427,7 +9427,7 @@
         "pick": "18"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77669.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1002,
         "gs": 0,
@@ -9533,7 +9533,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77691.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 599,
         "gs": 371,
@@ -9636,7 +9636,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78047.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 566,
         "gs": 63,
@@ -9732,7 +9732,7 @@
       "lastTeam": "New York Knicks",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76243.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 788,
         "gs": null,
@@ -9847,7 +9847,7 @@
         "pick": "34"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2430.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 861,
         "gs": 775,
@@ -10199,7 +10199,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78045.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 817,
         "gs": null,
@@ -10305,7 +10305,7 @@
         "pick": "48"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 609,
         "gs": 313,
@@ -10405,7 +10405,7 @@
         "pick": "12"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77487.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 835,
         "gs": 538,
@@ -10778,7 +10778,7 @@
         "pick": "106"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78097.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 560,
         "gs": null,
@@ -11137,7 +11137,7 @@
         "pick": "12"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78435.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1032,
         "gs": null,
@@ -11378,7 +11378,7 @@
         "pick": "16"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/423.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 700,
         "gs": 86,
@@ -12011,7 +12011,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/363.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 868,
         "gs": 692,
@@ -12117,7 +12117,7 @@
         "pick": "30"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77722.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 411,
         "gs": null,
@@ -12217,7 +12217,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/456.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 943,
         "gs": 622,
@@ -12320,7 +12320,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76912.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 745,
         "gs": null,
@@ -12438,7 +12438,7 @@
         "pick": "36"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/361.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1380,
         "gs": 844,
@@ -12685,7 +12685,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77357.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 742,
         "gs": null,
@@ -12785,7 +12785,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77414.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 704,
         "gs": null,
@@ -13194,7 +13194,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78028.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 590,
         "gs": null,
@@ -13851,7 +13851,7 @@
         "pick": "122"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77097.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 718,
         "gs": 236,
@@ -14064,7 +14064,7 @@
         "pick": "28"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78025.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 746,
         "gs": 270,
@@ -14188,7 +14188,7 @@
         "pick": "16"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/344.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 850,
         "gs": 264,
@@ -14291,7 +14291,7 @@
         "pick": "31"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76017.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1042,
         "gs": 508,
@@ -14706,7 +14706,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77093.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 801,
         "gs": null,
@@ -14905,7 +14905,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76890.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 765,
         "gs": 492,
@@ -15717,7 +15717,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78326.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 509,
         "gs": 69,
@@ -16718,7 +16718,7 @@
         "pick": "29"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77141.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1100,
         "gs": 985,
@@ -17360,7 +17360,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/96.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1136,
         "gs": 522,
@@ -17693,7 +17693,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76107.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 971,
         "gs": null,
@@ -17797,7 +17797,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76783.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 421,
         "gs": null,
@@ -17906,7 +17906,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77537.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 738,
         "gs": null,
@@ -18021,7 +18021,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78398.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 921,
         "gs": null,
@@ -18435,7 +18435,7 @@
         "pick": "31"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/470.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 864,
         "gs": 605,
@@ -18924,7 +18924,7 @@
       "lastTeam": "Boston Celtics",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76102.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 262,
         "gs": null,
@@ -19024,7 +19024,7 @@
         "pick": "34"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76317.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 648,
         "gs": 103,
@@ -19136,7 +19136,7 @@
         "pick": "21"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77295.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 814,
         "gs": null,
@@ -19237,7 +19237,7 @@
         "pick": "19"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/931.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 319,
         "gs": 111,
@@ -19315,7 +19315,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77573.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 343,
         "gs": null,
@@ -19415,7 +19415,7 @@
         "pick": "36"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77751.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 727,
         "gs": null,
@@ -19519,7 +19519,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78278.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 113,
         "gs": null,
@@ -19718,7 +19718,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76421.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 415,
         "gs": null,
@@ -20655,7 +20655,7 @@
         "pick": "49"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77144.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 675,
         "gs": 232,
@@ -20888,7 +20888,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77596.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 605,
         "gs": null,
@@ -21596,7 +21596,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76568.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 312,
         "gs": null,
@@ -21819,7 +21819,7 @@
         "pick": "15"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77988.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 494,
         "gs": null,
@@ -21918,7 +21918,7 @@
       "lastTeam": "Ft. Wayne Zollner Pistons",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76250.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 438,
         "gs": null,
@@ -22027,7 +22027,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78113.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 565,
         "gs": null,
@@ -22128,7 +22128,7 @@
         "pick": "6"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76272.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 963,
         "gs": 4,
@@ -22231,7 +22231,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78075.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 334,
         "gs": null,
@@ -22432,7 +22432,7 @@
       "lastTeam": "Washington Capitols",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78094.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 534,
         "gs": null,
@@ -22541,7 +22541,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76832.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1031,
         "gs": null,
@@ -22829,7 +22829,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78142.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 699,
         "gs": null,
@@ -22943,7 +22943,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77844.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 446,
         "gs": null,
@@ -23162,7 +23162,7 @@
         "pick": "22"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77532.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 528,
         "gs": 4,
@@ -23405,7 +23405,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78628.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 472,
         "gs": null,
@@ -23523,7 +23523,7 @@
         "pick": "25"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2222.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 832,
         "gs": 611,
@@ -23629,7 +23629,7 @@
         "pick": "30"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/49.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 307,
         "gs": 207,
@@ -24020,7 +24020,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/779.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1000,
         "gs": 876,
@@ -24141,7 +24141,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/299.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 688,
         "gs": 668,
@@ -24591,7 +24591,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77150.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 581,
         "gs": null,
@@ -24721,7 +24721,7 @@
         "pick": "20"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78549.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 825,
         "gs": 385,
@@ -24838,7 +24838,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78003.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 892,
         "gs": null,
@@ -25271,7 +25271,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76773.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 682,
         "gs": null,
@@ -25596,7 +25596,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/270.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1165,
         "gs": 1037,
@@ -25714,7 +25714,7 @@
         "pick": "48"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1134.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 432,
         "gs": 166,
@@ -26288,7 +26288,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76414.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 633,
         "gs": null,
@@ -26392,7 +26392,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76800.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 506,
         "gs": null,
@@ -26502,7 +26502,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77463.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 849,
         "gs": null,
@@ -26606,7 +26606,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77624.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 29,
         "gs": null,
@@ -26684,7 +26684,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78149.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1107,
         "gs": 739,
@@ -26802,7 +26802,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78388.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 823,
         "gs": null,
@@ -27481,7 +27481,7 @@
         "pick": "19"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2048.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 680,
         "gs": 314,
@@ -27581,7 +27581,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78532.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 828,
         "gs": 245,
@@ -27807,7 +27807,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/469.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 611,
         "gs": 584,
@@ -28131,7 +28131,7 @@
         "pick": "73"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76583.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 957,
         "gs": 662,
@@ -28722,7 +28722,7 @@
         "pick": "2"
       },
       "greatest75": true,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/467.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1391,
         "gs": 1350,
@@ -29256,7 +29256,7 @@
         "pick": "21"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/420.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 475,
         "gs": 158,
@@ -29456,7 +29456,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/117.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 905,
         "gs": 755,
@@ -29560,7 +29560,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77662.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 802,
         "gs": null,
@@ -29668,7 +29668,7 @@
         "pick": "25"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78041.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 332,
         "gs": 189,
@@ -29874,7 +29874,7 @@
         "pick": "17"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/979.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1011,
         "gs": 697,
@@ -30134,7 +30134,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78173.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 755,
         "gs": null,
@@ -30253,7 +30253,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/711.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 970,
         "gs": 564,
@@ -30531,7 +30531,7 @@
         "pick": "13"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77270.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 607,
         "gs": null,
@@ -30634,7 +30634,7 @@
         "pick": "12"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77819.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 784,
         "gs": 368,
@@ -30741,7 +30741,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77867.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 438,
         "gs": null,
@@ -30868,7 +30868,7 @@
         "pick": "16"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77883.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 510,
         "gs": null,
@@ -31121,7 +31121,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78439.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 698,
         "gs": null,
@@ -31344,7 +31344,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76353.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 705,
         "gs": 613,
@@ -31447,7 +31447,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76329.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 468,
         "gs": null,
@@ -31702,7 +31702,7 @@
       "lastTeam": "Philadelphia Warriors",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76764.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 489,
         "gs": null,
@@ -32079,7 +32079,7 @@
         "pick": "27"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76187.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 597,
         "gs": null,
@@ -32179,7 +32179,7 @@
         "pick": "25"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76598.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 739,
         "gs": 104,
@@ -32464,7 +32464,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77152.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 869,
         "gs": 1,
@@ -32564,7 +32564,7 @@
       "lastTeam": "New York Knicks",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/317.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 866,
         "gs": 420,
@@ -32955,7 +32955,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76867.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1057,
         "gs": null,
@@ -33058,7 +33058,7 @@
         "pick": "6"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77248.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 905,
         "gs": null,
@@ -33163,7 +33163,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78510.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 837,
         "gs": null,
@@ -33293,7 +33293,7 @@
         "pick": "24"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77533.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 792,
         "gs": null,
@@ -33990,7 +33990,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/436.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1208,
         "gs": 900,
@@ -34886,7 +34886,7 @@
         "pick": "12"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78369.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 707,
         "gs": 575,
@@ -35099,7 +35099,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78106.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 529,
         "gs": null,
@@ -35200,7 +35200,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/72.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 858,
         "gs": 693,
@@ -35403,7 +35403,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78467.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 507,
         "gs": 5,
@@ -35511,7 +35511,7 @@
         "pick": "33"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/404.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 684,
         "gs": 527,
@@ -36365,7 +36365,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/788.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1424,
         "gs": 891,
@@ -36582,7 +36582,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78404.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 810,
         "gs": 566,
@@ -37692,7 +37692,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77376.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 752,
         "gs": 599,
@@ -37805,7 +37805,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1885.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 961,
         "gs": 684,
@@ -38088,7 +38088,7 @@
         "pick": "12"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76454.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 706,
         "gs": null,
@@ -38202,7 +38202,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76744.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 817,
         "gs": null,
@@ -38319,7 +38319,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/913.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 707,
         "gs": 699,
@@ -38432,7 +38432,7 @@
         "pick": "50"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77246.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 503,
         "gs": 37,
@@ -38533,7 +38533,7 @@
         "pick": "20"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77685.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 920,
         "gs": 795,
@@ -38647,7 +38647,7 @@
         "pick": "24"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/84.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 913,
         "gs": 867,
@@ -39178,7 +39178,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78121.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 196,
         "gs": null,
@@ -39278,7 +39278,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76382.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 591,
         "gs": null,
@@ -39378,7 +39378,7 @@
         "pick": "6"
       },
       "greatest75": true,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78530.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1077,
         "gs": null,
@@ -39492,7 +39492,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76110.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 344,
         "gs": null,
@@ -39593,7 +39593,7 @@
         "pick": "6"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77043.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 673,
         "gs": 195,
@@ -39709,7 +39709,7 @@
         "pick": "25"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78133.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 673,
         "gs": 253,
@@ -39818,7 +39818,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77074.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 890,
         "gs": null,
@@ -40034,7 +40034,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77103.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 522,
         "gs": null,
@@ -40544,7 +40544,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/51.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 586,
         "gs": 336,
@@ -41234,7 +41234,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76016.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 923,
         "gs": 639,
@@ -41340,7 +41340,7 @@
         "pick": "72"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76631.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 875,
         "gs": 815,
@@ -41460,7 +41460,7 @@
         "pick": "18"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/349.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1296,
         "gs": 1092,
@@ -41566,7 +41566,7 @@
         "pick": "25"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/899.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 722,
         "gs": 577,
@@ -41683,7 +41683,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77160.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 691,
         "gs": 668,
@@ -41802,7 +41802,7 @@
         "pick": "36"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76385.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1101,
         "gs": 978,
@@ -41927,7 +41927,7 @@
         "pick": "14"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77420.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 855,
         "gs": 244,
@@ -42049,7 +42049,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/600016.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 202,
         "gs": null,
@@ -42163,7 +42163,7 @@
       "lastTeam": "Chicago Stags",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78638.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 540,
         "gs": null,
@@ -42275,7 +42275,7 @@
         "pick": "37"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2246.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 634,
         "gs": 460,
@@ -42378,7 +42378,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77089.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 437,
         "gs": null,
@@ -42610,7 +42610,7 @@
         "pick": "66"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/149.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 653,
         "gs": 510,
@@ -42813,7 +42813,7 @@
         "pick": "60"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76444.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 873,
         "gs": 141,
@@ -42942,7 +42942,7 @@
         "pick": "21"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/714.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1103,
         "gs": 875,
@@ -43256,7 +43256,7 @@
         "pick": "43"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/2072.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 629,
         "gs": 429,
@@ -43365,7 +43365,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77952.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 556,
         "gs": 276,
@@ -43692,7 +43692,7 @@
         "pick": "15"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77615.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 759,
         "gs": 443,
@@ -44501,7 +44501,7 @@
       "lastTeam": "New York Knicks",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76404.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 544,
         "gs": null,
@@ -44951,7 +44951,7 @@
       "lastTeam": "Philadelphia Warriors",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77169.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 516,
         "gs": null,
@@ -45525,7 +45525,7 @@
         "pick": "22"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77721.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 768,
         "gs": 416,
@@ -45633,7 +45633,7 @@
         "pick": "34"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78406.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 746,
         "gs": null,
@@ -46025,7 +46025,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76170.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 696,
         "gs": 567,
@@ -46465,7 +46465,7 @@
         "pick": "1"
       },
       "greatest75": true,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/121.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1183,
         "gs": 1122,
@@ -47269,7 +47269,7 @@
       "lastTeam": "Syracuse Nationals",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78117.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 622,
         "gs": null,
@@ -47382,7 +47382,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78151.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1254,
         "gs": null,
@@ -47504,7 +47504,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78447.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 370,
         "gs": null,
@@ -47604,7 +47604,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78500.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 823,
         "gs": 73,
@@ -47939,7 +47939,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/442.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 474,
         "gs": 245,
@@ -48159,7 +48159,7 @@
       "lastTeam": "Washington Bullets",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76386.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 578,
         "gs": null,
@@ -48270,7 +48270,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76736.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 482,
         "gs": 184,
@@ -48382,7 +48382,7 @@
         "pick": "29"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78199.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 659,
         "gs": 58,
@@ -48628,7 +48628,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76131.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 126,
         "gs": null,
@@ -48738,7 +48738,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78055.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 456,
         "gs": 363,
@@ -48859,7 +48859,7 @@
         "pick": "104"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78200.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 976,
         "gs": 56,
@@ -48969,7 +48969,7 @@
         "pick": "32"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1740.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1049,
         "gs": 842,
@@ -49314,7 +49314,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76704.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 637,
         "gs": null,
@@ -49417,7 +49417,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77999.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 586,
         "gs": null,
@@ -49521,7 +49521,7 @@
         "pick": "22"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77384.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 450,
         "gs": 352,
@@ -49741,7 +49741,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78310.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1026,
         "gs": 743,
@@ -49845,7 +49845,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1888.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 921,
         "gs": 783,
@@ -49950,7 +49950,7 @@
         "pick": "17"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76902.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 848,
         "gs": null,
@@ -50068,7 +50068,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77932.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 215,
         "gs": null,
@@ -50311,7 +50311,7 @@
         "pick": "16"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76874.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 946,
         "gs": 580,
@@ -50411,7 +50411,7 @@
         "pick": "18"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/894.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 969,
         "gs": 269,
@@ -50515,7 +50515,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/22.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 867,
         "gs": 792,
@@ -50745,7 +50745,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77082.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 431,
         "gs": null,
@@ -50946,7 +50946,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76176.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 980,
         "gs": 815,
@@ -51049,7 +51049,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/938.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 678,
         "gs": 607,
@@ -51256,7 +51256,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78293.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 280,
         "gs": 57,
@@ -51505,7 +51505,7 @@
         "pick": "10"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77340.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 736,
         "gs": null,
@@ -51614,7 +51614,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78350.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 768,
         "gs": null,
@@ -52205,7 +52205,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77326.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1002,
         "gs": 40,
@@ -52305,7 +52305,7 @@
         "pick": "22"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/101.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 600,
         "gs": 371,
@@ -52405,7 +52405,7 @@
         "pick": "6"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78482.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 906,
         "gs": 105,
@@ -52804,7 +52804,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/251.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 742,
         "gs": 712,
@@ -53457,7 +53457,7 @@
         "pick": "9"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1890.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1163,
         "gs": 1062,
@@ -53574,7 +53574,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77626.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 767,
         "gs": 513,
@@ -53714,7 +53714,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78520.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 760,
         "gs": null,
@@ -53819,7 +53819,7 @@
       "lastTeam": "Minneapolis Lakers",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77480.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 745,
         "gs": null,
@@ -53949,7 +53949,7 @@
         "pick": "13"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76726.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 957,
         "gs": 584,
@@ -54049,7 +54049,7 @@
         "pick": "30"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76981.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 760,
         "gs": 88,
@@ -54668,7 +54668,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77134.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 626,
         "gs": 327,
@@ -54768,7 +54768,7 @@
         "pick": "61"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77618.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 787,
         "gs": 20,
@@ -55217,7 +55217,7 @@
         "pick": "2"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/187.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1183,
         "gs": 815,
@@ -55334,7 +55334,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76577.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 652,
         "gs": null,
@@ -55445,7 +55445,7 @@
         "pick": "24"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/345.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1274,
         "gs": 732,
@@ -55654,7 +55654,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76636.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 266,
         "gs": null,
@@ -55968,7 +55968,7 @@
         "pick": "14"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/896.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 867,
         "gs": 770,
@@ -56096,7 +56096,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1472.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1107,
         "gs": 743,
@@ -56210,7 +56210,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76828.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 698,
         "gs": null,
@@ -56326,7 +56326,7 @@
         "pick": "6"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/339.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 763,
         "gs": 608,
@@ -56429,7 +56429,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76988.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 654,
         "gs": null,
@@ -56562,7 +56562,7 @@
         "pick": "7"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77584.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 778,
         "gs": null,
@@ -56662,7 +56662,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78399.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 929,
         "gs": null,
@@ -57230,7 +57230,7 @@
         "pick": "22"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77993.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 772,
         "gs": 212,
@@ -57771,7 +57771,7 @@
         "pick": "11"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/238.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 801,
         "gs": 610,
@@ -57998,7 +57998,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77593.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 699,
         "gs": null,
@@ -58370,7 +58370,7 @@
         "pick": "8"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/452.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 791,
         "gs": 604,
@@ -58485,7 +58485,7 @@
       "lastTeam": "New York Knicks",
       "draft": null,
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76210.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 285,
         "gs": null,
@@ -58917,7 +58917,7 @@
         "pick": "1"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76144.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1043,
         "gs": null,
@@ -59184,7 +59184,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76983.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 724,
         "gs": null,
@@ -59287,7 +59287,7 @@
         "pick": "5"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1453.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 1033,
         "gs": 682,
@@ -59409,7 +59409,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76611.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 553,
         "gs": null,
@@ -59510,7 +59510,7 @@
         "pick": "22"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76668.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 831,
         "gs": null,
@@ -59745,7 +59745,7 @@
         "pick": null
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/77693.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 716,
         "gs": null,
@@ -60172,7 +60172,7 @@
         "pick": "60"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/78064.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 462,
         "gs": null,
@@ -60275,7 +60275,7 @@
         "pick": "23"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76753.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 886,
         "gs": 596,
@@ -60381,7 +60381,7 @@
         "pick": "4"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/1365.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 870,
         "gs": 529,
@@ -60830,7 +60830,7 @@
         "pick": "3"
       },
       "greatest75": false,
-      "headshot": "https://cdn.nba.com/headshots/nba/latest/1040x760/76133.png",
+      "headshot": null,
       "careerRegularSeason": {
         "gp": 570,
         "gs": null,

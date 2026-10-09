@@ -291,6 +291,28 @@ def build_player(pid: int, refresh: bool, delay: float) -> dict:
     }
 
 
+def drop_placeholder_headshots(players: list[dict]) -> None:
+    """Set headshot to None where cdn.nba.com only serves its grey silhouette.
+
+    The CDN answers 200 for every id and falls back to a generic placeholder
+    (the same image it serves for id 0), so compare bytes against that.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    def fetch(url: str) -> bytes:
+        return requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=30).content
+
+    placeholder = fetch(HEADSHOT_URL.format(id=0))
+    with ThreadPoolExecutor(16) as pool:
+        images = list(pool.map(lambda p: fetch(p["headshot"]), players))
+    missing = 0
+    for player, image in zip(players, images):
+        if image == placeholder:
+            player["headshot"] = None
+            missing += 1
+    print(f"{missing} players have no NBA.com headshot")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--limit", type=int, help="only process the first N candidates (for testing)")
@@ -337,6 +359,7 @@ def main() -> int:
         output.append(player)
 
     output.sort(key=lambda p: p["name"])
+    drop_placeholder_headshots(output)
     OUTPUT.write_text(
         json.dumps(
             {

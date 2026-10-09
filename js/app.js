@@ -427,12 +427,38 @@ function accoladeChips(a) {
     .join("");
 }
 
+// [primary, secondary] by team nickname, including relocated/defunct franchises.
+const TEAM_COLORS = {
+  Hawks: ["#E03A3E", "#C1D32F"], Celtics: ["#007A33", "#BA9653"], Nets: ["#2A2A2A", "#FFFFFF"],
+  Bobcats: ["#F26532", "#2F598C"], Hornets: ["#1D1160", "#00788C"], Bulls: ["#CE1141", "#1A1A1A"],
+  Cavaliers: ["#860038", "#FDBB30"], Mavericks: ["#00538C", "#B8C4CA"], Nuggets: ["#0E2240", "#FEC524"],
+  Pistons: ["#C8102E", "#1D42BA"], Warriors: ["#1D428A", "#FFC72C"], Rockets: ["#CE1141", "#C4CED4"],
+  Pacers: ["#002D62", "#FDBB30"], Clippers: ["#C8102E", "#1D428A"], Lakers: ["#552583", "#FDB927"],
+  Grizzlies: ["#5D76A9", "#12173F"], Heat: ["#98002E", "#F9A01B"], Bucks: ["#00471B", "#EEE1C6"],
+  Timberwolves: ["#0C2340", "#78BE20"], Pelicans: ["#0C2340", "#C8102E"], Knicks: ["#006BB6", "#F58426"],
+  Thunder: ["#007AC1", "#EF3B24"], Magic: ["#0077C0", "#C4CED4"], "76ers": ["#006BB6", "#ED174C"],
+  Suns: ["#1D1160", "#E56020"], "Trail Blazers": ["#E03A3E", "#1A1A1A"], Kings: ["#5A2D81", "#63727A"],
+  Spurs: ["#2A2A2A", "#C4CED4"], SuperSonics: ["#00653A", "#FFC200"], Raptors: ["#CE1141", "#1A1A1A"],
+  Jazz: ["#002B5C", "#F9A01B"], Wizards: ["#002B5C", "#E31837"], Bullets: ["#C8102E", "#002B5C"],
+  Royals: ["#003DA5", "#E31837"], Nationals: ["#C8102E", "#1D428A"], Olympians: ["#E31837", "#003DA5"],
+  Braves: ["#0B3D91", "#F58426"], Stags: ["#CE1141", "#002B5C"], Capitols: ["#002B5C", "#C8102E"],
+};
+const teamNickname = (team) => Object.keys(TEAM_COLORS).find((n) => team?.endsWith(n));
+
 function headshot(p, cls = "") {
   const initials = p.name
     .split(" ")
     .map((w) => w[0])
     .slice(0, 2)
     .join("");
+  if (!p.headshot) {
+    const nick = teamNickname(p.lastTeam);
+    const [a, b] = TEAM_COLORS[nick] ?? ["#3a4150", "#8b93a3"];
+    return `<div class="headshot no-photo ${cls}" style="--team-a:${a};--team-b:${b}" role="img" aria-label="${escapeHtml(p.name)}">
+      <span class="initials">${escapeHtml(initials)}</span>
+      ${nick ? `<span class="team-tag">${escapeHtml(nick)}</span>` : ""}
+    </div>`;
+  }
   return `<div class="headshot ${cls}" data-initials="${escapeHtml(initials)}">
     <img src="${p.headshot}" alt="" loading="lazy" onerror="this.remove()" />
   </div>`;
