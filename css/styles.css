@@ -275,14 +275,6 @@ legend {
   gap: 0.5rem;
 }
 
-.match-select {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
 .examples {
   display: flex;
   flex-wrap: wrap;
@@ -441,16 +433,8 @@ legend {
   outline-offset: 2px;
 }
 
-.bulk-years {
-  display: flex;
+.custom-builder .builder-section > .rule-line {
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem 0.6rem;
-  min-width: 0;
-}
-
-.bulk-years .btn.small {
-  align-self: center;
 }
 
 .custom-preview {

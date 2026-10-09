@@ -28,6 +28,21 @@ const SETS = [
   },
 ];
 
+// "2025-26" is the 2026 All-Star Game. The id includes the year so a saved
+// session never silently switches to a newer roster after a data refresh.
+function addLatestAllStarSet() {
+  const seasons = [...players.values()].flatMap((p) => p.accolades.seasons.allStar ?? []);
+  if (!seasons.length) return;
+  const latest = seasons.reduce((a, b) => (b > a ? b : a));
+  const year = Number(latest.slice(0, 4)) + 1;
+  SETS.splice(1, 0, {
+    id: `all-stars-${year}`,
+    name: `${year} NBA All-Stars`,
+    description: `Everyone selected to the ${year} All-Star Game`,
+    filter: (p) => (p.accolades.seasons.allStar ?? []).includes(latest),
+  });
+}
+
 const app = document.getElementById("app");
 let players = new Map();
 let session = null; // { setId, filter?, mode, seed, answers: [{ a, b, winner }] }
@@ -177,7 +192,7 @@ function renderSetup() {
   };
 
   const onFilterChange = () => {
-    filter = readCustomBuilder(builder, filter);
+    filter = readCustomBuilder(builder);
     localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
     update();
   };
@@ -195,15 +210,6 @@ function renderSetup() {
     else if (action === "remove") filter.rules.splice(Number(btn.dataset.index), 1);
     else if (action === "example") filter = withDefaults(EXAMPLES[Number(btn.dataset.index)].filter);
     else if (action === "reset") filter = defaultFilter();
-    else if (action === "apply-years") {
-      const year = (input) => {
-        const v = Math.round(parseFloat(input.value));
-        return v >= FIRST_YEAR && v <= thisYear ? v : null;
-      };
-      const from = year(builder.querySelector("[data-bulk=from]"));
-      const to = year(builder.querySelector("[data-bulk=to]"));
-      filter.rules = filter.rules.map((r) => ({ ...r, from, to }));
-    }
     localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
     rebuild();
   });
@@ -267,16 +273,6 @@ function renderCustomBuilder(el, f) {
     <div class="builder-section">
       <div class="builder-head">
         <span class="builder-label">Players with…</span>
-        ${
-          f.rules.length > 1
-            ? `<label class="match-select">Match
-                <select data-f="match">
-                  <option value="all" ${f.match === "all" ? "selected" : ""}>all rules</option>
-                  <option value="any" ${f.match === "any" ? "selected" : ""}>any rule</option>
-                </select>
-              </label>`
-            : ""
-        }
       </div>
       <div class="rules">
         ${f.rules
@@ -286,12 +282,6 @@ function renderCustomBuilder(el, f) {
                 <span class="rule-word">At least</span>
                 <input type="number" inputmode="numeric" class="count" data-f="min" min="1" max="30" value="${r.min ?? 1}" aria-label="Minimum count" />
                 ${awardSelect(r.award)}
-              </span>
-              <span class="rule-line">
-                <span class="rule-word">from</span>
-                ${yearInput("from", r.from, "any year", 'aria-label="From season"')}
-                <span class="rule-word">to</span>
-                ${yearInput("to", r.to, "now", 'aria-label="To season"')}
                 ${
                   f.rules.length > 1
                     ? `<button type="button" class="icon-btn" data-builder="remove" data-index="${i}" aria-label="Remove rule">✕</button>`
@@ -303,20 +293,17 @@ function renderCustomBuilder(el, f) {
           .join("")}
       </div>
       <button type="button" class="btn ghost small" data-builder="add">+ Add rule</button>
-      ${
-        f.rules.length > 1
-          ? `<div class="bulk-years">
-              <span class="rule-word">Same years for every rule:</span>
-              <span class="rule-line">
-                <input type="number" inputmode="numeric" class="year" data-bulk="from" min="${FIRST_YEAR}" max="${thisYear}" placeholder="any year" aria-label="From season for all rules" />
-                <span class="rule-word">to</span>
-                <input type="number" inputmode="numeric" class="year" data-bulk="to" min="${FIRST_YEAR}" max="${thisYear}" placeholder="now" aria-label="To season for all rules" />
-                <button type="button" class="btn ghost small" data-builder="apply-years">Apply to all</button>
-              </span>
-            </div>`
-          : ""
-      }
-      <p class="hint">Years are seasons by the year they end, so 2015 means the 2014–15 season.</p>
+    </div>
+
+    <div class="builder-section">
+      <span class="builder-label">Seasons</span>
+      <span class="rule-line">
+        <span class="rule-word">from</span>
+        ${yearInput("from", f.from, "any year", 'aria-label="From season"')}
+        <span class="rule-word">to</span>
+        ${yearInput("to", f.to, "now", 'aria-label="To season"')}
+      </span>
+      <p class="hint">Only awards won in these seasons count. 2015 means the 2014–15 season.</p>
     </div>
 
     <details class="builder-section more" ${hasExtras(f) ? "open" : ""}>
@@ -351,7 +338,7 @@ function renderCustomBuilder(el, f) {
 
 const hasExtras = (f) => f.status !== "any" || f.positions.length;
 
-function readCustomBuilder(el, prev) {
+function readCustomBuilder(el) {
   const num = (input) => {
     const v = parseFloat(input?.value);
     return Number.isFinite(v) ? v : null;
@@ -362,13 +349,12 @@ function readCustomBuilder(el, prev) {
   };
   const q = (sel) => el.querySelector(sel);
   return {
-    match: q("[data-f=match]")?.value ?? prev.match,
     rules: [...el.querySelectorAll("[data-rule]")].map((row) => ({
       award: row.querySelector("[data-f=award]").value,
       min: Math.max(1, Math.round(num(row.querySelector("[data-f=min]")) || 1)),
-      from: year(row.querySelector("[data-f=from]")),
-      to: year(row.querySelector("[data-f=to]")),
     })),
+    from: year(q("[data-f=from]")),
+    to: year(q("[data-f=to]")),
     status: q("[data-f=status]:checked")?.value ?? "any",
     positions: [...el.querySelectorAll("[data-f=positions]:checked")].map((i) => i.value),
   };
@@ -615,6 +601,7 @@ async function init() {
     if (!res.ok) throw new Error(res.statusText);
     const data = await res.json();
     players = new Map(data.players.map((p) => [p.id, p]));
+    addLatestAllStarSet();
   } catch (err) {
     app.innerHTML = `<p class="error">Couldn't load player data (${escapeHtml(err.message)}).</p>`;
     return;
