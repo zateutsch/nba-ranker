@@ -57,6 +57,10 @@ const customSet = (filter) => {
   return { id: "custom", custom: true, name: describe(f), filter: (p) => matches(p, f) };
 };
 const RANDOM_N = 10;
+const RANDOM_SINCE = 1985;
+// toYear is the start year of a player's last season ("1984-85" → 1984), so
+// +1 matches the year convention used by the custom filters.
+const randomPool = () => [...players.values()].filter((p) => (p.toYear ?? 0) + 1 >= RANDOM_SINCE).map((p) => p.id);
 // The drawn players are stored on the session so resume and undo see the same 10.
 const randomSet = (ids = []) => ({
   id: "random",
@@ -154,7 +158,7 @@ function renderSetup() {
             <label class="set-card">
               <input type="radio" name="set" value="random" />
               <span class="set-name">Rank ${RANDOM_N} Random Players</span>
-              <span class="set-desc">A fresh draw of ${RANDOM_N} from all ${players.size} players every time</span>
+              <span class="set-desc">A fresh draw of ${RANDOM_N} from ${randomPool().length} players who played in ${RANDOM_SINCE} or later</span>
               <span class="set-count">${RANDOM_N} players</span>
             </label>
             <label class="set-card custom-card">
@@ -246,7 +250,7 @@ function renderSetup() {
     session = {
       setId: form.set.value,
       ...(isCustom ? { filter: structuredClone(filter) } : {}),
-      ...(isRandom ? { ids: shuffle([...players.keys()], Math.floor(Math.random() * 2 ** 31)).slice(0, RANDOM_N) } : {}),
+      ...(isRandom ? { ids: shuffle(randomPool(), Math.floor(Math.random() * 2 ** 31)).slice(0, RANDOM_N) } : {}),
       mode: form.mode.value,
       seed: Math.floor(Math.random() * 2 ** 31),
       answers: [],
