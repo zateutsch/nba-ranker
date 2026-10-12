@@ -27,7 +27,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
-from nba_api.stats.endpoints import commonplayerinfo, playerawards, playercareerstats
+from nba_api.stats.endpoints import commonplayerinfo, franchisehistory, playerawards, playercareerstats
 from nba_api.stats.static import players as static_players
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -190,6 +190,64 @@ def get_career(pid: int, refresh: bool, delay: float) -> dict:
     )
 
 
+_franchise_eras: list[dict] | None = None
+
+
+def get_franchise_eras(refresh: bool, delay: float) -> list[dict]:
+    """Every name a franchise has played under, e.g. Seattle SuperSonics 1967-2007."""
+    global _franchise_eras
+    if _franchise_eras is None:
+        data = cached_call(
+            "franchise_history",
+            lambda: franchisehistory.FranchiseHistory(timeout=30).get_normalized_dict(),
+            refresh, delay,
+        )
+        _franchise_eras = data["FranchiseHistory"] + data["DefunctTeams"]
+    return _franchise_eras
+
+
+def team_name(team_id: int, start_year: int, eras: list[dict]) -> str | None:
+    """The franchise's name in the season starting in start_year."""
+    rows = [r for r in eras if r["TEAM_ID"] == team_id]
+    # Current franchises also have a summary row spanning their whole history,
+    # so prefer the narrowest era that contains the season.
+    hits = [r for r in rows if int(r["START_YEAR"]) <= start_year <= int(r["END_YEAR"])]
+    if not hits:
+        hits = sorted(rows, key=lambda r: int(r["END_YEAR"]))[-1:]  # season newer than the data
+    if not hits:
+        return None
+    r = min(hits, key=lambda r: int(r["END_YEAR"]) - int(r["START_YEAR"]))
+    return f"{r['TEAM_CITY']} {r['TEAM_NAME']}"
+
+
+def summarize_teams(season_rows: list[dict], eras: list[dict]) -> list[dict]:
+    """Consecutive seasons with the same team (and team name) become one stint.
+
+    Years follow the filter convention: a season's year is the year it ends.
+    Traded players have a row per team plus a "TOT" row, which is skipped.
+    """
+    stints: list[dict] = []
+    for row in season_rows:
+        if not row.get("TEAM_ID"):
+            continue
+        start = int(row["SEASON_ID"][:4])
+        name = team_name(row["TEAM_ID"], start, eras) or row.get("TEAM_ABBREVIATION")
+        last = stints[-1] if stints else None
+        if last and last["teamId"] == row["TEAM_ID"] and last["team"] == name and start + 1 - last["to"] <= 1:
+            last["to"] = start + 1
+            last["gp"] += row.get("GP") or 0
+        else:
+            stints.append({"team": name, "teamId": row["TEAM_ID"], "from": start + 1, "to": start + 1, "gp": row.get("GP") or 0})
+    return stints
+
+
+def primary_team(stints: list[dict]) -> str | None:
+    games: Counter[str] = Counter()
+    for s in stints:
+        games[s["team"]] += s["gp"]
+    return games.most_common(1)[0][0] if games else None
+
+
 def get_info(pid: int, refresh: bool, delay: float) -> dict:
     return cached_call(
         f"info_{pid}",
@@ -265,6 +323,7 @@ def build_player(pid: int, refresh: bool, delay: float) -> dict:
         a for a in AWARD_CORRECTIONS.get(pid, []) if (a["DESCRIPTION"], a["SEASON"]) not in seen
     ]
     draft_year = info.get("DRAFT_YEAR")
+    teams = summarize_teams(career.get("SeasonTotalsRegularSeason", []), get_franchise_eras(refresh, delay))
     return {
         "id": pid,
         "name": info["DISPLAY_FIRST_LAST"],
@@ -278,6 +337,8 @@ def build_player(pid: int, refresh: bool, delay: float) -> dict:
         "toYear": info.get("TO_YEAR"),
         "active": info.get("ROSTERSTATUS") == "Active",
         "lastTeam": " ".join(filter(None, [info.get("TEAM_CITY"), info.get("TEAM_NAME")])) or None,
+        "primaryTeam": primary_team(teams),
+        "teams": teams,
         "draft": None if draft_year in (None, "", "Undrafted") else {
             "year": draft_year,
             "round": info.get("DRAFT_ROUND"),

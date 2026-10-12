@@ -452,7 +452,7 @@ function headshot(p, cls = "") {
     .slice(0, 2)
     .join("");
   if (!p.headshot) {
-    const nick = teamNickname(p.lastTeam);
+    const nick = teamNickname(p.primaryTeam ?? p.lastTeam);
     const [a, b] = TEAM_COLORS[nick] ?? ["#3a4150", "#8b93a3"];
     return `<div class="headshot no-photo ${cls}" style="--team-a:${a};--team-b:${b}" role="img" aria-label="${escapeHtml(p.name)}">
       <span class="initials">${escapeHtml(initials)}</span>
