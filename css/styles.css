@@ -91,6 +91,15 @@ a.btn {
   font-size: 1.15rem;
   color: var(--text);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-mark {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
 }
 
 .site-footer {

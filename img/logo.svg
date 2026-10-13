@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Colours use the site's theme variables when embedded via <use>; the fallbacks apply as a favicon. -->
+  <symbol id="mark" viewBox="0 0 64 64">
+    <clipPath id="ball"><circle cx="32" cy="32" r="30" /></clipPath>
+    <circle cx="32" cy="32" r="30" style="fill: var(--accent, #c81e2c)" />
+    <g clip-path="url(#ball)" fill="none" stroke-width="3.5" style="stroke: var(--accent-2, #9b1220)">
+      <path d="M2 32H62M32 2V62M13 5Q27 32 13 59M51 5Q37 32 51 59" />
+    </g>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <g stroke-width="9" style="stroke: var(--accent, #c81e2c)">
+        <path d="M22 47V15M13 24L22 15L31 24" />
+        <path d="M42 17V49M33 40L42 49L51 40" />
+      </g>
+      <g stroke-width="5" style="stroke: var(--on-accent, #fff)">
+        <path d="M22 47V15M13 24L22 15L31 24" />
+        <path d="M42 17V49M33 40L42 49L51 40" />
+      </g>
+    </g>
+  </symbol>
+  <use href="#mark" />
+</svg>
