@@ -1,12 +1,12 @@
 :root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --surface-2: #1f2630;
-  --border: #2d3540;
-  --text: #e8edf3;
-  --muted: #8b96a5;
-  --accent: #f58426;
-  --accent-2: #ffb35c;
+  --bg: #0b0f1a;
+  --surface: #141a27;
+  --surface-2: #1d2434;
+  --border: #2c3447;
+  --text: #eef1f6;
+  --muted: #8f98ad;
+  --accent: #e5383b;
+  --accent-2: #ff7a7c;
   --gold: #f5c542;
   --silver: #c9d1d9;
   --bronze: #d08a4f;
@@ -24,7 +24,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: radial-gradient(circle at top, #1a2130 0%, var(--bg) 60%);
+  background: radial-gradient(circle at top, #1c2134 0%, var(--bg) 60%);
   color: var(--text);
 }
 
@@ -45,23 +45,25 @@ a {
 }
 
 .nav-link {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
-  color: var(--text);
+  color: #fff;
   text-decoration: none;
-  padding: 0.4rem 0.85rem;
-  border: 1px solid var(--border);
+  padding: 0.45rem 0.95rem;
+  background: var(--accent);
+  border: 1px solid var(--accent);
   border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(229, 56, 59, 0.35);
   white-space: nowrap;
 }
 
 .nav-link:active {
-  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 85%, #000);
 }
 
 @media (hover: hover) {
   .nav-link:hover {
-    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 88%, #fff);
   }
 }
 
@@ -136,7 +138,7 @@ h2 {
 .btn.primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #111;
+  color: #fff;
 }
 
 .btn.ghost {
@@ -223,7 +225,7 @@ legend {
 .set-card:has(input:checked),
 .mode-card:has(input:checked) {
   border-color: var(--accent);
-  background: linear-gradient(160deg, rgba(245, 132, 38, 0.15), var(--surface) 60%);
+  background: linear-gradient(160deg, rgba(229, 56, 59, 0.15), var(--surface) 60%);
 }
 
 .set-card:has(input:focus-visible),
@@ -519,7 +521,7 @@ legend {
 .segmented input:checked + span {
   background: var(--accent);
   border-color: var(--accent);
-  color: #111;
+  color: #fff;
   font-weight: 700;
 }
 
@@ -624,7 +626,7 @@ legend {
 
 .tab[aria-selected="true"] .tab-count {
   background: var(--accent);
-  color: #111;
+  color: #fff;
 }
 
 .saved-list {
@@ -645,10 +647,82 @@ legend {
   min-width: 0;
 }
 
+.saved-card.pinned {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
 .saved-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.saved-text {
   display: grid;
   gap: 0.2rem;
   min-width: 0;
+}
+
+.saved-icons {
+  display: flex;
+  gap: 0.15rem;
+  margin: -0.45rem -0.55rem 0 0;
+}
+
+.icon-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.icon-btn svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-btn.pin[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.icon-btn.pin[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+.icon-btn:active {
+  background: var(--surface-2);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--accent-2);
+}
+
+@media (hover: hover) {
+  .icon-btn:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .icon-btn.pin[aria-pressed="true"]:hover {
+    color: var(--accent-2);
+  }
+
+  .icon-btn.delete:hover {
+    color: var(--accent-2);
+  }
 }
 
 .saved-title {
@@ -746,7 +820,7 @@ legend {
   .versus:not(.await-pointer) .player-card:hover {
     border-color: var(--accent);
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(245, 132, 38, 0.15);
+    box-shadow: 0 10px 30px rgba(229, 56, 59, 0.15);
   }
 }
 

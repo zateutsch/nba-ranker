@@ -158,11 +158,23 @@ function deleteRanking(id) {
 }
 
 const byRecent = (a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0);
-const inProgressRankings = () => loadRankings().filter((r) => !r.ranking && sessionSet(r)).sort(byRecent);
+const byFinished = (a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0);
+const pinnedFirst = (order) => (a, b) => Boolean(b.pinned) - Boolean(a.pinned) || order(a, b);
+const inProgressRankings = () => loadRankings().filter((r) => !r.ranking && sessionSet(r)).sort(pinnedFirst(byRecent));
 const finishedRankings = () =>
   loadRankings()
     .filter((r) => Array.isArray(r.ranking))
-    .sort((a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0));
+    .sort(pinnedFirst(byFinished));
+
+// Pinning doesn't count as activity, so it leaves updatedAt alone.
+function togglePinned(id) {
+  const list = loadRankings();
+  const r = list.find((x) => x.id === id);
+  if (!r) return;
+  if (r.pinned) delete r.pinned;
+  else r.pinned = true;
+  writeRankings(list);
+}
 
 // Leave the My Rankings page without re-triggering the router.
 function clearRoute() {
@@ -909,37 +921,46 @@ const shortDate = (ts) => {
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }) });
 };
 
+const PIN_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2H6v-2l4-4z"/><path d="M12 15v6"/></svg>`;
+const TRASH_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/></svg>`;
+
+function savedHead(r, title, meta) {
+  return `<div class="saved-head">
+      <div class="saved-text">
+        <span class="saved-title">${escapeHtml(title)}</span>
+        <span class="saved-meta">${escapeHtml(meta)}</span>
+      </div>
+      <div class="saved-icons">
+        <button type="button" class="icon-btn pin" data-pin="${r.id}" aria-pressed="${Boolean(r.pinned)}"
+          aria-label="${r.pinned ? "Unpin" : "Pin to top"}" title="${r.pinned ? "Unpin" : "Pin to top"}">${PIN_ICON}</button>
+        <button type="button" class="icon-btn delete" data-delete="${r.id}" aria-label="Delete" title="Delete">${TRASH_ICON}</button>
+      </div>
+    </div>`;
+}
+
 function progressCard(r) {
   const set = sessionSet(r);
   const n = idsForSet(set).length;
   const total = maxPicks(n, r.mode, TOP_K);
   const pct = Math.min(99, Math.round((r.answers.length / total) * 100));
-  return `<li class="saved-card">
-    <div class="saved-head">
-      <span class="saved-title">${escapeHtml(set.name)}</span>
-      <span class="saved-meta">${r.mode === "top" ? `Top ${TOP_K}` : "Full ranking"} · ${r.answers.length} of up to ${total} picks · ${escapeHtml(shortDate(r.updatedAt))}</span>
-    </div>
+  return `<li class="saved-card${r.pinned ? " pinned" : ""}">
+    ${savedHead(r, set.name, `${r.mode === "top" ? `Top ${TOP_K}` : "Full ranking"} · ${r.answers.length} of up to ${total} picks · ${shortDate(r.updatedAt)}`)}
     <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><div style="width:${pct}%"></div></div>
     <div class="saved-actions">
       <button type="button" class="btn primary" data-open="${r.id}">Resume</button>
-      <button type="button" class="btn ghost" data-delete="${r.id}">Delete</button>
     </div>
   </li>`;
 }
 
 function finishedCard(r) {
   const top = r.ranking.map((id) => players.get(id)).filter(Boolean).slice(0, 3);
-  return `<li class="saved-card">
-    <div class="saved-head">
-      <span class="saved-title">${escapeHtml(r.title)}</span>
-      <span class="saved-meta">${r.ranking.length} players · finished ${escapeHtml(shortDate(r.finishedAt))}</span>
-    </div>
+  return `<li class="saved-card${r.pinned ? " pinned" : ""}">
+    ${savedHead(r, r.title, `${r.ranking.length} players · finished ${shortDate(r.finishedAt)}`)}
     <ol class="saved-top">
       ${top.map((p) => `<li>${escapeHtml(p.name)}</li>`).join("")}
     </ol>
     <div class="saved-actions">
       <button type="button" class="btn primary" data-open="${r.id}">View</button>
-      <button type="button" class="btn ghost" data-delete="${r.id}">Delete</button>
     </div>
   </li>`;
 }
@@ -972,10 +993,18 @@ function renderMyRankings(tab) {
   const byId = new Map(list.map((r) => [r.id, r]));
   app.querySelector(".saved-list")?.addEventListener("click", (e) => {
     const open = e.target.closest("[data-open]");
+    const pin = e.target.closest("[data-pin]");
     const del = e.target.closest("[data-delete]");
     if (open) openRanking(byId.get(open.dataset.open));
-    else if (del && confirm("Delete this ranking? This can't be undone.")) {
-      deleteRanking(del.dataset.delete);
+    else if (pin) {
+      togglePinned(pin.dataset.pin);
+      renderMyRankings(tab);
+      app.querySelector(`[data-pin="${pin.dataset.pin}"]`)?.focus();
+    } else if (del) {
+      const r = byId.get(del.dataset.delete);
+      const name = r.title ?? sessionSet(r)?.name ?? "this ranking";
+      if (!confirm(`Delete “${name}”? This can't be undone.`)) return;
+      deleteRanking(r.id);
       renderMyRankings(tab);
     }
   });

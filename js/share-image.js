@@ -6,14 +6,14 @@ const PAD = 64;
 const INNER = W - PAD * 2;
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
 const C = {
-  bgTop: "#1a2130",
-  bg: "#0d1117",
-  surface: "#161b22",
-  surface2: "#1f2630",
-  border: "#2d3540",
-  text: "#e8edf3",
-  muted: "#8b96a5",
-  accent: "#f58426",
+  bgTop: "#1c2134",
+  bg: "#0b0f1a",
+  surface: "#141a27",
+  surface2: "#1d2434",
+  border: "#2c3447",
+  text: "#eef1f6",
+  muted: "#8f98ad",
+  accent: "#e5383b",
   medals: ["#f5c542", "#c9d1d9", "#d08a4f"],
 };
 
