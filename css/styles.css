@@ -1,31 +1,34 @@
 /* Theme: every colour used by the site (and the share image) lives here. */
 :root {
-  --bg: #cfd6e0;
-  --bg-top: #e2e7ee;
-  --surface: #e3e8ef;
-  --surface-2: #d7dee8;
-  --border: #aab4c3;
-  --text: #161c28;
-  --muted: #4a5568;
-  --accent: #c81e2c;
-  --accent-2: #9b1220; /* accent used as text: darker for contrast */
-  --on-accent: #fff;
-  --gold: #c0900e;
-  --silver: #77818f;
-  --bronze: #b06a32;
-  --on-medal: #111;
-  --team-fallback-a: #4a5568;
-  --team-fallback-b: #8d98a8;
+  --bg: #0b0918;
+  --bg-top: #17102f;
+  --surface: #181231;
+  --surface-2: #231a45;
+  --border: #3b2f66;
+  --text: #ece9f8;
+  --muted: #a99fcb;
+  --accent: #a66bff; /* violet, from the logo ball/rim */
+  --accent-2: #c7a6ff; /* lighter violet for text/links on dark */
+  --on-accent: #140a26; /* dark text for contrast on the bright violet */
+  --lime: #a0ff3b; /* lime, from the logo arrows */
+  --lime-2: #c6ff79;
+  --gold: #f2c74b;
+  --silver: #c3cdda;
+  --bronze: #d58a4e;
+  --on-medal: #1a1206;
+  --team-fallback-a: #3a2f63;
+  --team-fallback-b: #6b5aa8;
   --on-team: #fff;
-  --logo-plate: rgb(255 255 255 / 0.92);
-  --sheen: rgb(255 255 255 / 0.18);
+  --logo-plate: rgb(238 240 250 / 0.92);
+  --sheen: rgb(255 255 255 / 0.16);
   --shade: #000;
-  --accent-glow: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-tint: color-mix(in srgb, var(--accent) 12%, transparent);
-  --gold-glow: color-mix(in srgb, var(--gold) 25%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 42%, transparent);
+  --accent-tint: color-mix(in srgb, var(--accent) 20%, transparent);
+  --lime-glow: color-mix(in srgb, var(--lime) 40%, transparent);
+  --gold-glow: color-mix(in srgb, var(--gold) 28%, transparent);
   --radius: 14px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 * {
@@ -120,6 +123,7 @@ h1 {
   font-size: clamp(2rem, 5vw, 3rem);
   margin: 1rem 0 0.5rem;
   letter-spacing: -0.02em;
+  text-shadow: 0 0 28px var(--accent-glow);
 }
 
 h2 {
@@ -161,6 +165,7 @@ h2 {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
+  box-shadow: 0 4px 20px var(--accent-glow);
 }
 
 .btn.ghost {
@@ -269,7 +274,7 @@ legend {
 .set-count {
   margin-top: 0.35rem;
   font-size: 0.85rem;
-  color: var(--accent-2);
+  color: var(--lime);
   font-weight: 600;
 }
 
@@ -602,7 +607,7 @@ legend {
 
 .progress div {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: linear-gradient(90deg, var(--accent), var(--lime));
   transition: width 0.25s;
 }
 
