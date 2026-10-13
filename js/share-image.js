@@ -5,17 +5,22 @@ const W = 1080;
 const PAD = 64;
 const INNER = W - PAD * 2;
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
-const C = {
-  bgTop: "#1c2134",
-  bg: "#0b0f1a",
-  surface: "#141a27",
-  surface2: "#1d2434",
-  border: "#2c3447",
-  text: "#eef1f6",
-  muted: "#8f98ad",
-  accent: "#e5383b",
-  medals: ["#f5c542", "#c9d1d9", "#d08a4f"],
-};
+// Colours come from the theme variables in css/styles.css.
+function themeColors() {
+  const css = getComputedStyle(document.documentElement);
+  const v = (name) => css.getPropertyValue(name).trim();
+  return {
+    bgTop: v("--bg-top"),
+    bg: v("--bg"),
+    surface: v("--surface"),
+    surface2: v("--surface-2"),
+    border: v("--border"),
+    text: v("--text"),
+    muted: v("--muted"),
+    accent: v("--accent"),
+    medals: [v("--gold"), v("--silver"), v("--bronze")],
+  };
+}
 
 const PODIUM_H = 172;
 const FEATURED_H = 88;
@@ -90,6 +95,7 @@ function roundRect(ctx, x, y, w, h, r, fill) {
 }
 
 export function renderRankingImage({ title, subtitle = "", ranked, footer }) {
+  const C = themeColors();
   const podium = ranked.slice(0, 3);
   const featured = ranked.slice(3, 10);
   const rest = ranked.slice(10);

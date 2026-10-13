@@ -8,3 +8,4 @@
   - Hover effects go inside `@media (hover: hover)`; touch devices get `:active` feedback instead.
   - On the compare screen, both player cards should fit on a phone screen without scrolling.
 - Verify layout changes at both ~390px and desktop widths before committing.
+- Colours live only in the `:root` theme variables at the top of `css/styles.css` (the share image reads them too). Use `var(--...)` instead of hard-coding colours; per-team colours in `TEAM_COLORS` are data, not theme.

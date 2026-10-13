@@ -1,18 +1,31 @@
+/* Theme: every colour used by the site (and the share image) lives here. */
 :root {
-  --bg: #0b0f1a;
-  --surface: #141a27;
-  --surface-2: #1d2434;
-  --border: #2c3447;
-  --text: #eef1f6;
-  --muted: #8f98ad;
-  --accent: #e5383b;
-  --accent-2: #ff7a7c;
-  --gold: #f5c542;
-  --silver: #c9d1d9;
-  --bronze: #d08a4f;
+  --bg: #cfd6e0;
+  --bg-top: #e2e7ee;
+  --surface: #e3e8ef;
+  --surface-2: #d7dee8;
+  --border: #aab4c3;
+  --text: #161c28;
+  --muted: #4a5568;
+  --accent: #c81e2c;
+  --accent-2: #9b1220; /* accent used as text: darker for contrast */
+  --on-accent: #fff;
+  --gold: #c0900e;
+  --silver: #77818f;
+  --bronze: #b06a32;
+  --on-medal: #111;
+  --team-fallback-a: #4a5568;
+  --team-fallback-b: #8d98a8;
+  --on-team: #fff;
+  --logo-plate: rgb(255 255 255 / 0.92);
+  --sheen: rgb(255 255 255 / 0.18);
+  --shade: #000;
+  --accent-glow: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-tint: color-mix(in srgb, var(--accent) 12%, transparent);
+  --gold-glow: color-mix(in srgb, var(--gold) 25%, transparent);
   --radius: 14px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -24,7 +37,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: radial-gradient(circle at top, #1c2134 0%, var(--bg) 60%);
+  background: radial-gradient(circle at top, var(--bg-top) 0%, var(--bg) 60%);
   color: var(--text);
 }
 
@@ -47,23 +60,23 @@ a {
 .nav-link {
   font-weight: 700;
   font-size: 0.95rem;
-  color: #fff;
+  color: var(--on-accent);
   text-decoration: none;
   padding: 0.45rem 0.95rem;
   background: var(--accent);
   border: 1px solid var(--accent);
   border-radius: 999px;
-  box-shadow: 0 4px 16px rgba(229, 56, 59, 0.35);
+  box-shadow: 0 4px 16px var(--accent-glow);
   white-space: nowrap;
 }
 
 .nav-link:active {
-  background: color-mix(in srgb, var(--accent) 85%, #000);
+  background: color-mix(in srgb, var(--accent) 85%, var(--shade));
 }
 
 @media (hover: hover) {
   .nav-link:hover {
-    background: color-mix(in srgb, var(--accent) 88%, #fff);
+    background: color-mix(in srgb, var(--accent) 88%, var(--on-accent));
   }
 }
 
@@ -138,7 +151,7 @@ h2 {
 .btn.primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .btn.ghost {
@@ -225,7 +238,7 @@ legend {
 .set-card:has(input:checked),
 .mode-card:has(input:checked) {
   border-color: var(--accent);
-  background: linear-gradient(160deg, rgba(229, 56, 59, 0.15), var(--surface) 60%);
+  background: linear-gradient(160deg, var(--accent-tint), var(--surface) 60%);
 }
 
 .set-card:has(input:focus-visible),
@@ -283,10 +296,10 @@ legend {
   gap: 0.85rem;
   padding: 0.75rem 0.9rem;
   border-radius: 10px;
-  color: #fff;
+  color: var(--on-team);
   background:
-    radial-gradient(circle at 15% 20%, rgb(255 255 255 / 0.18), transparent 55%),
-    linear-gradient(135deg, var(--team-a), color-mix(in srgb, var(--team-a) 55%, #000));
+    radial-gradient(circle at 15% 20%, var(--sheen), transparent 55%),
+    linear-gradient(135deg, var(--team-a), color-mix(in srgb, var(--team-a) 55%, var(--shade)));
   box-shadow: inset 0 -4px 0 var(--team-b);
   min-width: 0;
 }
@@ -298,7 +311,7 @@ legend {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgb(255 255 255 / 0.92);
+  background: var(--logo-plate);
 }
 
 .team-logo img {
@@ -322,7 +335,7 @@ legend {
   font-size: 1.15rem;
   line-height: 1.2;
   overflow-wrap: anywhere;
-  text-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+  text-shadow: 0 1px 4px color-mix(in srgb, var(--shade) 30%, transparent);
 }
 
 .team-banner-sub {
@@ -521,7 +534,7 @@ legend {
 .segmented input:checked + span {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-weight: 700;
 }
 
@@ -662,7 +675,7 @@ legend {
 
 .tab[aria-selected="true"] .tab-count {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .saved-list {
@@ -886,7 +899,7 @@ legend {
   .versus:not(.await-pointer) .player-card:hover {
     border-color: var(--accent);
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(229, 56, 59, 0.15);
+    box-shadow: 0 10px 30px var(--accent-tint);
   }
 }
 
@@ -947,10 +960,10 @@ legend {
   justify-content: center;
   gap: 0.2em;
   background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.18), transparent 60%),
-    linear-gradient(135deg, var(--team-a), color-mix(in srgb, var(--team-a) 55%, #000));
+    radial-gradient(circle at 30% 20%, var(--sheen), transparent 60%),
+    linear-gradient(135deg, var(--team-a), color-mix(in srgb, var(--team-a) 55%, var(--shade)));
   box-shadow: inset 0 -5px 0 var(--team-b);
-  color: #fff;
+  color: var(--on-team);
 }
 
 .headshot.no-photo .initials {
@@ -958,7 +971,7 @@ legend {
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.02em;
-  text-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+  text-shadow: 0 2px 8px color-mix(in srgb, var(--shade) 35%, transparent);
 }
 
 .headshot.no-photo .team-tag {
@@ -968,6 +981,12 @@ legend {
   text-transform: uppercase;
   opacity: 0.85;
   white-space: nowrap;
+}
+
+.team-banner,
+.headshot.no-photo {
+  --team-a: var(--team-fallback-a);
+  --team-b: var(--team-fallback-b);
 }
 
 .headshot.small.no-photo {
@@ -1153,7 +1172,7 @@ legend {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: #111;
+  color: var(--on-medal);
   font-size: 1.1rem;
 }
 
@@ -1161,7 +1180,7 @@ legend {
   order: 2;
   border-color: var(--gold);
   padding-top: 2rem;
-  box-shadow: 0 0 40px rgba(245, 197, 66, 0.15);
+  box-shadow: 0 0 40px var(--gold-glow);
 }
 .podium-card.rank-1 .rank {
   background: var(--gold);

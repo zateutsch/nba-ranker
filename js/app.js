@@ -436,12 +436,17 @@ function loadFranchiseChoice() {
   return { team: DEFAULT_FRANCHISE, since: null };
 }
 
+// Unknown teams fall back to --team-fallback-* from the stylesheet.
+function teamStyle(nick) {
+  const c = TEAM_COLORS[nick];
+  return c ? `--team-a:${c[0]};--team-b:${c[1]}` : "";
+}
+
 function renderFranchisePicker(el, choice) {
   const current = franchises().find((f) => f.id === choice.team);
   const nick = teamNickname(current?.name);
-  const [a, b] = TEAM_COLORS[nick] ?? ["#3a4150", "#8b93a3"];
   el.innerHTML = `
-    <div class="team-banner" style="--team-a:${a};--team-b:${b}">
+    <div class="team-banner" style="${teamStyle(nick)}">
       <span class="team-logo"><img src="https://cdn.nba.com/logos/nba/${choice.team}/primary/L/logo.svg" alt="" onerror="this.remove()" /></span>
       <span class="team-banner-text">
         <span class="team-banner-name">${escapeHtml(current?.name ?? "")}</span>
@@ -661,8 +666,7 @@ function headshot(p, cls = "") {
     .join("");
   if (!p.headshot) {
     const nick = teamNickname(p.primaryTeam ?? p.lastTeam);
-    const [a, b] = TEAM_COLORS[nick] ?? ["#3a4150", "#8b93a3"];
-    return `<div class="headshot no-photo ${cls}" style="--team-a:${a};--team-b:${b}" role="img" aria-label="${escapeHtml(p.name)}">
+    return `<div class="headshot no-photo ${cls}" style="${teamStyle(nick)}" role="img" aria-label="${escapeHtml(p.name)}">
       <span class="initials">${escapeHtml(initials)}</span>
       ${nick ? `<span class="team-tag">${escapeHtml(nick)}</span>` : ""}
     </div>`;
