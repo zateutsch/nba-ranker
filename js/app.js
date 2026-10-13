@@ -1030,12 +1030,13 @@ function renderMyRankings(tab, status = "") {
       <h1>My Rankings</h1>
       <p class="lede">Saved on this device. Clearing your browser data removes them, so back them up to a file now and then.</p>
       <div class="backup-row">
+        <a class="btn primary small" href="./">+ New ranking</a>
         <button type="button" class="btn ghost small" data-action="backup" ${loadRankings().length ? "" : "disabled"}>Back up</button>
         <label class="btn ghost small file-btn">Restore<input type="file" accept=".json,application/json" data-action="restore" /></label>
         <span class="backup-status" role="status">${escapeHtml(status)}</span>
       </div>
       <div class="tabs" role="tablist">
-        <a role="tab" class="tab" href="#my-rankings" aria-selected="${tab === "progress"}">In Progress <span class="tab-count">${progress.length}</span></a>
+        <a role="tab" class="tab" href="#my-rankings/in-progress" aria-selected="${tab === "progress"}">In Progress <span class="tab-count">${progress.length}</span></a>
         <a role="tab" class="tab" href="#my-rankings/finished" aria-selected="${tab === "finished"}">Finished <span class="tab-count">${finished.length}</span></a>
       </div>
       ${
@@ -1043,7 +1044,6 @@ function renderMyRankings(tab, status = "") {
           ? `<ul class="saved-list">${list.map(tab === "progress" ? progressCard : finishedCard).join("")}</ul>`
           : `<div class="saved-empty">
               <p>${tab === "progress" ? "No rankings in progress." : "No finished rankings yet."}</p>
-              <a class="btn primary" href="./">Start a ranking</a>
             </div>`
       }
     </section>`;
@@ -1087,6 +1087,7 @@ function route() {
   session = null;
   const hash = location.hash;
   if (hash === "#my-rankings") renderMyRankings();
+  else if (hash === "#my-rankings/in-progress") renderMyRankings("progress");
   else if (hash === "#my-rankings/finished") renderMyRankings("finished");
   else renderSetup();
   window.scrollTo(0, 0);
