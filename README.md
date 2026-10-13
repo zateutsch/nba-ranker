@@ -18,7 +18,7 @@ python -m http.server 8000   # then visit http://localhost:8000
 
 It's hosted on GitHub Pages straight from the root of `main`.
 
-- `img/logo.svg` — the logo (header and favicon); it uses the theme colours from `css/styles.css` when shown in the page.
+- `img/logo.svg` — the logo (header and favicon); a self-contained neon mark (violet basketball with lime up/down arrows).
 - `index.html`, `css/`, `js/app.js` — UI (setup → compare → results, plus
   `#my-rankings`). Every ranking is stored in `localStorage` under
   `nba-ranker:rankings`; finished ones also keep their final order and title so
