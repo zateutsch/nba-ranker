@@ -586,6 +586,42 @@ legend {
 
 /* ---------- My Rankings ---------- */
 
+.backup-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.file-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* The real input covers the label so it stays clickable and keyboard-focusable. */
+.file-btn input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-btn:focus-within {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.backup-status {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.backup-status:empty {
+  display: none;
+}
+
 .tabs {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

@@ -5,7 +5,8 @@ All-Stars, MVPs, the Top 75, a franchise's All-Stars, 10 random players, or a
 custom filter), then choose between two players at a time until
 your ranking is settled — either a full ranking or just your Top 10. Rankings
 are saved in your browser, and the My Rankings page lists the ones in progress
-and the ones you've finished.
+and the ones you've finished. Back up there to download a `.json` file, and
+Restore to merge it back in on any browser.
 
 ## Running locally
 

@@ -965,7 +965,60 @@ function finishedCard(r) {
   </li>`;
 }
 
-function renderMyRankings(tab) {
+// ---------- Backup / restore ----------
+
+const BACKUP_APP = "nba-ranker";
+const BACKUP_MAX_BYTES = 5_000_000;
+
+function downloadBackup() {
+  const today = new Date().toISOString().slice(0, 10);
+  const data = { app: BACKUP_APP, version: 1, exportedAt: new Date().toISOString(), rankings: loadRankings() };
+  const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement("a"), { href: url, download: `nba-rankings-${today}.json` });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+const validRanking = (r) =>
+  r && typeof r === "object" && typeof r.id === "string" && typeof r.setId === "string" && Array.isArray(r.answers) &&
+  r.answers.every((x) => x && Number.isFinite(x.a) && Number.isFinite(x.b) && Number.isFinite(x.winner)) &&
+  (r.ranking === undefined || (Array.isArray(r.ranking) && r.ranking.every(Number.isFinite)));
+
+// Merges by id; when a ranking is in both, the more recently updated copy wins.
+async function restoreBackup(file) {
+  if (file.size > BACKUP_MAX_BYTES) throw new Error("That file is too large to be a backup.");
+  let data;
+  try {
+    data = JSON.parse(await file.text());
+  } catch {
+    throw new Error("That file isn't an NBA Ranker backup.");
+  }
+  if (data?.app !== BACKUP_APP || !Array.isArray(data.rankings)) throw new Error("That file isn't an NBA Ranker backup.");
+  const incoming = data.rankings.filter(validRanking);
+  const list = loadRankings();
+  const index = new Map(list.map((r, i) => [r.id, i]));
+  let added = 0;
+  let updated = 0;
+  for (const r of incoming) {
+    const i = index.get(r.id);
+    if (i === undefined) {
+      index.set(r.id, list.push(r) - 1);
+      added++;
+    } else if ((r.updatedAt ?? 0) > (list[i].updatedAt ?? 0)) {
+      list[i] = r;
+      updated++;
+    }
+  }
+  writeRankings(list);
+  const plural = (n) => `${n} ranking${n === 1 ? "" : "s"}`;
+  if (!added && !updated) return "Everything in that backup is already here.";
+  return `Restored ${plural(added)}${updated ? ` and updated ${plural(updated)}` : ""}.`;
+}
+
+function renderMyRankings(tab, status = "") {
   setKeys(null);
   const progress = inProgressRankings();
   const finished = finishedRankings();
@@ -975,7 +1028,12 @@ function renderMyRankings(tab) {
   app.innerHTML = `
     <section class="my-rankings">
       <h1>My Rankings</h1>
-      <p class="lede">Saved on this device. Clearing your browser data removes them.</p>
+      <p class="lede">Saved on this device. Clearing your browser data removes them, so back them up to a file now and then.</p>
+      <div class="backup-row">
+        <button type="button" class="btn ghost small" data-action="backup" ${loadRankings().length ? "" : "disabled"}>Back up</button>
+        <label class="btn ghost small file-btn">Restore<input type="file" accept=".json,application/json" data-action="restore" /></label>
+        <span class="backup-status" role="status">${escapeHtml(status)}</span>
+      </div>
       <div class="tabs" role="tablist">
         <a role="tab" class="tab" href="#my-rankings" aria-selected="${tab === "progress"}">In Progress <span class="tab-count">${progress.length}</span></a>
         <a role="tab" class="tab" href="#my-rankings/finished" aria-selected="${tab === "finished"}">Finished <span class="tab-count">${finished.length}</span></a>
@@ -989,6 +1047,19 @@ function renderMyRankings(tab) {
             </div>`
       }
     </section>`;
+
+  app.querySelector("[data-action=backup]").addEventListener("click", downloadBackup);
+  app.querySelector("[data-action=restore]").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    let message;
+    try {
+      message = await restoreBackup(file);
+    } catch (err) {
+      message = err.message;
+    }
+    renderMyRankings(tab, message);
+  });
 
   const byId = new Map(list.map((r) => [r.id, r]));
   app.querySelector(".saved-list")?.addEventListener("click", (e) => {
