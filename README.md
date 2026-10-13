@@ -1,7 +1,8 @@
 # nba-ranker
 
 A web tool for ranking your favorite NBA players. Pick a group (Active
-All-Stars, MVPs, or the Top 75), then choose between two players at a time until
+All-Stars, MVPs, the Top 75, a franchise's All-Stars, 10 random players, or a
+custom filter), then choose between two players at a time until
 your ranking is settled — either a full ranking or just your Top 10.
 
 ## Running locally

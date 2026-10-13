@@ -68,12 +68,13 @@ const randomSet = (ids = []) => ({
   name: `${RANDOM_N} Random Players`,
   filter: (p) => ids.includes(p.id),
 });
-const setById = (id, filter, ids) => {
-  if (id === "custom") return customSet(filter);
-  if (id === "random") return Array.isArray(ids) ? randomSet(ids) : undefined;
+const setById = (id, opts = {}) => {
+  if (id === "custom") return customSet(opts.filter);
+  if (id === "random") return Array.isArray(opts.ids) ? randomSet(opts.ids) : undefined;
+  if (id === "franchise") return opts.franchise ? franchiseSet(opts.franchise) : undefined;
   return SETS.find((s) => s.id === id);
 };
-const sessionSet = (s) => setById(s.setId, s.filter, s.ids);
+const sessionSet = (s) => setById(s.setId, s);
 const idsForSet = (set) => [...players.values()].filter(set.filter).map((p) => p.id);
 
 function rankingTitle(s) {
@@ -161,6 +162,12 @@ function renderSetup() {
               <span class="set-desc">A fresh draw of ${RANDOM_N} from ${randomPool().length} players who played in ${RANDOM_SINCE} or later</span>
               <span class="set-count">${RANDOM_N} players</span>
             </label>
+            <label class="set-card">
+              <input type="radio" name="set" value="franchise" />
+              <span class="set-name">Franchise All-Stars</span>
+              <span class="set-desc">Every All-Star from one team, while they played there</span>
+              <span class="set-count" data-franchise-count></span>
+            </label>
             <label class="set-card custom-card">
               <input type="radio" name="set" value="custom" />
               <span class="set-name">Custom</span>
@@ -168,6 +175,7 @@ function renderSetup() {
               <span class="set-count" data-custom-count></span>
             </label>
           </div>
+          <div class="custom-builder franchise-picker" hidden></div>
           <div class="custom-builder" hidden></div>
         </fieldset>
         <fieldset>
@@ -192,21 +200,29 @@ function renderSetup() {
     </section>`;
 
   const form = app.querySelector("#setup-form");
-  const builder = form.querySelector(".custom-builder");
+  const builder = form.querySelector(".custom-builder:not(.franchise-picker)");
+  const picker = form.querySelector(".franchise-picker");
   const startBtn = form.querySelector("[type=submit]");
+  let franchise = loadFranchiseChoice();
 
   const currentSet = () => {
     if (form.set.value === "custom") return customSet(filter);
     if (form.set.value === "random") return randomSet([...players.keys()].slice(0, RANDOM_N));
+    if (form.set.value === "franchise") return franchiseSet(franchise);
     return setById(form.set.value);
   };
 
   const update = () => {
     const isCustom = form.set.value === "custom";
+    const isFranchise = form.set.value === "franchise";
     builder.hidden = !isCustom;
+    picker.hidden = !isFranchise;
     const customIds = idsForSet(customSet(filter));
     form.querySelector("[data-custom-count]").textContent = `${customIds.length} players`;
     if (isCustom) renderCustomPreview(builder, customIds);
+    const franchiseIds = idsForSet(franchiseSet(franchise));
+    form.querySelector("[data-franchise-count]").textContent = `${franchiseIds.length} players`;
+    if (isFranchise) renderCustomPreview(picker, franchiseIds, "Try an earlier year.");
     const n = idsForSet(currentSet()).length;
     for (const el of form.querySelectorAll("[data-picks]")) {
       el.textContent = n < 2 ? "Need at least 2 players" : `Up to ${maxPicks(n, el.dataset.picks, TOP_K)} picks`;
@@ -225,11 +241,28 @@ function renderSetup() {
     update();
   };
 
+  // Re-render on team change (banner, former names); typing a year only refreshes counts
+  // so the input keeps focus.
+  const onFranchiseChange = (e) => {
+    const teamChanged = e.target.dataset.f === "team";
+    franchise = readFranchisePicker(picker);
+    localStorage.setItem(FRANCHISE_KEY, JSON.stringify(franchise));
+    if (teamChanged && e.type === "change") renderFranchisePicker(picker, franchise);
+    else {
+      const sub = picker.querySelector(".team-banner-sub");
+      if (sub) sub.textContent = `All-Stars${franchise.since ? ` since ${franchise.since}` : ""}`;
+    }
+    update();
+  };
+  renderFranchisePicker(picker, franchise);
+
   form.addEventListener("change", (e) => {
     if (builder.contains(e.target)) onFilterChange();
+    else if (picker.contains(e.target)) onFranchiseChange(e);
     else update();
   });
   builder.addEventListener("input", onFilterChange);
+  picker.addEventListener("input", onFranchiseChange);
   builder.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-builder]");
     if (!btn) return;
@@ -250,6 +283,7 @@ function renderSetup() {
     session = {
       setId: form.set.value,
       ...(isCustom ? { filter: structuredClone(filter) } : {}),
+      ...(form.set.value === "franchise" ? { franchise: { ...franchise } } : {}),
       ...(isRandom ? { ids: shuffle(randomPool(), Math.floor(Math.random() * 2 ** 31)).slice(0, RANDOM_N) } : {}),
       mode: form.mode.value,
       seed: Math.floor(Math.random() * 2 ** 31),
@@ -268,6 +302,104 @@ function renderSetup() {
     save();
     renderSetup();
   });
+}
+
+// ---------- Franchise All-Stars ----------
+
+const FRANCHISE_KEY = "nba-ranker:franchise";
+const DEFAULT_FRANCHISE = 1610612747; // Lakers
+
+// One entry per franchise (team id), named after its most recent name, with
+// any earlier names (e.g. Seattle SuperSonics for the Thunder).
+let franchiseList = null;
+function franchises() {
+  if (franchiseList) return franchiseList;
+  const byId = new Map();
+  for (const p of players.values()) {
+    for (const s of p.teams ?? []) {
+      const f = byId.get(s.teamId) ?? { id: s.teamId, name: s.team, to: 0, names: new Set() };
+      if (s.to > f.to) Object.assign(f, { name: s.team, to: s.to });
+      f.names.add(s.team);
+      byId.set(s.teamId, f);
+    }
+  }
+  franchiseList = [...byId.values()]
+    .map((f) => ({ id: f.id, name: f.name, former: [...f.names].filter((n) => n !== f.name) }))
+    .filter((f) => [...players.values()].some((p) => allStarWith(p, f.id)))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return franchiseList;
+}
+
+// An All-Star season counts when the player was on the franchise that season.
+// "2025-26" is the 2026 All-Star Game; stint years use the same convention.
+function allStarWith(p, teamId, since) {
+  return (p.accolades.seasons.allStar ?? []).some((season) => {
+    const year = Number(season.slice(0, 4)) + 1;
+    if (since && year < since) return false;
+    return (p.teams ?? []).some((t) => t.teamId === teamId && t.from <= year && year <= t.to);
+  });
+}
+
+function franchiseSet({ team, since }) {
+  const f = franchises().find((x) => x.id === team);
+  if (!f) return undefined;
+  return {
+    id: "franchise",
+    name: `${f.name} All-Stars${since ? ` since ${since}` : ""}`,
+    filter: (p) => allStarWith(p, team, since),
+  };
+}
+
+function loadFranchiseChoice() {
+  try {
+    const c = JSON.parse(localStorage.getItem(FRANCHISE_KEY));
+    if (c && franchises().some((f) => f.id === c.team)) return { team: c.team, since: c.since || null };
+  } catch {
+    /* ignore */
+  }
+  return { team: DEFAULT_FRANCHISE, since: null };
+}
+
+function renderFranchisePicker(el, choice) {
+  const current = franchises().find((f) => f.id === choice.team);
+  const nick = teamNickname(current?.name);
+  const [a, b] = TEAM_COLORS[nick] ?? ["#3a4150", "#8b93a3"];
+  el.innerHTML = `
+    <div class="team-banner" style="--team-a:${a};--team-b:${b}">
+      <span class="team-logo"><img src="https://cdn.nba.com/logos/nba/${choice.team}/primary/L/logo.svg" alt="" onerror="this.remove()" /></span>
+      <span class="team-banner-text">
+        <span class="team-banner-name">${escapeHtml(current?.name ?? "")}</span>
+        <span class="team-banner-sub">All-Stars${choice.since ? ` since ${choice.since}` : ""}</span>
+      </span>
+    </div>
+    <div class="builder-section">
+      <span class="builder-label">Franchise</span>
+      <span class="rule-line">
+        <select data-f="team" aria-label="Franchise">
+          ${franchises()
+            .map((f) => `<option value="${f.id}" ${f.id === choice.team ? "selected" : ""}>${escapeHtml(f.name)}</option>`)
+            .join("")}
+        </select>
+      </span>
+      ${current?.former.length ? `<p class="hint">Includes the ${escapeHtml(current.former.join(", "))} years.</p>` : ""}
+    </div>
+    <div class="builder-section">
+      <span class="builder-label">All-Star selections</span>
+      <span class="rule-line">
+        <span class="rule-word">since</span>
+        ${yearInput("since", choice.since, "any year", 'aria-label="Since season"')}
+      </span>
+      <p class="hint">Only All-Star selections made while playing for this team count. 2015 means the 2014–15 season.</p>
+    </div>
+    <p class="custom-preview" aria-live="polite"></p>`;
+}
+
+function readFranchisePicker(el) {
+  const since = Number(el.querySelector("[data-f=since]").value);
+  return {
+    team: Number(el.querySelector("[data-f=team]").value),
+    since: since >= FIRST_YEAR && since <= thisYear + 1 ? since : null,
+  };
 }
 
 // ---------- Custom builder ----------
@@ -390,11 +522,11 @@ function readCustomBuilder(el) {
   };
 }
 
-function renderCustomPreview(el, ids) {
+function renderCustomPreview(el, ids, emptyHint = "Try loosening a rule.") {
   const preview = el.querySelector(".custom-preview");
   if (!preview) return;
   if (!ids.length) {
-    preview.innerHTML = `<strong>No players match.</strong> Try loosening a rule.`;
+    preview.innerHTML = `<strong>No players match.</strong> ${emptyHint}`;
     return;
   }
   const sample = ids
