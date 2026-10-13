@@ -95,19 +95,85 @@ function loadCustomFilter() {
   return defaultFilter();
 }
 
-function save() {
-  if (session) localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
-  else localStorage.removeItem(STORAGE_KEY);
+// ---------- Saved rankings ----------
+// Every ranking (in progress or finished) lives in one list. Finished entries
+// keep their final order and title so they still display if a data refresh
+// later removes their set (e.g. last season's All-Stars).
+
+const RANKINGS_KEY = "nba-ranker:rankings";
+const newId = () => crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+function markFinished(s, ranking) {
+  s.ranking = ranking;
+  s.title = rankingTitle(s);
+  s.finishedAt ??= Date.now();
 }
 
-function loadSaved() {
+function writeRankings(list) {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && sessionSet(saved) && Array.isArray(saved.answers)) return saved;
+    localStorage.setItem(RANKINGS_KEY, JSON.stringify(list));
+  } catch {
+    /* storage full or disabled */
+  }
+}
+
+function loadRankings() {
+  let list = [];
+  try {
+    const v = JSON.parse(localStorage.getItem(RANKINGS_KEY));
+    if (Array.isArray(v)) list = v.filter((r) => r && r.id && Array.isArray(r.answers));
   } catch {
     /* ignore corrupt state */
   }
-  return null;
+  // One-time move from the old single-session format.
+  try {
+    const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (legacy && Array.isArray(legacy.answers) && sessionSet(legacy)) {
+      const now = Date.now();
+      const entry = { ...legacy, id: newId(), createdAt: now, updatedAt: now };
+      const result = runSort(sessionIds(entry), entry.mode, TOP_K, entry.answers);
+      if (result.done) markFinished(entry, result.ranking);
+      list.push(entry);
+      writeRankings(list);
+    }
+  } catch {
+    /* ignore */
+  }
+  localStorage.removeItem(STORAGE_KEY);
+  return list;
+}
+
+function save() {
+  if (!session) return;
+  session.updatedAt = Date.now();
+  const list = loadRankings();
+  const i = list.findIndex((r) => r.id === session.id);
+  if (i >= 0) list[i] = session;
+  else list.push(session);
+  writeRankings(list);
+}
+
+function deleteRanking(id) {
+  writeRankings(loadRankings().filter((r) => r.id !== id));
+}
+
+const byRecent = (a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0);
+const inProgressRankings = () => loadRankings().filter((r) => !r.ranking && sessionSet(r)).sort(byRecent);
+const finishedRankings = () =>
+  loadRankings()
+    .filter((r) => Array.isArray(r.ranking))
+    .sort((a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0));
+
+// Leave the My Rankings page without re-triggering the router.
+function clearRoute() {
+  if (location.hash) history.pushState(null, "", location.pathname + location.search);
+}
+
+function openRanking(r) {
+  clearRoute();
+  session = r;
+  if (r.ranking) renderResults(r.ranking.filter((id) => players.has(id)));
+  else renderCompare();
 }
 
 function sessionIds(s) {
@@ -124,21 +190,25 @@ function setKeys(handler) {
 
 function renderSetup() {
   setKeys(null);
-  const saved = loadSaved();
-  const savedSet = saved && sessionSet(saved);
+  const pending = inProgressRankings();
+  const latest = pending[0];
   let filter = loadCustomFilter();
   app.innerHTML = `
     <section class="setup">
       <h1>Rank the legends.</h1>
       <p class="lede">Pick a group, then choose between two players at a time until your ranking is settled.</p>
       ${
-        saved
+        latest
           ? `<div class="resume">
-              <span>You have a ranking in progress: <strong>${escapeHtml(savedSet.name)}</strong>
-              (${saved.mode === "top" ? `Top ${TOP_K}` : "full"}, ${saved.answers.length} picks made)</span>
+              <span>${
+                pending.length === 1
+                  ? `You have a ranking in progress: <strong>${escapeHtml(sessionSet(latest).name)}</strong>
+                     (${latest.mode === "top" ? `Top ${TOP_K}` : "full"}, ${latest.answers.length} picks made)`
+                  : `You have <strong>${pending.length} rankings</strong> in progress.`
+              }</span>
               <span class="resume-actions">
-                <button type="button" class="btn" data-action="resume">Resume</button>
-                <button type="button" class="btn ghost" data-action="discard">Discard</button>
+                <button type="button" class="btn" data-action="resume">Resume${pending.length > 1 ? " latest" : ""}</button>
+                <a class="btn ghost" href="#my-rankings">My Rankings</a>
               </span>
             </div>`
           : ""
@@ -281,6 +351,8 @@ function renderSetup() {
     const isCustom = form.set.value === "custom";
     const isRandom = form.set.value === "random";
     session = {
+      id: newId(),
+      createdAt: Date.now(),
       setId: form.set.value,
       ...(isCustom ? { filter: structuredClone(filter) } : {}),
       ...(form.set.value === "franchise" ? { franchise: { ...franchise } } : {}),
@@ -289,19 +361,11 @@ function renderSetup() {
       seed: Math.floor(Math.random() * 2 ** 31),
       answers: [],
     };
-    save();
+    // Not saved until the first pick, so abandoned starts don't clutter My Rankings.
     renderCompare();
   });
 
-  app.querySelector("[data-action=resume]")?.addEventListener("click", () => {
-    session = saved;
-    renderCompare();
-  });
-  app.querySelector("[data-action=discard]")?.addEventListener("click", () => {
-    session = null;
-    save();
-    renderSetup();
-  });
+  app.querySelector("[data-action=resume]")?.addEventListener("click", () => openRanking(latest));
 }
 
 // ---------- Franchise All-Stars ----------
@@ -628,7 +692,11 @@ function renderCompare() {
   const ids = sessionIds(session);
   const result = runSort(ids, session.mode, TOP_K, session.answers);
   if (result.done) {
-    renderResults(result.ranking);
+    if (!session.ranking) {
+      markFinished(session, result.ranking);
+      save();
+    }
+    renderResults(session.ranking);
     return;
   }
 
@@ -655,7 +723,8 @@ function renderCompare() {
       </div>
       <div class="compare-actions">
         <button class="btn ghost" data-action="undo" ${done ? "" : "disabled"}>↶ Undo</button>
-        <button class="btn ghost" data-action="quit">Start over</button>
+        <button class="btn ghost" data-action="exit">${done ? "Save &amp; exit" : "Back"}</button>
+        <button class="btn ghost" data-action="discard" ${done ? "" : "hidden"}>Discard</button>
       </div>
     </section>`;
 
@@ -681,10 +750,15 @@ function renderCompare() {
   versus.classList.add("await-pointer");
   versus.addEventListener("pointermove", () => versus.classList.remove("await-pointer"), { once: true });
   app.querySelector("[data-action=undo]").addEventListener("click", undo);
-  app.querySelector("[data-action=quit]").addEventListener("click", () => {
-    if (done && !confirm("Discard this ranking and start over?")) return;
+  app.querySelector("[data-action=exit]").addEventListener("click", () => {
     session = null;
-    save();
+    if (done) location.hash = "#my-rankings";
+    else renderSetup();
+  });
+  app.querySelector("[data-action=discard]").addEventListener("click", () => {
+    if (!confirm("Discard this ranking? This can't be undone.")) return;
+    deleteRanking(session.id);
+    session = null;
     renderSetup();
   });
   setKeys((e) => {
@@ -705,7 +779,8 @@ function renderResults(ranking) {
   const podium = ranked.slice(0, 3);
   const featured = ranked.slice(3, 10);
   const rest = ranked.slice(10);
-  const title = rankingTitle(session);
+  const title = session.title ?? rankingTitle(session);
+  const canUndo = Boolean(sessionSet(session)) && session.answers.length > 0;
 
   const statLine = (p) => {
     const s = p.careerRegularSeason || {};
@@ -756,7 +831,8 @@ function renderResults(ranking) {
       <div class="results-actions">
         <button class="btn primary" data-action="image">Save image</button>
         <button class="btn" data-action="copy">Copy as text</button>
-        <button class="btn" data-action="undo">↶ Undo last pick</button>
+        <button class="btn" data-action="undo" ${canUndo ? "" : "hidden"}>↶ Undo last pick</button>
+        <a class="btn ghost" href="#my-rankings/finished">My Rankings</a>
         <button class="btn ghost" data-action="new">Rank again</button>
       </div>
     </section>`;
@@ -770,8 +846,8 @@ function renderResults(ranking) {
       const set = sessionSet(session);
       const heading = session.mode === "top" ? `My Top ${TOP_K}` : "My ranking";
       const blob = await renderRankingImage({
-        title: set.custom ? heading : title,
-        subtitle: set.custom ? set.name : "",
+        title: set?.custom ? heading : title,
+        subtitle: set?.custom ? set.name : "",
         ranked,
         footer: "zateutsch.github.io/nba-ranker",
       });
@@ -811,14 +887,109 @@ function renderResults(ranking) {
   });
   app.querySelector("[data-action=undo]").addEventListener("click", () => {
     session.answers.pop();
+    delete session.ranking;
+    delete session.title;
+    delete session.finishedAt;
     save();
     renderCompare();
   });
   app.querySelector("[data-action=new]").addEventListener("click", () => {
     session = null;
-    save();
+    clearRoute();
     renderSetup();
   });
+}
+
+// ---------- My Rankings ----------
+
+const shortDate = (ts) => {
+  if (!ts) return "";
+  const d = new Date(ts);
+  const sameYear = d.getFullYear() === new Date().getFullYear();
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }) });
+};
+
+function progressCard(r) {
+  const set = sessionSet(r);
+  const n = idsForSet(set).length;
+  const total = maxPicks(n, r.mode, TOP_K);
+  const pct = Math.min(99, Math.round((r.answers.length / total) * 100));
+  return `<li class="saved-card">
+    <div class="saved-head">
+      <span class="saved-title">${escapeHtml(set.name)}</span>
+      <span class="saved-meta">${r.mode === "top" ? `Top ${TOP_K}` : "Full ranking"} · ${r.answers.length} of up to ${total} picks · ${escapeHtml(shortDate(r.updatedAt))}</span>
+    </div>
+    <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><div style="width:${pct}%"></div></div>
+    <div class="saved-actions">
+      <button type="button" class="btn primary" data-open="${r.id}">Resume</button>
+      <button type="button" class="btn ghost" data-delete="${r.id}">Delete</button>
+    </div>
+  </li>`;
+}
+
+function finishedCard(r) {
+  const top = r.ranking.map((id) => players.get(id)).filter(Boolean).slice(0, 3);
+  return `<li class="saved-card">
+    <div class="saved-head">
+      <span class="saved-title">${escapeHtml(r.title)}</span>
+      <span class="saved-meta">${r.ranking.length} players · finished ${escapeHtml(shortDate(r.finishedAt))}</span>
+    </div>
+    <ol class="saved-top">
+      ${top.map((p) => `<li>${escapeHtml(p.name)}</li>`).join("")}
+    </ol>
+    <div class="saved-actions">
+      <button type="button" class="btn primary" data-open="${r.id}">View</button>
+      <button type="button" class="btn ghost" data-delete="${r.id}">Delete</button>
+    </div>
+  </li>`;
+}
+
+function renderMyRankings(tab) {
+  setKeys(null);
+  const progress = inProgressRankings();
+  const finished = finishedRankings();
+  tab ??= progress.length || !finished.length ? "progress" : "finished";
+  const list = tab === "progress" ? progress : finished;
+
+  app.innerHTML = `
+    <section class="my-rankings">
+      <h1>My Rankings</h1>
+      <p class="lede">Saved on this device. Clearing your browser data removes them.</p>
+      <div class="tabs" role="tablist">
+        <a role="tab" class="tab" href="#my-rankings" aria-selected="${tab === "progress"}">In Progress <span class="tab-count">${progress.length}</span></a>
+        <a role="tab" class="tab" href="#my-rankings/finished" aria-selected="${tab === "finished"}">Finished <span class="tab-count">${finished.length}</span></a>
+      </div>
+      ${
+        list.length
+          ? `<ul class="saved-list">${list.map(tab === "progress" ? progressCard : finishedCard).join("")}</ul>`
+          : `<div class="saved-empty">
+              <p>${tab === "progress" ? "No rankings in progress." : "No finished rankings yet."}</p>
+              <a class="btn primary" href="./">Start a ranking</a>
+            </div>`
+      }
+    </section>`;
+
+  const byId = new Map(list.map((r) => [r.id, r]));
+  app.querySelector(".saved-list")?.addEventListener("click", (e) => {
+    const open = e.target.closest("[data-open]");
+    const del = e.target.closest("[data-delete]");
+    if (open) openRanking(byId.get(open.dataset.open));
+    else if (del && confirm("Delete this ranking? This can't be undone.")) {
+      deleteRanking(del.dataset.delete);
+      renderMyRankings(tab);
+    }
+  });
+}
+
+// ---------- Routing ----------
+
+function route() {
+  session = null;
+  const hash = location.hash;
+  if (hash === "#my-rankings") renderMyRankings();
+  else if (hash === "#my-rankings/finished") renderMyRankings("finished");
+  else renderSetup();
+  window.scrollTo(0, 0);
 }
 
 // ---------- Boot ----------
@@ -834,7 +1005,8 @@ async function init() {
     app.innerHTML = `<p class="error">Couldn't load player data (${escapeHtml(err.message)}).</p>`;
     return;
   }
-  renderSetup();
+  window.addEventListener("hashchange", route);
+  route();
 }
 
 init();

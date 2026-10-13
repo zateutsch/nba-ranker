@@ -3,7 +3,9 @@
 A web tool for ranking your favorite NBA players. Pick a group (Active
 All-Stars, MVPs, the Top 75, a franchise's All-Stars, 10 random players, or a
 custom filter), then choose between two players at a time until
-your ranking is settled — either a full ranking or just your Top 10.
+your ranking is settled — either a full ranking or just your Top 10. Rankings
+are saved in your browser, and the My Rankings page lists the ones in progress
+and the ones you've finished.
 
 ## Running locally
 
@@ -15,7 +17,10 @@ python -m http.server 8000   # then visit http://localhost:8000
 
 It's hosted on GitHub Pages straight from the root of `main`.
 
-- `index.html`, `css/`, `js/app.js` — UI (setup → compare → results)
+- `index.html`, `css/`, `js/app.js` — UI (setup → compare → results, plus
+  `#my-rankings`). Every ranking is stored in `localStorage` under
+  `nba-ranker:rankings`; finished ones also keep their final order and title so
+  they still display after a data refresh changes the sets.
 - `js/sorter.js` — the ranking algorithm. Full rankings use binary insertion
   sort; Top 10 uses a knockout tournament where each later pick only replays
   the previous winner's path. The sort is re-run against the saved list of
