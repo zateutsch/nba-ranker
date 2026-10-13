@@ -160,7 +160,7 @@ function deleteRanking(id) {
 const byRecent = (a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0);
 const byFinished = (a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0);
 const pinnedFirst = (order) => (a, b) => Boolean(b.pinned) - Boolean(a.pinned) || order(a, b);
-const inProgressRankings = () => loadRankings().filter((r) => !r.ranking && sessionSet(r)).sort(pinnedFirst(byRecent));
+const inProgressRankings = () => loadRankings().filter((r) => !r.ranking && sessionSet(r)).sort(byRecent);
 const finishedRankings = () =>
   loadRankings()
     .filter((r) => Array.isArray(r.ranking))
@@ -924,15 +924,21 @@ const shortDate = (ts) => {
 const PIN_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2H6v-2l4-4z"/><path d="M12 15v6"/></svg>`;
 const TRASH_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/></svg>`;
 
-function savedHead(r, title, meta) {
-  return `<div class="saved-head">
+// The whole card opens the ranking via a full-card button; the icon buttons sit above it.
+function savedHead(r, title, meta, { pinnable = false, openLabel }) {
+  return `<button type="button" class="saved-open" data-open="${r.id}" aria-label="${escapeHtml(`${openLabel} ${title}`)}"></button>
+    <div class="saved-head">
       <div class="saved-text">
         <span class="saved-title">${escapeHtml(title)}</span>
         <span class="saved-meta">${escapeHtml(meta)}</span>
       </div>
       <div class="saved-icons">
-        <button type="button" class="icon-btn pin" data-pin="${r.id}" aria-pressed="${Boolean(r.pinned)}"
-          aria-label="${r.pinned ? "Unpin" : "Pin to top"}" title="${r.pinned ? "Unpin" : "Pin to top"}">${PIN_ICON}</button>
+        ${
+          pinnable
+            ? `<button type="button" class="icon-btn pin" data-pin="${r.id}" aria-pressed="${Boolean(r.pinned)}"
+                aria-label="${r.pinned ? "Unpin" : "Pin to top"}" title="${r.pinned ? "Unpin" : "Pin to top"}">${PIN_ICON}</button>`
+            : ""
+        }
         <button type="button" class="icon-btn delete" data-delete="${r.id}" aria-label="Delete" title="Delete">${TRASH_ICON}</button>
       </div>
     </div>`;
@@ -943,25 +949,19 @@ function progressCard(r) {
   const n = idsForSet(set).length;
   const total = maxPicks(n, r.mode, TOP_K);
   const pct = Math.min(99, Math.round((r.answers.length / total) * 100));
-  return `<li class="saved-card${r.pinned ? " pinned" : ""}">
-    ${savedHead(r, set.name, `${r.mode === "top" ? `Top ${TOP_K}` : "Full ranking"} · ${r.answers.length} of up to ${total} picks · ${shortDate(r.updatedAt)}`)}
+  return `<li class="saved-card">
+    ${savedHead(r, set.name, `${r.mode === "top" ? `Top ${TOP_K}` : "Full ranking"} · ${r.answers.length} of up to ${total} picks · ${shortDate(r.updatedAt)}`, { openLabel: "Resume" })}
     <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><div style="width:${pct}%"></div></div>
-    <div class="saved-actions">
-      <button type="button" class="btn primary" data-open="${r.id}">Resume</button>
-    </div>
   </li>`;
 }
 
 function finishedCard(r) {
   const top = r.ranking.map((id) => players.get(id)).filter(Boolean).slice(0, 3);
   return `<li class="saved-card${r.pinned ? " pinned" : ""}">
-    ${savedHead(r, r.title, `${r.ranking.length} players · finished ${shortDate(r.finishedAt)}`)}
+    ${savedHead(r, r.title, `${r.ranking.length} players · finished ${shortDate(r.finishedAt)}`, { pinnable: true, openLabel: "View" })}
     <ol class="saved-top">
       ${top.map((p) => `<li>${escapeHtml(p.name)}</li>`).join("")}
     </ol>
-    <div class="saved-actions">
-      <button type="button" class="btn primary" data-open="${r.id}">View</button>
-    </div>
   </li>`;
 }
 

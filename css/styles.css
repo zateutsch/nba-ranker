@@ -758,10 +758,40 @@ legend {
   font-weight: 700;
 }
 
-.saved-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+.saved-card {
+  position: relative;
+}
+
+.saved-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.saved-open:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.saved-icons {
+  position: relative;
+  z-index: 1;
+}
+
+.saved-card:has(.saved-open:active) {
+  background: var(--surface-2);
+}
+
+@media (hover: hover) {
+  .saved-card:has(.saved-open:hover) {
+    border-color: var(--accent);
+    background: var(--surface-2);
+  }
 }
 
 .saved-empty {
