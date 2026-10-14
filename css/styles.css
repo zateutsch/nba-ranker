@@ -563,6 +563,119 @@ legend {
   font-weight: 600;
 }
 
+/* ---------- Player chooser (three buttons + dialogs) ---------- */
+
+.chooser {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.choice-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+  padding: 1.1rem 1.2rem;
+  font: inherit;
+  color: inherit;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.choice-head {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.choice-sub {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.choice-btn.is-active {
+  border-color: var(--accent);
+  background: linear-gradient(160deg, var(--accent-tint), var(--surface) 60%);
+}
+
+.choice-btn.is-active .choice-sub {
+  color: var(--lime-ink);
+  font-weight: 600;
+}
+
+.choice-btn:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.choice-btn:active {
+  transform: translateY(0);
+}
+
+@media (hover: hover) {
+  .choice-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  }
+}
+
+.picker-dialog {
+  width: min(680px, calc(100vw - 1.5rem));
+  max-width: calc(100vw - 1.5rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  color: var(--text);
+  background: var(--bg-top);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 60px rgba(8, 6, 20, 0.45);
+  overflow: hidden;
+}
+
+.picker-dialog::backdrop {
+  background: rgba(10, 8, 20, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+}
+
+.dialog-title {
+  margin: 0;
+  color: var(--shelf-fill);
+}
+
+.dialog-actions {
+  position: sticky;
+  bottom: -1.25rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin: 0 -1.25rem -1.25rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--bg-top);
+  border-top: 1px solid var(--border);
+}
+
+.picker-dialog .custom-builder {
+  margin-top: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
 /* ---------- Custom builder ---------- */
 
 .custom-card {
@@ -1660,6 +1773,13 @@ legend {
   .set-grid,
   .mode-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .chooser,
+  .preset-grid {
+    grid-template-columns: 1fr;
+  }
+  .picker-dialog .custom-builder {
+    padding: 0;
   }
   .set-desc {
     font-size: 0.8rem;

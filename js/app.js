@@ -154,6 +154,28 @@ function loadCustomFilter() {
   return defaultFilter();
 }
 
+// Which of the three pickers (preset / team / custom) was last used.
+const SELECTION_KEY = "nba-ranker:selection";
+function loadSelection() {
+  try {
+    const c = JSON.parse(localStorage.getItem(SELECTION_KEY));
+    if (c && c.kind === "franchise") return { kind: "franchise" };
+    if (c && c.kind === "custom") return { kind: "custom" };
+    if (c && c.kind === "preset" && (c.setId === "random" || SETS.some((s) => s.id === c.setId)))
+      return { kind: "preset", setId: c.setId };
+  } catch {
+    /* ignore */
+  }
+  return { kind: "preset", setId: SETS[0]?.id ?? "active-all-stars" };
+}
+function saveSelection(c) {
+  try {
+    localStorage.setItem(SELECTION_KEY, JSON.stringify(c));
+  } catch {
+    /* ignore */
+  }
+}
+
 // ---------- Saved rankings ----------
 // Every ranking (in progress or finished) lives in one list. Finished entries
 // keep their final order and title so they still display if a data refresh
@@ -264,6 +286,33 @@ function renderSetup() {
   const pending = inProgressRankings();
   const latest = pending[0];
   let filter = loadCustomFilter();
+  let franchise = loadFranchiseChoice();
+  let choice = loadSelection();
+
+  const presetCard = (id, name, desc, count, checked) => `
+    <label class="set-card">
+      <input type="radio" name="preset-set" value="${id}" ${checked ? "checked" : ""} />
+      <span class="set-name">${escapeHtml(name)}</span>
+      <span class="set-desc">${escapeHtml(desc)}</span>
+      <span class="set-count">${count} players</span>
+    </label>`;
+
+  const presetCards = () => {
+    const cards = SETS.map((s) =>
+      presetCard(s.id, s.name, s.description, idsForSet(s).length, choice.kind === "preset" && choice.setId === s.id)
+    );
+    cards.push(
+      presetCard(
+        "random",
+        `${RANDOM_N} Random Players`,
+        `A fresh draw of ${RANDOM_N} from ${randomPool().length} players who played in ${RANDOM_SINCE} or later`,
+        RANDOM_N,
+        choice.kind === "preset" && choice.setId === "random"
+      )
+    );
+    return cards.join("");
+  };
+
   app.innerHTML = `
     <section class="setup">
       <h1>Rank the legends.</h1>
@@ -287,37 +336,20 @@ function renderSetup() {
       <form id="setup-form">
         <fieldset>
           <legend>1. Choose players</legend>
-          <div class="set-grid">
-            ${SETS.map((s, i) => {
-              const n = idsForSet(s).length;
-              return `<label class="set-card">
-                <input type="radio" name="set" value="${s.id}" ${i === 0 ? "checked" : ""} />
-                <span class="set-name">${escapeHtml(s.name)}</span>
-                <span class="set-desc">${escapeHtml(s.description)}</span>
-                <span class="set-count">${n} players</span>
-              </label>`;
-            }).join("")}
-            <label class="set-card">
-              <input type="radio" name="set" value="random" />
-              <span class="set-name">Rank ${RANDOM_N} Random Players</span>
-              <span class="set-desc">A fresh draw of ${RANDOM_N} from ${randomPool().length} players who played in ${RANDOM_SINCE} or later</span>
-              <span class="set-count">${RANDOM_N} players</span>
-            </label>
-            <label class="set-card">
-              <input type="radio" name="set" value="franchise" />
-              <span class="set-name">Franchise All-Stars</span>
-              <span class="set-desc">Every All-Star from one team, while they played there</span>
-              <span class="set-count" data-franchise-count></span>
-            </label>
-            <label class="set-card custom-card">
-              <input type="radio" name="set" value="custom" />
-              <span class="set-name">Custom</span>
-              <span class="set-desc">Build your own group from awards, eras and more</span>
-              <span class="set-count" data-custom-count></span>
-            </label>
+          <div class="chooser">
+            <button type="button" class="choice-btn" data-open="preset">
+              <span class="choice-head">Preset</span>
+              <span class="choice-sub" data-sub="preset"></span>
+            </button>
+            <button type="button" class="choice-btn" data-open="franchise">
+              <span class="choice-head">Rank From a Team</span>
+              <span class="choice-sub" data-sub="franchise"></span>
+            </button>
+            <button type="button" class="choice-btn" data-open="custom">
+              <span class="choice-head">Custom</span>
+              <span class="choice-sub" data-sub="custom"></span>
+            </button>
           </div>
-          <div class="custom-builder franchise-picker" hidden></div>
-          <div class="custom-builder" hidden></div>
         </fieldset>
         <fieldset>
           <legend>2. Choose a mode</legend>
@@ -338,54 +370,106 @@ function renderSetup() {
         </fieldset>
         <button type="submit" class="btn primary big">Start ranking</button>
       </form>
+
+      <dialog class="picker-dialog" data-dialog="preset">
+        <div class="dialog-body">
+          <h2 class="dialog-title">Choose a preset group</h2>
+          <div class="set-grid preset-grid">${presetCards()}</div>
+          <div class="dialog-actions">
+            <button type="button" class="btn ghost" data-dialog-cancel>Cancel</button>
+            <button type="button" class="btn primary" data-dialog-confirm>Use group</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog class="picker-dialog" data-dialog="franchise">
+        <div class="dialog-body">
+          <h2 class="dialog-title">Rank from a team</h2>
+          <div class="custom-builder franchise-picker"></div>
+          <div class="dialog-actions">
+            <button type="button" class="btn ghost" data-dialog-cancel>Cancel</button>
+            <button type="button" class="btn primary" data-dialog-confirm>Use team</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog class="picker-dialog" data-dialog="custom">
+        <div class="dialog-body">
+          <h2 class="dialog-title">Build a custom group</h2>
+          <div class="custom-builder custom-picker"></div>
+          <div class="dialog-actions">
+            <button type="button" class="btn ghost" data-dialog-cancel>Cancel</button>
+            <button type="button" class="btn primary" data-dialog-confirm>Use group</button>
+          </div>
+        </div>
+      </dialog>
     </section>`;
 
   const form = app.querySelector("#setup-form");
-  const builder = form.querySelector(".custom-builder:not(.franchise-picker)");
-  const picker = form.querySelector(".franchise-picker");
+  const section = app.querySelector(".setup");
   const startBtn = form.querySelector("[type=submit]");
-  let franchise = loadFranchiseChoice();
+  const dlgPreset = section.querySelector('[data-dialog="preset"]');
+  const dlgFranchise = section.querySelector('[data-dialog="franchise"]');
+  const dlgCustom = section.querySelector('[data-dialog="custom"]');
+  const picker = dlgFranchise.querySelector(".franchise-picker");
+  const builder = dlgCustom.querySelector(".custom-picker");
 
   const currentSet = () => {
-    if (form.set.value === "custom") return customSet(filter);
-    if (form.set.value === "random") return randomSet([...players.keys()].slice(0, RANDOM_N));
-    if (form.set.value === "franchise") return franchiseSet(franchise);
-    return setById(form.set.value);
+    if (choice.kind === "custom") return customSet(filter);
+    if (choice.kind === "franchise") return franchiseSet(franchise);
+    if (choice.setId === "random") return randomSet([...players.keys()].slice(0, RANDOM_N));
+    return setById(choice.setId);
+  };
+
+  const selectedName = () => {
+    if (choice.kind === "custom") return describe(withDefaults(filter));
+    if (choice.kind === "franchise") return franchiseSet(franchise)?.name ?? "—";
+    if (choice.setId === "random") return `${RANDOM_N} Random Players`;
+    return setById(choice.setId)?.name ?? "—";
   };
 
   const update = () => {
-    const isCustom = form.set.value === "custom";
-    const isFranchise = form.set.value === "franchise";
-    builder.hidden = !isCustom;
-    picker.hidden = !isFranchise;
-    const customIds = idsForSet(customSet(filter));
-    form.querySelector("[data-custom-count]").textContent = `${customIds.length} players`;
-    if (isCustom) renderCustomPreview(builder, customIds);
-    const franchiseIds = idsForSet(franchiseSet(franchise));
-    form.querySelector("[data-franchise-count]").textContent = `${franchiseIds.length} players`;
-    if (isFranchise) renderCustomPreview(picker, franchiseIds, "Try an earlier year.");
+    for (const btn of section.querySelectorAll("[data-open]")) {
+      btn.classList.toggle("is-active", btn.dataset.open === choice.kind);
+    }
     const n = idsForSet(currentSet()).length;
+    const subs = {
+      preset: choice.kind === "preset" ? `${selectedName()} · ${n} players` : "Curated star groups",
+      franchise: choice.kind === "franchise" ? `${selectedName()} · ${n} players` : "Every All-Star from one team",
+      custom: choice.kind === "custom" ? `${selectedName()} · ${n} players` : "Build from awards, eras & more",
+    };
+    for (const [k, text] of Object.entries(subs)) {
+      section.querySelector(`[data-sub="${k}"]`).textContent = text;
+    }
     for (const el of form.querySelectorAll("[data-picks]")) {
       el.textContent = n < 2 ? "Need at least 2 players" : `Up to ${maxPicks(n, el.dataset.picks, TOP_K)} picks`;
     }
     startBtn.disabled = n < 2;
   };
 
-  const rebuild = () => {
-    renderCustomBuilder(builder, filter);
-    update();
+  // ----- Preset dialog -----
+  const openPreset = () => {
+    const radios = dlgPreset.querySelectorAll('input[name="preset-set"]');
+    radios.forEach((r) => (r.checked = choice.kind === "preset" && r.value === choice.setId));
+    if (![...radios].some((r) => r.checked) && radios[0]) radios[0].checked = true;
+    dlgPreset.showModal();
   };
+  dlgPreset.querySelector("[data-dialog-confirm]").addEventListener("click", () => {
+    const sel = dlgPreset.querySelector('input[name="preset-set"]:checked');
+    if (sel) {
+      choice = { kind: "preset", setId: sel.value };
+      saveSelection(choice);
+      update();
+    }
+    dlgPreset.close();
+  });
 
-  const onFilterChange = () => {
-    filter = readCustomBuilder(builder);
-    localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
-    update();
-  };
-
+  // ----- Team dialog -----
+  const refreshFranchisePreview = () => renderCustomPreview(picker, idsForSet(franchiseSet(franchise)), "Try an earlier year.");
   // Re-render on team change (banner, former names); typing a year only refreshes counts
   // so the input keeps focus.
   const onFranchiseChange = (e) => {
-    const teamChanged = e.target.dataset.f === "team";
+    const teamChanged = e.target.dataset?.f === "team";
     franchise = readFranchisePicker(picker);
     localStorage.setItem(FRANCHISE_KEY, JSON.stringify(franchise));
     if (teamChanged && e.type === "change") renderFranchisePicker(picker, franchise);
@@ -393,17 +477,35 @@ function renderSetup() {
       const sub = picker.querySelector(".team-banner-sub");
       if (sub) sub.textContent = `All-Stars${franchise.since ? ` since ${franchise.since}` : ""}`;
     }
-    update();
+    refreshFranchisePreview();
   };
   renderFranchisePicker(picker, franchise);
-
-  form.addEventListener("change", (e) => {
-    if (builder.contains(e.target)) onFilterChange();
-    else if (picker.contains(e.target)) onFranchiseChange(e);
-    else update();
-  });
-  builder.addEventListener("input", onFilterChange);
+  picker.addEventListener("change", onFranchiseChange);
   picker.addEventListener("input", onFranchiseChange);
+  const openFranchise = () => {
+    refreshFranchisePreview();
+    dlgFranchise.showModal();
+  };
+  dlgFranchise.querySelector("[data-dialog-confirm]").addEventListener("click", () => {
+    choice = { kind: "franchise" };
+    saveSelection(choice);
+    update();
+    dlgFranchise.close();
+  });
+
+  // ----- Custom dialog -----
+  const refreshCustomPreview = () => renderCustomPreview(builder, idsForSet(customSet(filter)));
+  const onFilterChange = () => {
+    filter = readCustomBuilder(builder);
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
+    refreshCustomPreview();
+  };
+  const rebuildCustom = () => {
+    renderCustomBuilder(builder, filter);
+    refreshCustomPreview();
+  };
+  builder.addEventListener("change", onFilterChange);
+  builder.addEventListener("input", onFilterChange);
   builder.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-builder]");
     if (!btn) return;
@@ -413,20 +515,50 @@ function renderSetup() {
     else if (action === "example") filter = withDefaults(EXAMPLES[Number(btn.dataset.index)].filter);
     else if (action === "reset") filter = defaultFilter();
     localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
-    rebuild();
+    rebuildCustom();
   });
-  rebuild();
+  rebuildCustom();
+  const openCustom = () => {
+    refreshCustomPreview();
+    dlgCustom.showModal();
+  };
+  dlgCustom.querySelector("[data-dialog-confirm]").addEventListener("click", () => {
+    filter = readCustomBuilder(builder);
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(filter));
+    choice = { kind: "custom" };
+    saveSelection(choice);
+    update();
+    dlgCustom.close();
+  });
+
+  // Open the matching dialog; close on Cancel or backdrop click.
+  section.querySelector(".chooser").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-open]");
+    if (!btn) return;
+    if (btn.dataset.open === "preset") openPreset();
+    else if (btn.dataset.open === "franchise") openFranchise();
+    else openCustom();
+  });
+  for (const dlg of [dlgPreset, dlgFranchise, dlgCustom]) {
+    dlg.querySelector("[data-dialog-cancel]").addEventListener("click", () => dlg.close());
+    dlg.addEventListener("click", (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+  }
+
+  update();
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const isCustom = form.set.value === "custom";
-    const isRandom = form.set.value === "random";
+    const isCustom = choice.kind === "custom";
+    const isFranchise = choice.kind === "franchise";
+    const isRandom = choice.kind === "preset" && choice.setId === "random";
     session = {
       id: newId(),
       createdAt: Date.now(),
-      setId: form.set.value,
+      setId: isCustom ? "custom" : isFranchise ? "franchise" : choice.setId,
       ...(isCustom ? { filter: structuredClone(filter) } : {}),
-      ...(form.set.value === "franchise" ? { franchise: { ...franchise } } : {}),
+      ...(isFranchise ? { franchise: { ...franchise } } : {}),
       ...(isRandom ? { ids: shuffle(randomPool(), Math.floor(Math.random() * 2 ** 31)).slice(0, RANDOM_N) } : {}),
       mode: form.mode.value,
       seed: Math.floor(Math.random() * 2 ** 31),
