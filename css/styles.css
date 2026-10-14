@@ -29,7 +29,28 @@
   --accent-tint: color-mix(in srgb, var(--accent) 16%, transparent);
   --lime-glow: color-mix(in srgb, var(--lime) 40%, transparent);
   --gold-glow: color-mix(in srgb, var(--gold) 28%, transparent);
-  --radius: 14px;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --radius: var(--radius-lg); /* back-compat alias */
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgb(20 10 40 / 0.05), 0 2px 8px rgb(20 10 40 / 0.06);
+  --shadow-md: 0 8px 24px rgb(20 10 40 / 0.1);
+  --shadow-lg: 0 16px 44px rgb(20 10 40 / 0.14);
+  --shadow-accent: 0 4px 18px var(--accent-glow);
+
+  /* Motion */
+  --dur: 0.16s;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+
+  /* Focus */
+  --focus-ring: 2px solid var(--accent-2);
+  --focus-offset: 2px;
+
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: light;
 }
@@ -94,18 +115,28 @@ a {
   padding: 0.45rem 0.95rem;
   background: var(--accent);
   border: 1px solid var(--accent);
-  border-radius: 999px;
-  box-shadow: 0 4px 16px var(--accent-glow);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-accent);
   white-space: nowrap;
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.nav-link:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
 .nav-link:active {
   background: color-mix(in srgb, var(--accent) 85%, var(--shade));
+  transform: translateY(1px);
 }
 
 @media (hover: hover) {
   .nav-link:hover {
-    background: color-mix(in srgb, var(--accent) 88%, var(--on-accent));
+    background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
+    box-shadow: 0 8px 26px var(--accent-glow);
+    transform: translateY(-1px);
   }
 }
 
@@ -177,16 +208,23 @@ h2 {
 .btn {
   font: inherit;
   font-weight: 600;
-  padding: 0.6rem 1.1rem;
-  border-radius: 999px;
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--text);
   cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 
-.btn:hover:not(:disabled) {
-  border-color: var(--accent);
+.btn:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .btn:disabled {
@@ -194,15 +232,42 @@ h2 {
   cursor: default;
 }
 
+@media (hover: hover) {
+  .btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
 .btn.primary {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
-  box-shadow: 0 4px 20px var(--accent-glow);
+  box-shadow: var(--shadow-accent);
+}
+
+@media (hover: hover) {
+  .btn.primary:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
+    border-color: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
+    box-shadow: 0 8px 26px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+}
+
+.btn.primary:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .btn.ghost {
   background: transparent;
+}
+
+@media (hover: hover) {
+  .btn.ghost:hover:not(:disabled) {
+    background: var(--surface-2);
+    border-color: var(--accent);
+  }
 }
 
 .btn.big {
@@ -223,6 +288,7 @@ h2 {
   background: var(--surface);
   border: 1px solid var(--accent);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
 .resume-actions {
@@ -267,13 +333,16 @@ legend {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
 }
 
 .set-card:hover,
 .mode-card:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .set-card input,
@@ -290,7 +359,7 @@ legend {
 
 .set-card:has(input:focus-visible),
 .mode-card:has(input:focus-visible) {
-  outline: 2px solid var(--accent-2);
+  outline: var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -342,7 +411,7 @@ legend {
   align-items: center;
   gap: 0.85rem;
   padding: 0.75rem 0.9rem;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   color: var(--on-team);
   background:
     radial-gradient(circle at 15% 20%, var(--sheen), transparent 55%),
@@ -400,7 +469,7 @@ legend {
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 0.4rem 0.5rem;
   min-width: 0;
 }
@@ -444,7 +513,7 @@ legend {
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.35rem 0.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--text);
@@ -469,7 +538,7 @@ legend {
   gap: 0.5rem 0.75rem;
   padding: 0.65rem;
   background: var(--surface-2);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   min-width: 0;
 }
 
@@ -574,7 +643,7 @@ legend {
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
 }
 
@@ -586,7 +655,7 @@ legend {
 }
 
 .segmented input:focus-visible + span {
-  outline: 2px solid var(--accent-2);
+  outline: var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -598,7 +667,7 @@ legend {
   padding: 0.75rem 0.9rem;
   border-left: 3px solid var(--accent);
   background: var(--bg);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
   overflow-wrap: anywhere;
 }
@@ -634,7 +703,7 @@ legend {
   height: 6px;
   margin-top: 0.5rem;
   background: var(--surface-2);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 
@@ -668,7 +737,7 @@ legend {
 }
 
 .file-btn:focus-within {
-  outline: 2px solid var(--accent-2);
+  outline: var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -690,7 +759,7 @@ legend {
   margin: 1.25rem 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .tab {
@@ -699,7 +768,7 @@ legend {
   justify-content: center;
   gap: 0.4rem;
   padding: 0.55rem 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   color: var(--muted);
   font-weight: 600;
   text-decoration: none;
@@ -714,7 +783,7 @@ legend {
 .tab-count {
   min-width: 1.5em;
   padding: 0 0.4em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--border);
   font-size: 0.8rem;
   text-align: center;
@@ -740,6 +809,7 @@ legend {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
   min-width: 0;
 }
 
@@ -803,7 +873,7 @@ legend {
 }
 
 .icon-btn:focus-visible {
-  outline: 2px solid var(--accent-2);
+  outline: var(--focus-ring);
 }
 
 @media (hover: hover) {
@@ -870,7 +940,7 @@ legend {
 }
 
 .saved-open:focus-visible {
-  outline: 2px solid var(--accent-2);
+  outline: var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -887,6 +957,7 @@ legend {
   .saved-card:has(.saved-open:hover) {
     border-color: var(--accent);
     background: var(--surface-2);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -926,10 +997,12 @@ legend {
   cursor: pointer;
   text-align: center;
   min-width: 0;
+  box-shadow: var(--shadow-sm);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
 }
 
 .card-body {
@@ -965,7 +1038,7 @@ legend {
   flex: none;
   width: min(220px, 100%);
   aspect-ratio: 1040 / 760;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--surface-2);
   overflow: hidden;
 }
@@ -1086,7 +1159,7 @@ legend {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.2rem 0.55rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface-2);
   border: 1px solid var(--border);
 }
@@ -1127,7 +1200,7 @@ legend {
     font-size: 0.75rem;
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
   }
   .player-card {
     flex-direction: row;
@@ -1209,6 +1282,7 @@ legend {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
 .podium-card .rank {
@@ -1263,6 +1337,7 @@ legend {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
 .featured .rank {
