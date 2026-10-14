@@ -44,6 +44,12 @@
   --shadow-accent: 0 4px 18px var(--accent-glow);
   --shadow-accent-lg: 0 8px 26px var(--accent-glow);
 
+  /* Button fills */
+  --accent-edge: color-mix(in srgb, var(--accent) 68%, var(--shade));
+  --grad-accent: linear-gradient(180deg, color-mix(in srgb, var(--accent) 82%, #fff), var(--accent));
+  --grad-accent-hi: linear-gradient(180deg, color-mix(in srgb, var(--accent) 70%, #fff), color-mix(in srgb, var(--accent) 96%, #fff));
+  --btn-sheen: inset 0 1px 0 rgb(255 255 255 / 0.35);
+
   /* Motion */
   --dur: 0.16s;
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
@@ -112,15 +118,16 @@ a {
 }
 
 .nav-link {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.95rem;
+  letter-spacing: 0.01em;
   color: var(--on-accent);
   text-decoration: none;
-  padding: 0.45rem 0.95rem;
-  background: var(--accent);
-  border: 1px solid var(--accent);
+  padding: 0.5rem 1.05rem;
+  background: var(--grad-accent);
+  border: 1px solid var(--accent-edge);
   border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-accent);
+  box-shadow: var(--btn-sheen), var(--shadow-accent);
   white-space: nowrap;
   transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
     transform var(--dur) var(--ease);
@@ -132,14 +139,15 @@ a {
 }
 
 .nav-link:active {
-  background: color-mix(in srgb, var(--accent) 85%, var(--shade));
+  background: var(--accent);
+  box-shadow: var(--btn-sheen), 0 2px 8px var(--accent-glow);
   transform: translateY(1px);
 }
 
 @media (hover: hover) {
   .nav-link:hover {
-    background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
-    box-shadow: var(--shadow-accent-lg);
+    background: var(--grad-accent-hi);
+    box-shadow: var(--btn-sheen), var(--shadow-accent-lg);
     transform: translateY(-1px);
   }
 }
@@ -211,15 +219,17 @@ h2 {
 
 .btn {
   font: inherit;
-  font-weight: 600;
-  padding: 0.6rem 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.62rem 1.3rem;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  background: var(--surface);
+  color: var(--accent-2);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+    color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 
 .btn:focus-visible {
@@ -229,6 +239,7 @@ h2 {
 
 .btn:active:not(:disabled) {
   transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn:disabled {
@@ -239,43 +250,54 @@ h2 {
 @media (hover: hover) {
   .btn:hover:not(:disabled) {
     border-color: var(--accent);
-    box-shadow: var(--shadow-sm);
+    background: var(--surface-2);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
   }
 }
 
 .btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--grad-accent);
+  border-color: var(--accent-edge);
   color: var(--on-accent);
-  box-shadow: var(--shadow-accent);
+  box-shadow: var(--btn-sheen), var(--shadow-accent);
 }
 
 @media (hover: hover) {
   .btn.primary:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
-    border-color: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
-    box-shadow: var(--shadow-accent-lg);
+    background: var(--grad-accent-hi);
+    border-color: var(--accent-edge);
+    color: var(--on-accent);
+    box-shadow: var(--btn-sheen), var(--shadow-accent-lg);
     transform: translateY(-1px);
   }
 }
 
 .btn.primary:active:not(:disabled) {
+  background: var(--accent);
   transform: translateY(1px);
+  box-shadow: var(--btn-sheen), 0 2px 8px var(--accent-glow);
 }
 
 .btn.ghost {
   background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: none;
+  font-weight: 600;
 }
 
 @media (hover: hover) {
   .btn.ghost:hover:not(:disabled) {
     background: var(--surface-2);
     border-color: var(--accent);
+    color: var(--accent-2);
+    box-shadow: var(--shadow-sm);
   }
 }
 
 .btn.big {
-  padding: 0.85rem 2rem;
+  padding: 0.9rem 2.1rem;
   font-size: 1.1rem;
 }
 
