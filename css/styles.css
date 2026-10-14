@@ -1,10 +1,33 @@
-/* Self-hosted display font for headings (all-caps, condensed). */
+/* Self-hosted display font for headings (condensed, athletic). */
 @font-face {
-  font-family: "Bebas Neue";
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/barlow-condensed-700-latin.woff2") format("woff2");
+}
+
+/* Self-hosted body font (Barlow, to match the condensed headings). */
+@font-face {
+  font-family: "Barlow";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("../fonts/bebas-neue-latin.woff2") format("woff2");
+  src: url("../fonts/barlow-400-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/barlow-600-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/barlow-700-latin.woff2") format("woff2");
 }
 
 /* Self-hosted font for button / nav labels. */
@@ -20,13 +43,13 @@
    Light mode is the default; dark mode overrides the raw colours below. */
 :root {
   /* Light mode (violet-grey) */
-  --bg: #e9e6f2;
-  --bg-top: #f4f2fa;
+  --bg: #eef0f3;
+  --bg-top: #f6f7f9;
   --surface: #ffffff;
-  --surface-2: #f0edf9;
-  --border: #d8d1ec;
-  --text: #221a3d;
-  --muted: #6a5f89;
+  --surface-2: #f3f4f6;
+  --border: #e2e3e8;
+  --text: #1c1d22;
+  --muted: #6b6e77;
   --accent: #7c3fe0; /* violet, from the logo ball/rim */
   --accent-2: #6a2fd0; /* deeper violet for links on light */
   --on-accent: #ffffff; /* white text on the bright violet */
@@ -83,13 +106,14 @@
   --content-max: 980px;
 
   /* Typography */
-  --font-display: "Bebas Neue", "Impact", "Haettenschweiler", "Franklin Gothic Bold", "Arial Narrow Bold", sans-serif;
+  --font-display: "Barlow Condensed", "Oswald", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-btn: "Archivo Black", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --shelf-fill: #5a2bb0; /* deep violet primary fill */
   --shelf-fill-hi: #653bbd; /* hover */
   --shelf-shadow: #9b6ef0; /* light-violet hard shadow */
 
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   color-scheme: light;
 }
 
@@ -143,6 +167,7 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding: 0.5rem 1.5rem;
 }
 
 .nav-link {
@@ -227,20 +252,44 @@ main {
 
 h1 {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2.3rem, 5.6vw, 3.4rem);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 3.7rem);
   margin: 1rem 0 0.5rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
+  color: var(--shelf-fill);
   text-shadow: 0 0 28px var(--accent-glow);
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 3.25rem;
+  height: 0.3rem;
+  margin-top: 0.55rem;
+  background: var(--lime);
+  border-radius: 999px;
+  box-shadow: 0 1px 0 var(--lime-edge);
 }
 
 h2 {
   text-align: center;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.6rem;
-  letter-spacing: 0.03em;
+  font-weight: 700;
+  font-size: 1.85rem;
+  letter-spacing: 0.01em;
   margin: 1.5rem 0 1rem;
+  color: var(--shelf-fill);
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 0.26rem;
+  margin: 0.45rem auto 0;
+  background: var(--lime);
+  border-radius: 999px;
+  box-shadow: 0 1px 0 var(--lime-edge);
 }
 
 .lede,
@@ -1324,6 +1373,11 @@ legend {
 
 .results h1 {
   text-align: center;
+}
+
+.results h1::after {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .results ol {
