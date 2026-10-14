@@ -8,6 +8,65 @@ const CUSTOM_KEY = "nba-ranker:custom";
 const FIRST_YEAR = 1947;
 const thisYear = new Date().getFullYear();
 
+// ---------- Theme toggle ----------
+(function setupTheme() {
+  const root = document.documentElement;
+  const btn = document.getElementById("theme-toggle");
+  const media = window.matchMedia
+    ? window.matchMedia("(prefers-color-scheme: dark)")
+    : null;
+
+  const sync = () => {
+    const dark = root.getAttribute("data-theme") === "dark";
+    if (btn) {
+      btn.setAttribute("aria-pressed", String(dark));
+      btn.setAttribute(
+        "aria-label",
+        dark ? "Switch to light theme" : "Switch to dark theme"
+      );
+    }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+      meta.setAttribute(
+        "content",
+        getComputedStyle(root).getPropertyValue("--bg-top").trim() ||
+          (dark ? "#17102f" : "#f6f7f9")
+      );
+    }
+  };
+
+  const apply = (theme, persist) => {
+    root.setAttribute("data-theme", theme);
+    if (persist) {
+      try {
+        localStorage.setItem("theme", theme);
+      } catch (e) {}
+    }
+    sync();
+  };
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const next =
+        root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      apply(next, true);
+    });
+  }
+
+  // Follow the system preference until the user makes an explicit choice.
+  if (media) {
+    media.addEventListener("change", (e) => {
+      let stored = null;
+      try {
+        stored = localStorage.getItem("theme");
+      } catch (err) {}
+      if (!stored) apply(e.matches ? "dark" : "light", false);
+    });
+  }
+
+  sync();
+})();
+
 const SETS = [
   {
     id: "active-all-stars",

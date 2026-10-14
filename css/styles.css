@@ -207,6 +207,74 @@ a {
   }
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  color: var(--shelf-fill);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 9px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.theme-toggle svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.theme-toggle .icon-sun line {
+  stroke-width: 2.2;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle {
+  color: var(--lime);
+}
+
+html[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .icon-moon {
+  display: inline-block;
+}
+
+.theme-toggle:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.theme-toggle:active {
+  transform: translateY(1px);
+}
+
+@media (hover: hover) {
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+}
+
 a.btn {
   display: inline-block;
   text-decoration: none;
@@ -1558,6 +1626,23 @@ legend {
   .site-header,
   .site-footer {
     padding: 0.75rem 1rem;
+  }
+  .site-header {
+    gap: 0.6rem;
+  }
+  .header-actions {
+    gap: 0.5rem;
+  }
+  .logo-lockup {
+    height: clamp(3.4rem, 15vw, 4.6rem);
+    max-width: 44vw;
+  }
+  .nav-link {
+    padding: 0.5rem 0.85rem;
+  }
+  .theme-toggle {
+    width: 2.4rem;
+    height: 2.4rem;
   }
   main {
     padding: 0 1rem 1.5rem;
