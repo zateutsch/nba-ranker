@@ -42,6 +42,7 @@
   --shadow-md: 0 8px 24px rgb(20 10 40 / 0.1);
   --shadow-lg: 0 16px 44px rgb(20 10 40 / 0.14);
   --shadow-accent: 0 4px 18px var(--accent-glow);
+  --shadow-accent-lg: 0 8px 26px var(--accent-glow);
 
   /* Motion */
   --dur: 0.16s;
@@ -138,7 +139,7 @@ a {
 @media (hover: hover) {
   .nav-link:hover {
     background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
-    box-shadow: 0 8px 26px var(--accent-glow);
+    box-shadow: var(--shadow-accent-lg);
     transform: translateY(-1px);
   }
 }
@@ -253,7 +254,7 @@ h2 {
   .btn.primary:hover:not(:disabled) {
     background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
     border-color: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
-    box-shadow: 0 8px 26px var(--accent-glow);
+    box-shadow: var(--shadow-accent-lg);
     transform: translateY(-1px);
   }
 }
@@ -346,6 +347,13 @@ legend {
 .mode-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+@media (hover: hover) {
+  .set-card:hover,
+  .mode-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  }
 }
 
 .set-card input,
