@@ -1,10 +1,19 @@
-/* Self-hosted display font for button / nav labels (all-caps, condensed). */
+/* Self-hosted display font for headings (all-caps, condensed). */
 @font-face {
   font-family: "Bebas Neue";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url("../fonts/bebas-neue-latin.woff2") format("woff2");
+}
+
+/* Self-hosted font for button / nav labels (condensed, legible). */
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/oswald-600-latin.woff2") format("woff2");
 }
 
 /* Theme: every colour used by the site (and the share image) lives here.
@@ -24,6 +33,9 @@
   --lime: #a0ff3b; /* lime, from the logo arrows */
   --lime-2: #c6ff79;
   --lime-ink: #4f8f12; /* readable lime/green for text on light */
+  --on-lime: #15241f; /* dark ink for labels on a lime fill */
+  --lime-edge: #7fd62a; /* crisp border for lime buttons */
+  --lime-hi: #b4ff63; /* brighter lime for hover */
   --gold: #e3a81d;
   --silver: #9aa6b6;
   --bronze: #c0783c;
@@ -72,6 +84,7 @@
 
   /* Typography */
   --font-display: "Bebas Neue", "Impact", "Haettenschweiler", "Franklin Gothic Bold", "Arial Narrow Bold", sans-serif;
+  --font-btn: "Oswald", "Franklin Gothic Medium", "Arial Narrow", system-ui, sans-serif;
 
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: light;
@@ -130,16 +143,17 @@ a {
 }
 
 .nav-link {
-  font-weight: 400;
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-family: var(--font-btn);
+  font-size: 1rem;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
   color: var(--on-accent);
   text-decoration: none;
   padding: 0.5rem 1.05rem;
   background: var(--grad-accent);
   border: 1px solid var(--accent-edge);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   box-shadow: var(--btn-sheen), var(--shadow-accent);
   white-space: nowrap;
   transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
@@ -237,13 +251,14 @@ h2 {
 
 .btn {
   font: inherit;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.05rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-btn);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
   padding: 0.62rem 1.3rem;
-  border-radius: var(--radius-md);
-  border: 1.5px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--accent);
   background: var(--surface);
   color: var(--accent-2);
   box-shadow: var(--shadow-sm);
@@ -277,32 +292,32 @@ h2 {
 }
 
 .btn.primary {
-  background: var(--grad-accent);
-  border-color: var(--accent-edge);
-  color: var(--on-accent);
-  box-shadow: var(--btn-sheen), var(--shadow-accent);
+  background: var(--lime);
+  border-color: var(--lime-edge);
+  color: var(--on-lime);
+  box-shadow: 0 6px 16px var(--lime-glow);
 }
 
 @media (hover: hover) {
   .btn.primary:hover:not(:disabled) {
-    background: var(--grad-accent-hi);
-    border-color: var(--accent-edge);
-    color: var(--on-accent);
-    box-shadow: var(--btn-sheen), var(--shadow-accent-lg);
+    background: var(--lime-hi);
+    border-color: var(--lime-edge);
+    color: var(--on-lime);
+    box-shadow: 0 8px 22px var(--lime-glow);
     transform: translateY(-1px);
   }
 }
 
 .btn.primary:active:not(:disabled) {
-  background: var(--accent);
+  background: var(--lime);
   transform: translateY(1px);
-  box-shadow: var(--btn-sheen), 0 2px 8px var(--accent-glow);
+  box-shadow: 0 2px 8px var(--lime-glow);
 }
 
 .btn.ghost {
   background: transparent;
-  border-color: var(--border);
-  color: var(--text);
+  border: 1.5px dashed var(--border);
+  color: var(--muted);
   box-shadow: none;
   font-weight: 600;
 }
