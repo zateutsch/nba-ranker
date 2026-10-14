@@ -133,9 +133,9 @@ a.btn {
 
 .logo-lockup {
   flex: none;
-  height: 2.4rem;
+  height: clamp(4rem, 11vw, 6.5rem);
   width: auto;
-  max-width: 62vw;
+  max-width: 58vw;
 }
 
 .site-footer {
