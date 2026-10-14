@@ -1,3 +1,12 @@
+/* Self-hosted display font for button / nav labels (all-caps, condensed). */
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/bebas-neue-latin.woff2") format("woff2");
+}
+
 /* Theme: every colour used by the site (and the share image) lives here.
    Light mode is the default; dark mode overrides the raw colours below. */
 :root {
@@ -61,6 +70,9 @@
   /* Layout */
   --content-max: 980px;
 
+  /* Typography */
+  --font-display: "Bebas Neue", "Impact", "Haettenschweiler", "Franklin Gothic Bold", "Arial Narrow Bold", sans-serif;
+
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: light;
 }
@@ -118,15 +130,16 @@ a {
 }
 
 .nav-link {
-  font-weight: 800;
-  font-size: 0.95rem;
-  letter-spacing: 0.01em;
+  font-weight: 400;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
   color: var(--on-accent);
   text-decoration: none;
   padding: 0.5rem 1.05rem;
   background: var(--grad-accent);
   border: 1px solid var(--accent-edge);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   box-shadow: var(--btn-sheen), var(--shadow-accent);
   white-space: nowrap;
   transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
@@ -196,15 +209,20 @@ main {
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 5.6vw, 3.4rem);
   margin: 1rem 0 0.5rem;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
   text-shadow: 0 0 28px var(--accent-glow);
 }
 
 h2 {
   text-align: center;
-  font-size: 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.6rem;
+  letter-spacing: 0.03em;
   margin: 1.5rem 0 1rem;
 }
 
@@ -219,10 +237,12 @@ h2 {
 
 .btn {
   font: inherit;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
   padding: 0.62rem 1.3rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   border: 1.5px solid color-mix(in srgb, var(--accent) 28%, var(--border));
   background: var(--surface);
   color: var(--accent-2);
