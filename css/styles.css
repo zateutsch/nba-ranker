@@ -7,13 +7,13 @@
   src: url("../fonts/bebas-neue-latin.woff2") format("woff2");
 }
 
-/* Self-hosted font for button / nav labels (condensed, legible). */
+/* Self-hosted font for button / nav labels. */
 @font-face {
-  font-family: "Oswald";
+  font-family: "Archivo Black";
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   font-display: swap;
-  src: url("../fonts/oswald-600-latin.woff2") format("woff2");
+  src: url("../fonts/archivo-black-latin.woff2") format("woff2");
 }
 
 /* Theme: every colour used by the site (and the share image) lives here.
@@ -84,7 +84,10 @@
 
   /* Typography */
   --font-display: "Bebas Neue", "Impact", "Haettenschweiler", "Franklin Gothic Bold", "Arial Narrow Bold", sans-serif;
-  --font-btn: "Oswald", "Franklin Gothic Medium", "Arial Narrow", system-ui, sans-serif;
+  --font-btn: "Archivo Black", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --shelf-fill: #5a2bb0; /* deep violet primary fill */
+  --shelf-fill-hi: #653bbd; /* hover */
+  --shelf-shadow: #9b6ef0; /* light-violet hard shadow */
 
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: light;
@@ -143,18 +146,18 @@ a {
 }
 
 .nav-link {
-  font-weight: 600;
+  font-weight: 400;
   font-family: var(--font-btn);
-  font-size: 1rem;
-  letter-spacing: 0.035em;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--on-accent);
+  color: #fff;
   text-decoration: none;
-  padding: 0.5rem 1.05rem;
-  background: var(--grad-accent);
-  border: 1px solid var(--accent-edge);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--btn-sheen), var(--shadow-accent);
+  padding: 0.55rem 1.1rem;
+  background: var(--shelf-fill);
+  border: none;
+  border-radius: 7px;
+  box-shadow: 4px 4px 0 var(--shelf-shadow);
   white-space: nowrap;
   transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
     transform var(--dur) var(--ease);
@@ -166,16 +169,16 @@ a {
 }
 
 .nav-link:active {
-  background: var(--accent);
-  box-shadow: var(--btn-sheen), 0 2px 8px var(--accent-glow);
-  transform: translateY(1px);
+  background: var(--shelf-fill);
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--shelf-shadow);
 }
 
 @media (hover: hover) {
   .nav-link:hover {
-    background: var(--grad-accent-hi);
-    box-shadow: var(--btn-sheen), var(--shadow-accent-lg);
-    transform: translateY(-1px);
+    background: var(--shelf-fill-hi);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shelf-shadow);
   }
 }
 
@@ -252,19 +255,19 @@ h2 {
 .btn {
   font: inherit;
   font-family: var(--font-btn);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.035em;
+  font-weight: 400;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  padding: 0.62rem 1.3rem;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--accent);
+  padding: 0.7rem 1.25rem;
+  border-radius: 7px;
+  border: none;
   background: var(--surface);
-  color: var(--accent-2);
-  box-shadow: var(--shadow-sm);
+  color: var(--shelf-fill);
+  box-shadow: 4px 4px 0 var(--shelf-shadow);
   cursor: pointer;
-  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
-    color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 
 .btn:focus-visible {
@@ -273,8 +276,8 @@ h2 {
 }
 
 .btn:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: var(--shadow-sm);
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--shelf-shadow);
 }
 
 .btn:disabled {
@@ -284,50 +287,45 @@ h2 {
 
 @media (hover: hover) {
   .btn:hover:not(:disabled) {
-    border-color: var(--accent);
-    background: var(--surface-2);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shelf-shadow);
   }
 }
 
 .btn.primary {
-  background: var(--lime);
-  border-color: var(--lime-edge);
-  color: var(--on-lime);
-  box-shadow: 0 6px 16px var(--lime-glow);
+  background: var(--shelf-fill);
+  color: #fff;
+  box-shadow: 4px 4px 0 var(--shelf-shadow);
 }
 
 @media (hover: hover) {
   .btn.primary:hover:not(:disabled) {
-    background: var(--lime-hi);
-    border-color: var(--lime-edge);
-    color: var(--on-lime);
-    box-shadow: 0 8px 22px var(--lime-glow);
-    transform: translateY(-1px);
+    background: var(--shelf-fill-hi);
+    color: #fff;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shelf-shadow);
   }
 }
 
 .btn.primary:active:not(:disabled) {
-  background: var(--lime);
-  transform: translateY(1px);
-  box-shadow: 0 2px 8px var(--lime-glow);
+  background: var(--shelf-fill);
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--shelf-shadow);
 }
 
 .btn.ghost {
   background: transparent;
-  border: 1.5px dashed var(--border);
+  border: none;
   color: var(--muted);
   box-shadow: none;
-  font-weight: 600;
 }
 
 @media (hover: hover) {
   .btn.ghost:hover:not(:disabled) {
     background: var(--surface-2);
-    border-color: var(--accent);
-    color: var(--accent-2);
-    box-shadow: var(--shadow-sm);
+    color: var(--text);
+    transform: none;
+    box-shadow: none;
   }
 }
 
