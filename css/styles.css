@@ -1,20 +1,23 @@
-/* Theme: every colour used by the site (and the share image) lives here. */
+/* Theme: every colour used by the site (and the share image) lives here.
+   Light mode is the default; dark mode overrides the raw colours below. */
 :root {
-  --bg: #0b0918;
-  --bg-top: #17102f;
-  --surface: #181231;
-  --surface-2: #231a45;
-  --border: #3b2f66;
-  --text: #ece9f8;
-  --muted: #a99fcb;
-  --accent: #a66bff; /* violet, from the logo ball/rim */
-  --accent-2: #c7a6ff; /* lighter violet for text/links on dark */
-  --on-accent: #140a26; /* dark text for contrast on the bright violet */
+  /* Light mode (violet-grey) */
+  --bg: #e9e6f2;
+  --bg-top: #f4f2fa;
+  --surface: #ffffff;
+  --surface-2: #f0edf9;
+  --border: #d8d1ec;
+  --text: #221a3d;
+  --muted: #6a5f89;
+  --accent: #7c3fe0; /* violet, from the logo ball/rim */
+  --accent-2: #6a2fd0; /* deeper violet for links on light */
+  --on-accent: #ffffff; /* white text on the bright violet */
   --lime: #a0ff3b; /* lime, from the logo arrows */
   --lime-2: #c6ff79;
-  --gold: #f2c74b;
-  --silver: #c3cdda;
-  --bronze: #d58a4e;
+  --lime-ink: #4f8f12; /* readable lime/green for text on light */
+  --gold: #e3a81d;
+  --silver: #9aa6b6;
+  --bronze: #c0783c;
   --on-medal: #1a1206;
   --team-fallback-a: #3a2f63;
   --team-fallback-b: #6b5aa8;
@@ -22,12 +25,35 @@
   --logo-plate: rgb(238 240 250 / 0.92);
   --sheen: rgb(255 255 255 / 0.16);
   --shade: #000;
-  --accent-glow: color-mix(in srgb, var(--accent) 42%, transparent);
-  --accent-tint: color-mix(in srgb, var(--accent) 20%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 24%, transparent);
+  --accent-tint: color-mix(in srgb, var(--accent) 16%, transparent);
   --lime-glow: color-mix(in srgb, var(--lime) 40%, transparent);
   --gold-glow: color-mix(in srgb, var(--gold) 28%, transparent);
   --radius: 14px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --bg: #0b0918;
+  --bg-top: #17102f;
+  --surface: #181231;
+  --surface-2: #231a45;
+  --border: #3b2f66;
+  --text: #ece9f8;
+  --muted: #a99fcb;
+  --accent: #a66bff;
+  --accent-2: #c7a6ff;
+  --on-accent: #140a26;
+  --lime: #a0ff3b;
+  --lime-2: #c6ff79;
+  --lime-ink: #a0ff3b;
+  --gold: #f2c74b;
+  --silver: #c3cdda;
+  --bronze: #d58a4e;
+  --on-medal: #1a1206;
+  --accent-glow: color-mix(in srgb, var(--accent) 42%, transparent);
+  --accent-tint: color-mix(in srgb, var(--accent) 20%, transparent);
   color-scheme: dark;
 }
 
@@ -103,6 +129,13 @@ a.btn {
   flex: none;
   width: 2rem;
   height: 2rem;
+}
+
+.logo-lockup {
+  flex: none;
+  height: 2.4rem;
+  width: auto;
+  max-width: 62vw;
 }
 
 .site-footer {
@@ -274,7 +307,7 @@ legend {
 .set-count {
   margin-top: 0.35rem;
   font-size: 0.85rem;
-  color: var(--lime);
+  color: var(--lime-ink);
   font-weight: 600;
 }
 
