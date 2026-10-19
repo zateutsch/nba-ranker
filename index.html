@@ -3,37 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f6f7f9" />
-    <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#17102f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#17102f" />
     <title>NBA Ranker</title>
     <meta name="description" content="Rank your favorite NBA players, two at a time." />
     <link rel="icon" href="img/logo.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/styles.css?v=dark-default-1" />
     <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
+      document.documentElement.setAttribute("data-theme", "dark");
     </script>
   </head>
   <body>
     <header class="site-header">
-      <a href="./" class="logo"><img class="logo-lockup" src="img/lockup-light.svg" alt="NBA Rank" width="372" height="145" /></a>
+      <a href="./" class="logo"><img class="logo-lockup" src="img/lockup-light.svg" alt="NBA Rank" width="329" height="97" /></a>
       <div class="header-actions">
-        <a href="#my-rankings" class="nav-link">My Rankings</a>
-        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme" aria-pressed="false">
-          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><g stroke-linecap="round"><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.3" y1="5.3" x2="7" y2="7"/><line x1="17" y1="17" x2="18.7" y2="18.7"/><line x1="18.7" y1="5.3" x2="17" y2="7"/><line x1="7" y1="17" x2="5.3" y2="18.7"/></g></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.3 6.3 0 0 0 10.5 10.5Z"/></svg>
-        </button>
+        <a href="#my-rankings" class="nav-link"><span class="nav-prefix">My </span>Rankings</a>
+        <a href="#my-predictions" class="nav-link"><span class="nav-prefix">My </span>Predictions</a>
       </div>
     </header>
     <main id="app" aria-live="polite">
@@ -41,9 +25,10 @@
     </main>
     <footer class="site-footer">
       Data from <a href="https://www.nba.com/stats">NBA.com</a> and
-      <a href="https://en.wikipedia.org/">Wikipedia</a>.
+      <a href="https://en.wikipedia.org/">Wikipedia</a>. Schedule data from
+      <a href="https://fixturedownload.com/">Fixture Download</a>.
       Not affiliated with the NBA.
     </footer>
-    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/app.js?v=dark-default-1"></script>
   </body>
 </html>

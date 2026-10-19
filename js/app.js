@@ -1,10 +1,35 @@
 import { runSort, maxPicks, shuffle, pairKey } from "./sorter.js";
 import { AWARDS, POSITIONS, EXAMPLES, defaultRule, defaultFilter, withDefaults, matches, describe } from "./custom.js";
-import { renderRankingImage } from "./share-image.js";
+import {
+  renderLeaguePredictionImage,
+  renderPredictionImage,
+  renderRankingImage,
+} from "./share-image.js?v=named-image-headers-1";
 
 const TOP_K = 10;
 const STORAGE_KEY = "nba-ranker:session";
 const CUSTOM_KEY = "nba-ranker:custom";
+const PREDICTION_KEY = "nba-ranker:season-prediction";
+const PREDICTIONS_KEY = "nba-ranker:season-predictions";
+const LEAGUE_PREDICTION_KEY = "nba-ranker:league-prediction";
+const LEAGUE_PREDICTIONS_KEY = "nba-ranker:league-predictions";
+const EASTERN_CONFERENCE = new Set([
+  "Atlanta Hawks",
+  "Boston Celtics",
+  "Brooklyn Nets",
+  "Charlotte Hornets",
+  "Chicago Bulls",
+  "Cleveland Cavaliers",
+  "Detroit Pistons",
+  "Indiana Pacers",
+  "Miami Heat",
+  "Milwaukee Bucks",
+  "New York Knicks",
+  "Orlando Magic",
+  "Philadelphia 76ers",
+  "Toronto Raptors",
+  "Washington Wizards",
+]);
 const FIRST_YEAR = 1947;
 const thisYear = new Date().getFullYear();
 
@@ -12,9 +37,6 @@ const thisYear = new Date().getFullYear();
 (function setupTheme() {
   const root = document.documentElement;
   const btn = document.getElementById("theme-toggle");
-  const media = window.matchMedia
-    ? window.matchMedia("(prefers-color-scheme: dark)")
-    : null;
 
   const sync = () => {
     const dark = root.getAttribute("data-theme") === "dark";
@@ -53,18 +75,7 @@ const thisYear = new Date().getFullYear();
     });
   }
 
-  // Follow the system preference until the user makes an explicit choice.
-  if (media) {
-    media.addEventListener("change", (e) => {
-      let stored = null;
-      try {
-        stored = localStorage.getItem("theme");
-      } catch (err) {}
-      if (!stored) apply(e.matches ? "dark" : "light", false);
-    });
-  }
-
-  sync();
+  apply("dark", false);
 })();
 
 const SETS = [
@@ -105,11 +116,32 @@ function addLatestAllStarSet() {
 
 const app = document.getElementById("app");
 let players = new Map();
+let scheduleData = null;
 let session = null; // { setId, filter?, mode, seed, answers: [{ a, b, winner }] }
 let keyHandler = null;
 
 const escapeHtml = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const EDIT_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>`;
+
+async function saveImageBlob(blob, fileName, title) {
+  const file = new File([blob], fileName, { type: "image/png" });
+  const touch = matchMedia("(pointer: coarse)").matches;
+  if (touch && navigator.canShare?.({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title });
+    } catch (err) {
+      if (err.name !== "AbortError") throw err;
+    }
+    return;
+  }
+  const url = URL.createObjectURL(blob);
+  const link = Object.assign(document.createElement("a"), { href: url, download: file.name });
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
 
 const customSet = (filter) => {
   const f = withDefaults(filter ?? {});
@@ -144,6 +176,91 @@ function rankingTitle(s) {
   return `My ${top ? `${top} ` : ""}${set.name}`;
 }
 
+const cleanName = (value) => String(value ?? "").trim().replace(/\s+/g, " ").slice(0, 80);
+
+function rankingDisplayTitle(ranking) {
+  return cleanName(ranking.name) || ranking.title || (sessionSet(ranking) ? rankingTitle(ranking) : "My ranking");
+}
+
+function rankingRules(ranking) {
+  const set = sessionSet(ranking);
+  return `${set?.name ?? "NBA players"} · ${ranking.mode === "top" ? `Top ${TOP_K}` : "Full ranking"}`;
+}
+
+function teamPredictionTitle(prediction) {
+  return cleanName(prediction.name) || `${prediction.team} Prediction`;
+}
+
+function teamPredictionRules(prediction, season) {
+  return `${season.label} · ${prediction.team} · Opponent-series picks`;
+}
+
+function leaguePredictionTitle(prediction) {
+  return cleanName(prediction.name) || "Full-League Prediction";
+}
+
+function leaguePredictionRules(prediction, season) {
+  return `${season.label} · Entire NBA · Shared game results`;
+}
+
+function editableResultTitle(title, name = "") {
+  return `
+    <div class="result-title-row">
+      <h1>${escapeHtml(title)}</h1>
+      <button type="button" class="icon-btn edit" data-edit-result-name
+        aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>
+    </div>
+    ${nameDialog("result", name, title)}`;
+}
+
+function nameDialog(kind, name = "", placeholder = "") {
+  return `<dialog class="picker-dialog name-dialog" data-name-dialog="${kind}">
+    <form class="dialog-body" data-name-dialog-form>
+      <h2 class="dialog-title">Edit name</h2>
+      <label class="name-field">
+        <span>Name <small>Optional</small></span>
+        <input type="text" maxlength="80" autocomplete="off" value="${escapeHtml(name)}"
+          placeholder="${escapeHtml(placeholder)}" />
+      </label>
+      <div class="dialog-actions">
+        <button type="button" class="btn ghost" data-name-dialog-cancel>Cancel</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </form>
+  </dialog>`;
+}
+
+function openNameDialog(dialog, name, placeholder) {
+  const input = dialog.querySelector("input");
+  input.value = name ?? "";
+  input.placeholder = placeholder;
+  dialog.showModal();
+  input.focus();
+  input.select();
+}
+
+function bindNameDialog(dialog, onSave) {
+  if (!dialog) return;
+  dialog.querySelector("[data-name-dialog-cancel]").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.querySelector("[data-name-dialog-form]").addEventListener("submit", (event) => {
+    event.preventDefault();
+    onSave(cleanName(dialog.querySelector("input").value));
+  });
+}
+
+function bindResultNameEditor(onSave) {
+  const edit = app.querySelector("[data-edit-result-name]");
+  const dialog = app.querySelector('[data-name-dialog="result"]');
+  if (!edit || !dialog) return;
+  edit.addEventListener("click", () =>
+    openNameDialog(dialog, dialog.querySelector("input").value, dialog.querySelector("input").placeholder)
+  );
+  bindNameDialog(dialog, onSave);
+}
+
 function loadCustomFilter() {
   try {
     const f = JSON.parse(localStorage.getItem(CUSTOM_KEY));
@@ -176,6 +293,40 @@ function saveSelection(c) {
   }
 }
 
+// ---------- Feature home ----------
+
+function renderHome() {
+  setKeys(null);
+  const scheduleReady = Boolean(scheduleData?.seasons?.length);
+  app.innerHTML = `
+    <section class="feature-home">
+      <h1>Choose your NBA challenge.</h1>
+      <p class="lede">Rank the players who defined the league, or predict every game in a team's season.</p>
+      <div class="feature-grid">
+        <a class="feature-card" href="#player-ranking">
+          <span class="feature-kicker">Player ranking</span>
+          <strong>Rank</strong>
+          <span>Choose a group of NBA players, make head-to-head picks, and build your personal player ranking.</span>
+          <span class="feature-action">Start ranking &rarr;</span>
+        </a>
+        ${
+          scheduleReady
+            ? `<a class="feature-card" href="#season-prediction">
+                <span class="feature-kicker">Season prediction</span>
+                <strong>Predict</strong>
+                <span>Predict one team's schedule or call every game across the entire league.</span>
+                <span class="feature-action">Start predicting &rarr;</span>
+              </a>`
+            : `<div class="feature-card is-disabled" aria-disabled="true">
+                <span class="feature-kicker">Season prediction</span>
+                <strong>Schedule unavailable</strong>
+                <span>The schedule data could not be loaded.</span>
+              </div>`
+        }
+      </div>
+    </section>`;
+}
+
 // ---------- Saved rankings ----------
 // Every ranking (in progress or finished) lives in one list. Finished entries
 // keep their final order and title so they still display if a data refresh
@@ -186,7 +337,7 @@ const newId = () => crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toSt
 
 function markFinished(s, ranking) {
   s.ranking = ranking;
-  s.title = rankingTitle(s);
+  s.title = rankingDisplayTitle(s);
   s.finishedAt ??= Date.now();
 }
 
@@ -257,6 +408,16 @@ function togglePinned(id) {
   writeRankings(list);
 }
 
+function renameRanking(id, name) {
+  const list = loadRankings();
+  const ranking = list.find((item) => item.id === id);
+  if (!ranking) return;
+  ranking.name = name;
+  ranking.title = name || rankingTitle(ranking);
+  ranking.updatedAt = Date.now();
+  writeRankings(list);
+}
+
 // Leave the My Rankings page without re-triggering the router.
 function clearRoute() {
   if (location.hash) history.pushState(null, "", location.pathname + location.search);
@@ -315,14 +476,14 @@ function renderSetup() {
 
   app.innerHTML = `
     <section class="setup">
-      <h1>Rank the legends.</h1>
+      <h1>Rank NBA players, past and present.</h1>
       <p class="lede">Pick a group, then choose between two players at a time until your ranking is settled.</p>
       ${
         latest
           ? `<div class="resume">
               <span>${
                 pending.length === 1
-                  ? `You have a ranking in progress: <strong>${escapeHtml(sessionSet(latest).name)}</strong>
+                  ? `You have a ranking in progress: <strong>${escapeHtml(rankingDisplayTitle(latest))}</strong>
                      (${latest.mode === "top" ? `Top ${TOP_K}` : "full"}, ${latest.answers.length} picks made)`
                   : `You have <strong>${pending.length} rankings</strong> in progress.`
               }</span>
@@ -338,18 +499,28 @@ function renderSetup() {
           <legend>1. Choose players</legend>
           <div class="chooser">
             <button type="button" class="choice-btn" data-open="preset">
-              <span class="choice-head">Preset</span>
+              <span class="choice-top">
+                <span class="choice-head">Preset</span>
+                <span class="choice-action">Choose &rarr;</span>
+              </span>
               <span class="choice-sub" data-sub="preset"></span>
             </button>
             <button type="button" class="choice-btn" data-open="franchise">
-              <span class="choice-head">Rank From a Team</span>
+              <span class="choice-top">
+                <span class="choice-head">Rank From a Team</span>
+                <span class="choice-action">Choose &rarr;</span>
+              </span>
               <span class="choice-sub" data-sub="franchise"></span>
             </button>
             <button type="button" class="choice-btn" data-open="custom">
-              <span class="choice-head">Custom</span>
+              <span class="choice-top">
+                <span class="choice-head">Custom</span>
+                <span class="choice-action">Choose &rarr;</span>
+              </span>
               <span class="choice-sub" data-sub="custom"></span>
             </button>
           </div>
+          <p class="selection-summary" data-selection-summary></p>
         </fieldset>
         <fieldset>
           <legend>2. Choose a mode</legend>
@@ -367,6 +538,14 @@ function renderSetup() {
               <span class="set-count" data-picks="full"></span>
             </label>
           </div>
+        </fieldset>
+        <fieldset>
+          <legend>3. Name your ranking</legend>
+          <label class="name-field">
+            <span>Optional</span>
+            <input type="text" name="rankingName" maxlength="80"
+              placeholder="e.g. My all-time favorites" autocomplete="off" />
+          </label>
         </fieldset>
         <button type="submit" class="btn primary big">Start ranking</button>
       </form>
@@ -430,17 +609,21 @@ function renderSetup() {
 
   const update = () => {
     for (const btn of section.querySelectorAll("[data-open]")) {
-      btn.classList.toggle("is-active", btn.dataset.open === choice.kind);
+      const active = btn.dataset.open === choice.kind;
+      btn.classList.toggle("is-active", active);
+      btn.querySelector(".choice-action").textContent = active ? "Change \u2192" : "Choose \u2192";
     }
     const n = idsForSet(currentSet()).length;
     const subs = {
-      preset: choice.kind === "preset" ? `${selectedName()} · ${n} players` : "Curated star groups",
-      franchise: choice.kind === "franchise" ? `${selectedName()} · ${n} players` : "Every All-Star from one team",
-      custom: choice.kind === "custom" ? `${selectedName()} · ${n} players` : "Build from awards, eras & more",
+      preset: "Curated star groups",
+      franchise: "Every All-Star from one team",
+      custom: "Build from awards, eras & more",
     };
     for (const [k, text] of Object.entries(subs)) {
       section.querySelector(`[data-sub="${k}"]`).textContent = text;
     }
+    section.querySelector("[data-selection-summary]").innerHTML =
+      `<span>Selected:</span> <strong>${escapeHtml(selectedName())}</strong> · ${n} players`;
     for (const el of form.querySelectorAll("[data-picks]")) {
       el.textContent = n < 2 ? "Need at least 2 players" : `Up to ${maxPicks(n, el.dataset.picks, TOP_K)} picks`;
     }
@@ -469,19 +652,31 @@ function renderSetup() {
   // Re-render on team change (banner, former names); typing a year only refreshes counts
   // so the input keeps focus.
   const onFranchiseChange = (e) => {
-    const teamChanged = e.target.dataset?.f === "team";
     franchise = readFranchisePicker(picker);
     localStorage.setItem(FRANCHISE_KEY, JSON.stringify(franchise));
-    if (teamChanged && e.type === "change") renderFranchisePicker(picker, franchise);
-    else {
-      const sub = picker.querySelector(".team-banner-sub");
-      if (sub) sub.textContent = `All-Stars${franchise.since ? ` since ${franchise.since}` : ""}`;
-    }
+    const sub = picker.querySelector(".team-banner-sub");
+    if (sub) sub.textContent = `All-Stars${franchise.since ? ` since ${franchise.since}` : ""}`;
     refreshFranchisePreview();
   };
   renderFranchisePicker(picker, franchise);
   picker.addEventListener("change", onFranchiseChange);
   picker.addEventListener("input", onFranchiseChange);
+  picker.addEventListener(
+    "toggle",
+    (e) => {
+      if (!e.target.matches(".team-select") || !e.target.open) return;
+      e.target.querySelector(".team-option.is-selected")?.scrollIntoView({ block: "nearest" });
+    },
+    true
+  );
+  picker.addEventListener("click", (e) => {
+    const option = e.target.closest("[data-team-id]");
+    if (!option) return;
+    franchise = { ...franchise, team: Number(option.dataset.teamId) };
+    localStorage.setItem(FRANCHISE_KEY, JSON.stringify(franchise));
+    renderFranchisePicker(picker, franchise);
+    refreshFranchisePreview();
+  });
   const openFranchise = () => {
     refreshFranchisePreview();
     dlgFranchise.showModal();
@@ -560,6 +755,7 @@ function renderSetup() {
       ...(isCustom ? { filter: structuredClone(filter) } : {}),
       ...(isFranchise ? { franchise: { ...franchise } } : {}),
       ...(isRandom ? { ids: shuffle(randomPool(), Math.floor(Math.random() * 2 ** 31)).slice(0, RANDOM_N) } : {}),
+      name: cleanName(form.rankingName.value),
       mode: form.mode.value,
       seed: Math.floor(Math.random() * 2 ** 31),
       answers: [],
@@ -597,6 +793,10 @@ function franchises() {
   return franchiseList;
 }
 
+function selectableFranchises() {
+  return franchises().filter((f) => !/(Olympians|Bullets)$/.test(f.name));
+}
+
 // An All-Star season counts when the player was on the franchise that season.
 // "2025-26" is the 2026 All-Star Game; stint years use the same convention.
 function allStarWith(p, teamId, since) {
@@ -620,7 +820,7 @@ function franchiseSet({ team, since }) {
 function loadFranchiseChoice() {
   try {
     const c = JSON.parse(localStorage.getItem(FRANCHISE_KEY));
-    if (c && franchises().some((f) => f.id === c.team)) return { team: c.team, since: c.since || null };
+    if (c && selectableFranchises().some((f) => f.id === c.team)) return { team: c.team, since: c.since || null };
   } catch {
     /* ignore */
   }
@@ -634,25 +834,37 @@ function teamStyle(nick) {
 }
 
 function renderFranchisePicker(el, choice) {
-  const current = franchises().find((f) => f.id === choice.team);
+  const current = selectableFranchises().find((f) => f.id === choice.team);
   const nick = teamNickname(current?.name);
   el.innerHTML = `
-    <div class="team-banner" style="${teamStyle(nick)}">
-      <span class="team-logo"><img src="https://cdn.nba.com/logos/nba/${choice.team}/primary/L/logo.svg" alt="" onerror="this.remove()" /></span>
-      <span class="team-banner-text">
-        <span class="team-banner-name">${escapeHtml(current?.name ?? "")}</span>
-        <span class="team-banner-sub">All-Stars${choice.since ? ` since ${choice.since}` : ""}</span>
-      </span>
-    </div>
     <div class="builder-section">
       <span class="builder-label">Franchise</span>
-      <span class="rule-line">
-        <select data-f="team" aria-label="Franchise">
-          ${franchises()
-            .map((f) => `<option value="${f.id}" ${f.id === choice.team ? "selected" : ""}>${escapeHtml(f.name)}</option>`)
+      <input type="hidden" data-f="team" value="${choice.team}" />
+      <details class="team-select">
+        <summary class="team-banner team-select-trigger" style="${teamStyle(nick)}">
+          <span class="team-logo"><img src="https://cdn.nba.com/logos/nba/${choice.team}/primary/L/logo.svg" alt="" onerror="this.remove()" /></span>
+          <span class="team-banner-text">
+            <span class="team-banner-name">${escapeHtml(current?.name ?? "")}</span>
+            <span class="team-banner-sub">All-Stars${choice.since ? ` since ${choice.since}` : ""}</span>
+          </span>
+          <span class="team-select-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="team-options" role="listbox" aria-label="Choose a franchise">
+          ${selectableFranchises()
+            .map((f) => {
+              const selected = f.id === choice.team;
+              return `<button type="button" class="team-option${selected ? " is-selected" : ""}" data-team-id="${f.id}"
+                role="option" aria-selected="${selected}" aria-label="${escapeHtml(f.name)}">
+                <span class="team-option-logo">
+                  <img src="https://cdn.nba.com/logos/nba/${f.id}/primary/L/logo.svg" alt="" loading="lazy" onerror="this.remove()" />
+                </span>
+                <span class="team-option-name">${escapeHtml(f.name)}</span>
+                <span class="team-option-check" aria-hidden="true">✓</span>
+              </button>`;
+            })
             .join("")}
-        </select>
-      </span>
+        </div>
+      </details>
       ${current?.former.length ? `<p class="hint">Includes the ${escapeHtml(current.former.join(", "))} years.</p>` : ""}
     </div>
     <div class="builder-section">
@@ -672,6 +884,1736 @@ function readFranchisePicker(el) {
     team: Number(el.querySelector("[data-f=team]").value),
     since: since >= FIRST_YEAR && since <= thisYear + 1 ? since : null,
   };
+}
+
+// ---------- Season prediction ----------
+
+function allScheduleSeasons() {
+  return scheduleData?.seasons ?? [];
+}
+
+function predictionSeasons() {
+  return allScheduleSeasons().filter((season) => season.predictionAvailable !== false);
+}
+
+function predictionSeason(id) {
+  return predictionSeasons().find((season) => season.id === id);
+}
+
+function predictionTeams(season) {
+  return Object.keys(season?.teamGameCounts ?? {}).sort((a, b) => a.localeCompare(b));
+}
+
+function gamesForTeam(season, team) {
+  return (season?.games ?? []).filter((game) => game.homeTeam === team || game.awayTeam === team);
+}
+
+function seriesForTeam(season, team) {
+  const series = new Map();
+  gamesForTeam(season, team).forEach((game, scheduleIndex) => {
+    const opponent = game.homeTeam === team ? game.awayTeam : game.homeTeam;
+    if (!series.has(opponent)) {
+      series.set(opponent, { opponent, games: [], scheduleIndex });
+    }
+    series.get(opponent).games.push(game);
+  });
+  return [...series.values()];
+}
+
+function predictionIsComplete(prediction, games) {
+  return games.every((game) => prediction.picks[game.id]);
+}
+
+function firstIncompleteSeriesIndex(series, picks) {
+  const index = series.findIndex((matchup) => matchup.games.some((game) => !picks[game.id]));
+  return index < 0 ? series.length : index;
+}
+
+function normalizePredictionProgress(prediction, season) {
+  const series = seriesForTeam(season, prediction.team);
+  const firstIncomplete = firstIncompleteSeriesIndex(series, prediction.picks);
+  if (prediction.flow !== "series") {
+    prediction.flow = "series";
+    prediction.index = firstIncomplete;
+    return true;
+  }
+  if (prediction.index > firstIncomplete || prediction.index >= series.length) {
+    prediction.index = firstIncomplete;
+    return true;
+  }
+  return false;
+}
+
+function priorSeasonFor(season) {
+  const startYear = Number(season?.id?.slice(0, 4)) - 1;
+  if (!startYear) return null;
+  const id = `${startYear}-${String(startYear + 1).slice(-2)}`;
+  return allScheduleSeasons().find((item) => item.id === id) ?? null;
+}
+
+function actualTeamRecord(season, team, opponent) {
+  const record = { wins: 0, losses: 0 };
+  for (const game of gamesForTeam(season, team)) {
+    if (
+      opponent &&
+      game.homeTeam !== opponent &&
+      game.awayTeam !== opponent
+    ) {
+      continue;
+    }
+    if (game.homeScore == null || game.awayScore == null) continue;
+    const teamScore = game.homeTeam === team ? game.homeScore : game.awayScore;
+    const opponentScore = game.homeTeam === team ? game.awayScore : game.homeScore;
+    record[teamScore > opponentScore ? "wins" : "losses"] += 1;
+  }
+  return record;
+}
+
+function franchiseForTeam(name) {
+  return selectableFranchises().find((franchise) => franchise.name === name);
+}
+
+function teamLogoUrl(name) {
+  const franchise = franchiseForTeam(name);
+  return franchise ? `https://cdn.nba.com/logos/nba/${franchise.id}/primary/L/logo.svg` : "";
+}
+
+function teamLogo(name, className = "prediction-logo") {
+  const url = teamLogoUrl(name);
+  return `<span class="${className}">${
+    url ? `<img src="${url}" alt="" loading="lazy" onerror="this.remove()" />` : ""
+  }</span>`;
+}
+
+function predictionTeamPicker(team, season) {
+  const names = predictionTeams(season);
+  return `
+    <details class="team-select prediction-team-select">
+      <summary class="team-banner team-select-trigger" style="${teamStyle(teamNickname(team))}">
+        ${teamLogo(team, "team-logo")}
+        <span class="team-banner-text">
+          <span class="team-banner-name">${escapeHtml(team)}</span>
+          <span class="team-banner-sub">${season.label} schedule</span>
+        </span>
+        <span class="team-select-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="team-options" role="listbox" aria-label="Choose a team">
+        ${names
+          .map((name) => {
+            const selected = name === team;
+            return `<button type="button" class="team-option${selected ? " is-selected" : ""}"
+              data-prediction-team="${escapeHtml(name)}" role="option" aria-selected="${selected}"
+              aria-label="${escapeHtml(name)}">
+              ${teamLogo(name, "team-option-logo")}
+              <span class="team-option-name">${escapeHtml(name)}</span>
+              <span class="team-option-check" aria-hidden="true">✓</span>
+            </button>`;
+          })
+          .join("")}
+      </div>
+    </details>`;
+}
+
+function validPrediction(prediction) {
+  return Boolean(
+    prediction &&
+      predictionSeason(prediction.seasonId) &&
+      predictionTeams(predictionSeason(prediction.seasonId)).includes(prediction.team) &&
+      prediction.picks &&
+      Number.isInteger(prediction.index)
+  );
+}
+
+function predictionIdentifier(prediction) {
+  return `${prediction.seasonId}|${prediction.team}`;
+}
+
+function loadPrediction() {
+  try {
+    const prediction = JSON.parse(localStorage.getItem(PREDICTION_KEY));
+    if (validPrediction(prediction)) return prediction;
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+function loadPredictions() {
+  let predictions = [];
+  try {
+    const stored = JSON.parse(localStorage.getItem(PREDICTIONS_KEY));
+    if (Array.isArray(stored)) predictions = stored.filter(validPrediction);
+  } catch {
+    /* ignore */
+  }
+  const active = loadPrediction();
+  if (active) predictions.push(active);
+  const unique = new Map();
+  predictions.forEach((prediction) => {
+    const id = predictionIdentifier(prediction);
+    const existing = unique.get(id);
+    if (!existing || (prediction.updatedAt ?? 0) >= (existing.updatedAt ?? 0)) {
+      unique.set(id, prediction);
+    }
+  });
+  const saved = [...unique.values()].sort(
+    (a, b) => a.team.localeCompare(b.team) || a.seasonId.localeCompare(b.seasonId)
+  );
+  localStorage.setItem(PREDICTIONS_KEY, JSON.stringify(saved));
+  return saved;
+}
+
+function activatePrediction(prediction) {
+  localStorage.setItem(PREDICTION_KEY, JSON.stringify(prediction));
+}
+
+function savePrediction(prediction) {
+  activatePrediction(prediction);
+  const predictions = loadPredictions().filter(
+    (saved) => predictionIdentifier(saved) !== predictionIdentifier(prediction)
+  );
+  predictions.push(prediction);
+  predictions.sort((a, b) => a.team.localeCompare(b.team) || a.seasonId.localeCompare(b.seasonId));
+  localStorage.setItem(PREDICTIONS_KEY, JSON.stringify(predictions));
+}
+
+function deletePrediction(prediction) {
+  const id = predictionIdentifier(prediction);
+  const predictions = loadPredictions().filter((saved) => predictionIdentifier(saved) !== id);
+  localStorage.setItem(PREDICTIONS_KEY, JSON.stringify(predictions));
+  const active = loadPrediction();
+  if (active && predictionIdentifier(active) === id) localStorage.removeItem(PREDICTION_KEY);
+}
+
+function renamePrediction(prediction, name) {
+  const renamed = { ...prediction, name, updatedAt: Date.now() };
+  const id = predictionIdentifier(prediction);
+  const predictions = loadPredictions().map((saved) =>
+    predictionIdentifier(saved) === id ? renamed : saved
+  );
+  localStorage.setItem(PREDICTIONS_KEY, JSON.stringify(predictions));
+  if (predictionIdentifier(loadPrediction() ?? {}) === id) activatePrediction(renamed);
+}
+
+function downloadJson(data, fileName) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = Object.assign(document.createElement("a"), { href: url, download: fileName });
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+function exportPredictions(predictions, fileName, includeLeague = false) {
+  downloadJson(
+    {
+      app: "nba-ranker",
+      version: 1,
+      type: includeLeague
+        ? "prediction-data"
+        : predictions.length === 1
+          ? "season-prediction"
+          : "season-predictions",
+      exportedAt: new Date().toISOString(),
+      predictions,
+      ...(includeLeague ? { leaguePredictions: loadLeaguePredictions() } : {}),
+    },
+    fileName
+  );
+}
+
+function normalizeLeaguePrediction(prediction) {
+  const season = predictionSeason(prediction?.seasonId);
+  if (!season || !prediction.picks || typeof prediction.picks !== "object") return null;
+  const games = new Map(season.games.map((game) => [game.id, game]));
+  const picks = {};
+  Object.entries(prediction.picks).forEach(([gameId, winner]) => {
+    const game = games.get(gameId);
+    if (game && (winner === game.homeTeam || winner === game.awayTeam)) picks[gameId] = winner;
+  });
+  const updatedAt = Number.isFinite(prediction.updatedAt) ? prediction.updatedAt : Date.now();
+  return {
+    id: prediction.id ?? `league-${season.id}-${updatedAt}`,
+    name: cleanName(prediction.name),
+    seasonId: season.id,
+    picks,
+    activeTeam: prediction.activeTeam ?? null,
+    seriesIndex: Number.isInteger(prediction.seriesIndex) ? prediction.seriesIndex : 0,
+    updatedAt,
+  };
+}
+
+function loadLeaguePrediction() {
+  try {
+    return normalizeLeaguePrediction(JSON.parse(localStorage.getItem(LEAGUE_PREDICTION_KEY)));
+  } catch {
+    return null;
+  }
+}
+
+function saveLeaguePrediction(prediction) {
+  const normalized = normalizeLeaguePrediction(prediction);
+  if (!normalized) return null;
+  localStorage.setItem(LEAGUE_PREDICTION_KEY, JSON.stringify(normalized));
+  const predictions = loadLeaguePredictions().filter((saved) => saved.id !== normalized.id);
+  predictions.push(normalized);
+  predictions.sort((a, b) => b.updatedAt - a.updatedAt);
+  localStorage.setItem(LEAGUE_PREDICTIONS_KEY, JSON.stringify(predictions));
+  return normalized;
+}
+
+function loadLeaguePredictions() {
+  let saved = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LEAGUE_PREDICTIONS_KEY));
+    if (Array.isArray(parsed)) saved = parsed.map(normalizeLeaguePrediction).filter(Boolean);
+  } catch {
+    saved = [];
+  }
+  if (!saved.length) {
+    const legacy = loadLeaguePrediction();
+    if (legacy) saved = [legacy];
+  }
+  const unique = [...new Map(saved.map((prediction) => [prediction.id, prediction])).values()].sort(
+    (a, b) => b.updatedAt - a.updatedAt
+  );
+  if (unique.length) localStorage.setItem(LEAGUE_PREDICTIONS_KEY, JSON.stringify(unique));
+  return unique;
+}
+
+function activateLeaguePrediction(prediction) {
+  localStorage.setItem(LEAGUE_PREDICTION_KEY, JSON.stringify(prediction));
+}
+
+function createLeaguePrediction(season, name = "") {
+  const now = Date.now();
+  return {
+    id: crypto.randomUUID?.() ?? `league-${season.id}-${now}-${Math.random().toString(36).slice(2)}`,
+    name: cleanName(name),
+    seasonId: season.id,
+    picks: {},
+    activeTeam: null,
+    seriesIndex: 0,
+    updatedAt: now,
+  };
+}
+
+function startNewLeaguePrediction(name = "") {
+  const season = predictionSeasons()[0];
+  if (!season) return null;
+  return saveLeaguePrediction(createLeaguePrediction(season, name));
+}
+
+function deleteLeaguePrediction(id) {
+  const predictions = loadLeaguePredictions().filter((prediction) => prediction.id !== id);
+  localStorage.setItem(LEAGUE_PREDICTIONS_KEY, JSON.stringify(predictions));
+  if (loadLeaguePrediction()?.id === id) localStorage.removeItem(LEAGUE_PREDICTION_KEY);
+}
+
+function renameLeaguePrediction(prediction, name) {
+  const renamed = { ...prediction, name, updatedAt: Date.now() };
+  const predictions = loadLeaguePredictions()
+    .map((saved) => (saved.id === renamed.id ? renamed : saved))
+    .sort((a, b) => b.updatedAt - a.updatedAt);
+  localStorage.setItem(LEAGUE_PREDICTIONS_KEY, JSON.stringify(predictions));
+  if (loadLeaguePrediction()?.id === renamed.id) activateLeaguePrediction(renamed);
+}
+
+function exportLeaguePrediction(prediction) {
+  downloadJson(
+    {
+      app: "nba-ranker",
+      version: 1,
+      type: "league-prediction",
+      exportedAt: new Date().toISOString(),
+      leaguePrediction: prediction,
+    },
+    `nba-${prediction.seasonId}-league-prediction.json`
+  );
+}
+
+async function importPredictionData(file) {
+  if (file.size > 5_000_000) throw new Error("That file is too large.");
+  const data = JSON.parse(await file.text());
+  if (data?.app !== "nba-ranker") throw new Error("That isn't an NBA Ranker export.");
+  let imported = 0;
+  if (Array.isArray(data.predictions)) {
+    const merged = new Map(loadPredictions().map((prediction) => [predictionIdentifier(prediction), prediction]));
+    data.predictions.filter(validPrediction).forEach((prediction) => {
+      merged.set(predictionIdentifier(prediction), prediction);
+      imported += 1;
+    });
+    localStorage.setItem(
+      PREDICTIONS_KEY,
+      JSON.stringify(
+        [...merged.values()].sort(
+          (a, b) => a.team.localeCompare(b.team) || a.seasonId.localeCompare(b.seasonId)
+        )
+      )
+    );
+  }
+  const leagueData = Array.isArray(data.leaguePredictions)
+    ? data.leaguePredictions
+    : data.leaguePrediction
+      ? [data.leaguePrediction]
+      : [];
+  const leaguePredictions = new Map(
+    loadLeaguePredictions().map((prediction) => [prediction.id, prediction])
+  );
+  let activeLeaguePrediction = null;
+  leagueData.map(normalizeLeaguePrediction).filter(Boolean).forEach((prediction) => {
+    leaguePredictions.set(prediction.id, prediction);
+    activeLeaguePrediction = prediction;
+    imported += 1;
+  });
+  if (activeLeaguePrediction) {
+    localStorage.setItem(
+      LEAGUE_PREDICTIONS_KEY,
+      JSON.stringify([...leaguePredictions.values()].sort((a, b) => b.updatedAt - a.updatedAt))
+    );
+    activateLeaguePrediction(activeLeaguePrediction);
+  }
+  if (!imported) throw new Error("No valid prediction data was found.");
+  return `Imported ${imported} prediction${imported === 1 ? "" : "s"}.`;
+}
+
+function seedLeaguePrediction(season) {
+  const params = new URLSearchParams(location.search);
+  const seed = params.get("seed-league");
+  if (seed !== "half" && seed !== "full") return null;
+  const games =
+    seed === "full"
+      ? season.games
+      : season.games.slice(0, Math.ceil(season.games.length / 2));
+  const prediction = {
+    id: loadLeaguePrediction()?.id ?? `league-${season.id}-${Date.now()}`,
+    seasonId: season.id,
+    picks: Object.fromEntries(
+      games.map((game, index) => [
+        game.id,
+        index % 3 === 0 ? game.awayTeam : game.homeTeam,
+      ])
+    ),
+    activeTeam: null,
+    seriesIndex: 0,
+    updatedAt: Date.now(),
+  };
+  saveLeaguePrediction(prediction);
+  params.delete("seed-league");
+  const query = params.toString();
+  history.replaceState(
+    null,
+    "",
+    `${location.pathname}${query ? `?${query}` : ""}${location.hash}`
+  );
+  return prediction;
+}
+
+function currentLeaguePrediction() {
+  const season = predictionSeasons()[0];
+  if (!season) return null;
+  const seeded = seedLeaguePrediction(season);
+  if (seeded) return seeded;
+  const saved = loadLeaguePrediction();
+  if (saved?.seasonId === season.id) return saved;
+  return createLeaguePrediction(season);
+}
+
+function renderPredictionMode() {
+  setKeys(null);
+  const leaguePrediction = currentLeaguePrediction();
+  const season = predictionSeason(leaguePrediction?.seasonId);
+  const totalGames = season?.games.length ?? 0;
+  const pickedGames = season
+    ? season.games.filter((game) => leaguePrediction.picks[game.id]).length
+    : 0;
+  app.innerHTML = `
+    <section class="prediction-mode">
+      <a class="back-link" href="./">&larr; All features</a>
+      <h1>Choose a prediction challenge.</h1>
+      <p class="lede">Focus on one team's season, or predict every game across the entire NBA.</p>
+      <div class="prediction-mode-grid feature-grid">
+        <a class="prediction-mode-card feature-card" href="#season-prediction/team">
+          <span class="feature-kicker">One team</span>
+          <strong>Predict a specific team</strong>
+          <span>Work through one team's opponent series and finish with its complete predicted record.</span>
+          <span class="feature-action">Choose a team &rarr;</span>
+        </a>
+        <a class="prediction-mode-card feature-card" href="#season-prediction/league/library">
+          <span class="feature-kicker">Entire NBA</span>
+          <strong>Predict the full season</strong>
+          <span>Pick winners across all 30 teams. Shared games update both teams automatically.</span>
+          ${
+            totalGames
+              ? `<span class="prediction-mode-progress">${pickedGames} of ${totalGames} games predicted</span>`
+              : ""
+          }
+          <span class="feature-action">View full-league predictions &rarr;</span>
+        </a>
+      </div>
+    </section>`;
+}
+
+function scheduleStatus(season) {
+  if (season.complete) return `Full ${season.expectedGamesPerTeam}-game regular-season schedule`;
+  const missing = season.expectedGamesPerTeam - season.knownGamesPerTeam;
+  return `${season.knownGamesPerTeam} scheduled games · ${missing} will be added after NBA Cup scheduling`;
+}
+
+function predictionDataFileName(prediction) {
+  const team = prediction.team.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return `${team}-${prediction.seasonId}-prediction.json`;
+}
+
+function savedPredictionCard(prediction) {
+  const season = predictionSeason(prediction.seasonId);
+  const games = gamesForTeam(season, prediction.team);
+  const series = seriesForTeam(season, prediction.team);
+  const complete = predictionIsComplete(prediction, games);
+  const pickedGames = games.filter((game) => prediction.picks[game.id]).length;
+  const seriesIndex = Math.min(
+    prediction.index,
+    firstIncompleteSeriesIndex(series, prediction.picks)
+  );
+  const records = predictionRecords(prediction, season);
+  const id = escapeHtml(predictionIdentifier(prediction));
+  return `
+    <article class="saved-prediction" style="${teamStyle(teamNickname(prediction.team))}">
+      <div class="saved-prediction-team">
+        ${teamLogo(prediction.team, "saved-prediction-logo")}
+        <span>
+          <strong>${escapeHtml(teamPredictionTitle(prediction))}</strong>
+          <small>${escapeHtml(`${prediction.team} · ${season.label}`)}</small>
+        </span>
+      </div>
+      <div class="saved-prediction-status">
+        <strong>${complete ? recordText(records.overall) : `${pickedGames}/${games.length}`}</strong>
+        <span>${complete ? "Final prediction" : `Series ${seriesIndex + 1} of ${series.length}`}</span>
+      </div>
+      <div class="saved-prediction-actions">
+        <button type="button" class="btn primary small" data-prediction-action="open" data-prediction-id="${id}">
+          ${complete ? "View results" : "Resume"}
+        </button>
+        ${
+          complete
+            ? `<button type="button" class="icon-btn edit" data-prediction-action="edit"
+                data-prediction-id="${id}" aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
+            : ""
+        }
+        <button type="button" class="btn ghost small" data-prediction-action="export" data-prediction-id="${id}">Export</button>
+        <button type="button" class="btn ghost small" data-prediction-action="delete" data-prediction-id="${id}">Delete</button>
+      </div>
+    </article>`;
+}
+
+function savedPredictionsMarkup(predictions) {
+  return predictions.length
+    ? `<div class="saved-predictions-list">${predictions.map(savedPredictionCard).join("")}</div>
+       ${nameDialog("prediction")}`
+    : `<div class="saved-empty"><p>No saved season predictions yet.</p></div>`;
+}
+
+function bindPredictionLibrary(root, predictions, onDelete) {
+  const predictionsById = new Map(
+    predictions.map((prediction) => [predictionIdentifier(prediction), prediction])
+  );
+  const dialog = root.querySelector('[data-name-dialog="prediction"]');
+  let renameTarget = null;
+  root.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-prediction-action]");
+    if (!action) return;
+    const prediction = predictionsById.get(action.dataset.predictionId);
+    if (!prediction) return;
+    if (action.dataset.predictionAction === "open") {
+      activatePrediction(prediction);
+      const predictionGames = gamesForTeam(predictionSeason(prediction.seasonId), prediction.team);
+      location.hash = predictionIsComplete(prediction, predictionGames)
+        ? "#season-prediction/results"
+        : "#season-prediction/play";
+    } else if (action.dataset.predictionAction === "edit") {
+      renameTarget = prediction;
+      openNameDialog(dialog, prediction.name ?? "", teamPredictionTitle(prediction));
+    } else if (action.dataset.predictionAction === "export") {
+      exportPredictions([prediction], predictionDataFileName(prediction));
+    } else if (action.dataset.predictionAction === "delete") {
+      if (!confirm(`Delete the ${prediction.team} prediction?`)) return;
+      deletePrediction(prediction);
+      onDelete();
+    }
+  });
+  bindNameDialog(dialog, (name) => {
+    if (!renameTarget) return;
+    renamePrediction(renameTarget, name);
+    onDelete();
+  });
+  root.querySelector("[data-export-all-predictions]")?.addEventListener("click", () => {
+    exportPredictions(predictions, "nba-prediction-data.json", true);
+  });
+}
+
+function renderPredictionSetup(selectedSeasonId, selectedTeam) {
+  setKeys(null);
+  const active = loadPrediction();
+  const savedPredictions = loadPredictions();
+  const seasons = predictionSeasons();
+  const season =
+    predictionSeason(selectedSeasonId) ??
+    predictionSeason(active?.seasonId) ??
+    seasons[0];
+
+  if (!season) {
+    app.innerHTML = `<p class="error">Season schedule data is unavailable.</p>`;
+    return;
+  }
+
+  const teams = predictionTeams(season);
+  const team = teams.includes(selectedTeam)
+    ? selectedTeam
+    : teams.includes(active?.team) && active?.seasonId === season.id
+      ? active.team
+      : teams.includes("Los Angeles Lakers")
+        ? "Los Angeles Lakers"
+        : teams[0];
+  const matchingSaved = savedPredictions.find(
+    (prediction) => prediction.seasonId === season.id && prediction.team === team
+  );
+  const savedGames = matchingSaved ? gamesForTeam(season, team) : [];
+  const savedSeries = matchingSaved ? seriesForTeam(season, team) : [];
+  const savedComplete = matchingSaved && predictionIsComplete(matchingSaved, savedGames);
+  const savedSeriesIndex = matchingSaved
+    ? Math.min(
+        matchingSaved.index,
+        firstIncompleteSeriesIndex(savedSeries, matchingSaved.picks)
+      )
+    : 0;
+
+  app.innerHTML = `
+    <section class="prediction-setup">
+      <a class="back-link" href="#season-prediction">&larr; Prediction modes</a>
+      <h1>Predict a team's season.</h1>
+      <p class="lede">Predict every game against one opponent at a time, then see the record you called at home, away, and across the league.</p>
+      <div class="prediction-config">
+        <label class="prediction-field">
+          <span>Season</span>
+          ${
+            seasons.length > 1
+              ? `<select data-prediction-season>
+                  ${seasons
+                    .map(
+                      (item) =>
+                        `<option value="${item.id}" ${item.id === season.id ? "selected" : ""}>${item.label}</option>`
+                    )
+                    .join("")}
+                </select>`
+              : `<span class="season-display">${season.label} <small>Upcoming season</small></span>`
+          }
+        </label>
+        <div class="prediction-field">
+          <span>Team</span>
+          ${predictionTeamPicker(team, season)}
+        </div>
+        <label class="prediction-field prediction-name-field">
+          <span>Prediction name <small>Optional</small></span>
+          <input type="text" maxlength="80" autocomplete="off" data-prediction-name
+            value="${escapeHtml(matchingSaved?.name ?? "")}"
+            placeholder="e.g. Pistons breakout season" />
+        </label>
+        <p class="schedule-status${season.complete ? "" : " is-partial"}">${escapeHtml(scheduleStatus(season))}</p>
+      </div>
+      <button type="button" class="btn primary big prediction-start" data-start-prediction>
+        ${matchingSaved ? (savedComplete ? "View results" : `Resume series ${savedSeriesIndex + 1}`) : "Start prediction"}
+      </button>
+      <section class="saved-predictions">
+        <div class="saved-predictions-heading">
+          <div>
+            <h2>Saved predictions</h2>
+            <p>Sorted alphabetically by team.</p>
+          </div>
+          <button type="button" class="btn ghost small" data-export-all-predictions
+            ${savedPredictions.length ? "" : "disabled"}>Export all data</button>
+        </div>
+        ${savedPredictionsMarkup(savedPredictions)}
+      </section>
+    </section>`;
+
+  app.querySelector("[data-prediction-season]")?.addEventListener("change", (e) => {
+    renderPredictionSetup(e.target.value);
+  });
+  app.querySelector(".prediction-team-select").addEventListener(
+    "toggle",
+    (e) => {
+      if (!e.target.open) return;
+      e.target.querySelector(".team-option.is-selected")?.scrollIntoView({ block: "nearest" });
+    },
+    true
+  );
+  app.querySelector(".prediction-team-select").addEventListener("click", (e) => {
+    const option = e.target.closest("[data-prediction-team]");
+    if (!option) return;
+    renderPredictionSetup(season.id, option.dataset.predictionTeam);
+  });
+  app.querySelector("[data-start-prediction]").addEventListener("click", () => {
+    const name = cleanName(app.querySelector("[data-prediction-name]").value);
+    if (!matchingSaved) {
+      savePrediction({
+        name,
+        seasonId: season.id,
+        team,
+        picks: {},
+        index: 0,
+        flow: "series",
+        updatedAt: Date.now(),
+      });
+    } else {
+      matchingSaved.name = name;
+      matchingSaved.updatedAt = Date.now();
+      savePrediction(matchingSaved);
+    }
+    location.hash = savedComplete ? "#season-prediction/results" : "#season-prediction/play";
+  });
+  bindPredictionLibrary(app.querySelector(".saved-predictions"), savedPredictions, () => {
+    renderPredictionSetup(season.id, team);
+  });
+}
+
+function savedLeaguePredictionCard(prediction) {
+  const season = predictionSeason(prediction.seasonId);
+  const pickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
+  const complete = pickedGames === season.games.length;
+  const progress = Math.round((pickedGames / season.games.length) * 100);
+  const updated = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(prediction.updatedAt));
+  return `
+    <article class="saved-league-prediction" data-league-prediction="${escapeHtml(prediction.id)}">
+      <div>
+        <span class="results-kicker">${escapeHtml(season.label)}</span>
+        <h2>${escapeHtml(leaguePredictionTitle(prediction))}</h2>
+        <p>${pickedGames} of ${season.games.length} games predicted · ${progress}% complete</p>
+        <small>Updated ${escapeHtml(updated)}</small>
+      </div>
+      <div class="saved-league-progress" aria-hidden="true"><span style="width:${progress}%"></span></div>
+      <div class="saved-prediction-actions">
+        <button type="button" class="btn primary small" data-open-league
+          data-league-destination="${complete ? "#season-prediction/league/results" : "#season-prediction/league"}">
+          ${complete ? "View standings" : "Continue"}
+        </button>
+        ${
+          complete
+            ? `<button type="button" class="icon-btn edit" data-edit-league
+                aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
+            : ""
+        }
+        <button type="button" class="btn ghost small" data-export-league>Export</button>
+        <button type="button" class="btn ghost small" data-delete-league>Delete</button>
+      </div>
+    </article>`;
+}
+
+function bindLeaguePredictionLibrary(root, predictions, onDelete) {
+  const dialog = root?.querySelector('[data-name-dialog="league"]');
+  let renameTarget = null;
+  root?.addEventListener("click", (event) => {
+    const card = event.target.closest("[data-league-prediction]");
+    if (!card) return;
+    const prediction = predictions.find((saved) => saved.id === card.dataset.leaguePrediction);
+    if (!prediction) return;
+    if (event.target.closest("[data-open-league]")) {
+      activateLeaguePrediction(prediction);
+      location.hash = event.target.closest("[data-open-league]").dataset.leagueDestination;
+    } else if (event.target.closest("[data-edit-league]")) {
+      renameTarget = prediction;
+      openNameDialog(dialog, prediction.name ?? "", leaguePredictionTitle(prediction));
+    } else if (event.target.closest("[data-export-league]")) {
+      exportLeaguePrediction(prediction);
+    } else if (event.target.closest("[data-delete-league]")) {
+      if (!confirm("Delete this full-league prediction?")) return;
+      deleteLeaguePrediction(prediction.id);
+      onDelete();
+    }
+  });
+  bindNameDialog(dialog, (name) => {
+    if (!renameTarget) return;
+    renameLeaguePrediction(renameTarget, name);
+    onDelete();
+  });
+}
+
+function renderLeaguePredictionLibrary() {
+  setKeys(null);
+  const predictions = loadLeaguePredictions();
+  const isComplete = (prediction) => {
+    const season = predictionSeason(prediction.seasonId);
+    return season && season.games.every((game) => prediction.picks[game.id]);
+  };
+  const inProgress = predictions.filter((prediction) => !isComplete(prediction));
+  const finished = predictions.filter(isComplete);
+  const section = (title, items, emptyText) => `
+    <section class="league-library-section">
+      <div class="league-library-section-heading">
+        <h2>${title}</h2>
+        <span>${items.length}</span>
+      </div>
+      ${
+        items.length
+          ? `<div class="saved-league-predictions">${items.map(savedLeaguePredictionCard).join("")}</div>`
+          : `<p class="saved-empty">${emptyText}</p>`
+      }
+    </section>`;
+
+  app.innerHTML = `
+    <section class="league-prediction-library">
+      <a class="back-link" href="#season-prediction">&larr; Prediction modes</a>
+      <div class="league-library-heading">
+        <div>
+          <span class="results-kicker">Entire NBA</span>
+          <h1>Full-league predictions</h1>
+          <p class="lede">Continue a season in progress or revisit completed standings.</p>
+        </div>
+        <form class="league-new-prediction-form" data-new-league-form>
+          <label class="name-field">
+            <span>Prediction name <small>Optional</small></span>
+            <input type="text" maxlength="80" autocomplete="off" data-new-league-name
+              placeholder="e.g. My chaos season" />
+          </label>
+          <button type="submit" class="btn primary">Start a new full season</button>
+        </form>
+      </div>
+      ${section("In progress", inProgress, "No full-league predictions are currently in progress.")}
+      ${section("Finished", finished, "No full-league predictions have been completed yet.")}
+      ${nameDialog("league")}
+    </section>`;
+
+  app.querySelector("[data-new-league-form]").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = app.querySelector("[data-new-league-name]").value;
+    if (!startNewLeaguePrediction(name)) return;
+    location.hash = "#season-prediction/league";
+  });
+  bindLeaguePredictionLibrary(
+    app.querySelector(".league-prediction-library"),
+    predictions,
+    renderLeaguePredictionLibrary
+  );
+}
+
+function renderMyPredictions(status = "") {
+  setKeys(null);
+  const predictions = loadPredictions();
+  const leaguePredictions = loadLeaguePredictions();
+  app.innerHTML = `
+    <section class="my-predictions">
+      <h1>My Predictions</h1>
+      <p class="lede">Saved team and full-league season predictions.</p>
+      <div class="prediction-library-toolbar">
+        <a class="btn primary small" href="#season-prediction">+ New prediction</a>
+        <a class="btn small" href="#season-prediction/league/library">+ New full season</a>
+        <button type="button" class="btn ghost small" data-export-all-predictions
+          ${predictions.length || leaguePredictions.length ? "" : "disabled"}>Export all data</button>
+        <label class="btn ghost small file-btn">Import
+          <input type="file" accept=".json,application/json" data-import-predictions />
+        </label>
+        <span class="backup-status" role="status">${escapeHtml(status)}</span>
+      </div>
+      ${
+        leaguePredictions.length
+          ? `<section class="saved-league-section">
+              <h2>Full league</h2>
+              <p>Each full-season prediction is saved separately.</p>
+              <div class="saved-league-predictions">
+                ${leaguePredictions.map(savedLeaguePredictionCard).join("")}
+              </div>
+              ${nameDialog("league")}
+            </section>`
+          : ""
+      }
+      <section class="saved-team-predictions">
+        <h2>Team predictions</h2>
+        <p>Sorted alphabetically by team.</p>
+        ${savedPredictionsMarkup(predictions)}
+      </section>
+    </section>`;
+  bindPredictionLibrary(app.querySelector(".my-predictions"), predictions, renderMyPredictions);
+  bindLeaguePredictionLibrary(
+    app.querySelector(".saved-league-section"),
+    leaguePredictions,
+    renderMyPredictions
+  );
+  app.querySelector("[data-import-predictions]").addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      renderMyPredictions(await importPredictionData(file));
+    } catch (error) {
+      renderMyPredictions(error.message);
+    }
+  });
+}
+
+function leagueTeamCard(prediction, season, team) {
+  const games = gamesForTeam(season, team);
+  const pickedGames = games.filter((game) => prediction.picks[game.id]).length;
+  const records = predictionRecords({ team, picks: prediction.picks }, season);
+  const progress = Math.round((pickedGames / games.length) * 100);
+  return `
+    <button type="button" class="league-team-card${pickedGames === games.length ? " is-complete" : ""}"
+      data-league-team="${escapeHtml(team)}" style="${teamStyle(teamNickname(team))}">
+      <span class="league-team-head">
+        ${teamLogo(team, "league-team-logo")}
+        <span>
+          <strong>${escapeHtml(team)}</strong>
+          <small>${recordText(records.overall)} predicted record</small>
+        </span>
+      </span>
+      <span class="league-team-progress">
+        <span><b>${pickedGames}</b> of ${games.length} games</span>
+        <span>${pickedGames === games.length ? "Complete" : `${progress}%`}</span>
+      </span>
+      <span class="league-team-progress-track" aria-hidden="true"><span style="width:${progress}%"></span></span>
+    </button>`;
+}
+
+function renderLeaguePredictionHub() {
+  setKeys(null);
+  const prediction = currentLeaguePrediction();
+  const season = predictionSeason(prediction?.seasonId);
+  if (!prediction || !season) {
+    app.innerHTML = `<p class="error">Season schedule data is unavailable.</p>`;
+    return;
+  }
+  const teams = predictionTeams(season);
+  const pickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
+  const progress = Math.round((pickedGames / season.games.length) * 1000) / 10;
+  app.innerHTML = `
+    <section class="league-prediction">
+      <a class="back-link" href="#season-prediction">&larr; Prediction modes</a>
+      <div class="league-prediction-heading">
+        <div>
+          <span class="results-kicker">${escapeHtml(season.label)}</span>
+          <h1>Predict the entire NBA season.</h1>
+          <p class="lede">Choose any team. Every result is shared with its opponent, so the whole league fills in together.</p>
+        </div>
+        <div class="league-total-progress">
+          <strong>${pickedGames}</strong>
+          <span>of ${season.games.length} games</span>
+          <b>${progress}% complete</b>
+        </div>
+      </div>
+      <div class="progress-track league-progress-track" aria-hidden="true"><span style="width:${progress}%"></span></div>
+      ${
+        season.complete
+          ? ""
+          : `<p class="schedule-status is-partial league-schedule-status">${escapeHtml(scheduleStatus(season))}</p>`
+      }
+      <div class="league-team-grid">
+        ${teams.map((team) => leagueTeamCard(prediction, season, team)).join("")}
+      </div>
+      ${
+        pickedGames === season.games.length
+          ? `<div class="league-complete-actions">
+              <a class="btn primary" href="#season-prediction/league/results">View final standings</a>
+              <a class="btn" href="#season-prediction/league/library">Start another full season</a>
+            </div>`
+          : ""
+      }
+    </section>`;
+
+  app.querySelector(".league-team-grid").addEventListener("click", (event) => {
+    const card = event.target.closest("[data-league-team]");
+    if (!card) return;
+    const team = card.dataset.leagueTeam;
+    const series = seriesForTeam(season, team);
+    const firstIncomplete = firstIncompleteSeriesIndex(series, prediction.picks);
+    prediction.activeTeam = team;
+    prediction.seriesIndex = firstIncomplete < series.length ? firstIncomplete : 0;
+    prediction.updatedAt = Date.now();
+    saveLeaguePrediction(prediction);
+    location.hash = "#season-prediction/league/play";
+  });
+}
+
+function leagueStandingRow(entry, rank) {
+  return `<tr>
+    <td>${rank}</td>
+    <td>
+      <button type="button" class="standing-team standing-team-button"
+        data-league-result-team="${escapeHtml(entry.team)}">
+        ${teamLogo(entry.team, "standing-team-logo")}
+        <strong>${escapeHtml(entry.team)}</strong>
+      </button>
+    </td>
+    <td><b>${recordText(entry.records.overall)}</b></td>
+    <td>${recordText(entry.records.home)}</td>
+    <td>${recordText(entry.records.away)}</td>
+  </tr>`;
+}
+
+function renderLeaguePredictionResults(status = "") {
+  setKeys(null);
+  const prediction = currentLeaguePrediction();
+  const season = predictionSeason(prediction?.seasonId);
+  if (!prediction || !season) {
+    location.hash = "#season-prediction/league";
+    return;
+  }
+  const pickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
+  if (pickedGames < season.games.length) {
+    location.hash = "#season-prediction/league";
+    return;
+  }
+  const standings = predictionTeams(season)
+    .map((team) => ({
+      team,
+      records: predictionRecords({ team, picks: prediction.picks }, season),
+    }))
+    .sort(
+      (a, b) =>
+        b.records.overall.wins - a.records.overall.wins ||
+        a.records.overall.losses - b.records.overall.losses ||
+        a.team.localeCompare(b.team)
+    );
+  const conferences = [
+    ["Eastern Conference", standings.filter((entry) => EASTERN_CONFERENCE.has(entry.team))],
+    ["Western Conference", standings.filter((entry) => !EASTERN_CONFERENCE.has(entry.team))],
+  ];
+  const title = leaguePredictionTitle(prediction);
+  const rules = leaguePredictionRules(prediction, season);
+  app.innerHTML = `
+    <section class="league-results">
+      <span class="results-kicker">${escapeHtml(season.label)} full-league prediction</span>
+      ${editableResultTitle(title, prediction.name)}
+      <p class="result-rules">${escapeHtml(rules)}</p>
+      <div class="league-standings-grid">
+        ${conferences
+          .map(
+            ([name, entries]) => `<section class="conference-standings">
+              <h2>${name}</h2>
+              <table>
+                <colgroup>
+                  <col class="standing-rank-column" />
+                  <col />
+                  <col class="standing-record-column" />
+                  <col class="standing-split-column" />
+                  <col class="standing-split-column" />
+                </colgroup>
+                <thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col">Record</th><th scope="col">Home</th><th scope="col">Away</th></tr></thead>
+                <tbody>${entries.map((entry, index) => leagueStandingRow(entry, index + 1)).join("")}</tbody>
+              </table>
+            </section>`
+          )
+          .join("")}
+      </div>
+      <div class="results-actions">
+        <button type="button" class="btn primary" data-export-league-image>Save image</button>
+        <button type="button" class="btn" data-export-league-data>Export data</button>
+        <label class="btn ghost file-btn">Import
+          <input type="file" accept=".json,application/json" data-import-league />
+        </label>
+        <a class="btn primary" href="#season-prediction/league">Back to league</a>
+        <a class="btn ghost" href="./">All features</a>
+      </div>
+      <p class="backup-status league-results-status" role="status">${escapeHtml(status)}</p>
+    </section>`;
+
+  bindResultNameEditor((name) => {
+    prediction.name = name;
+    prediction.updatedAt = Date.now();
+    saveLeaguePrediction(prediction);
+    renderLeaguePredictionResults(status);
+  });
+  app.querySelector(".league-standings-grid").addEventListener("click", (event) => {
+    const teamButton = event.target.closest("[data-league-result-team]");
+    if (!teamButton) return;
+    prediction.activeTeam = teamButton.dataset.leagueResultTeam;
+    prediction.updatedAt = Date.now();
+    saveLeaguePrediction(prediction);
+    location.hash = "#season-prediction/league/team";
+  });
+  app.querySelector("[data-export-league-image]").addEventListener("click", async (event) => {
+    const button = event.currentTarget;
+    const label = button.textContent;
+    button.disabled = true;
+    button.textContent = "Creating…";
+    try {
+      const blob = await renderLeaguePredictionImage({
+        title,
+        subtitle: rules,
+        conferences,
+        footer: "zateutsch.github.io/nba-ranker",
+      });
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+      await saveImageBlob(blob, `${slug || "nba-predicted-standings"}.png`, title);
+      button.textContent = label;
+    } catch {
+      button.textContent = "Couldn't save image";
+    } finally {
+      button.disabled = false;
+    }
+  });
+  app.querySelector("[data-export-league-data]").addEventListener("click", () => {
+    exportLeaguePrediction(prediction);
+  });
+  app.querySelector("[data-import-league]").addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      const message = await importPredictionData(file);
+      const imported = loadLeaguePrediction();
+      const importedSeason = predictionSeason(imported?.seasonId);
+      if (
+        !imported ||
+        !importedSeason ||
+        importedSeason.games.some((game) => !imported.picks[game.id])
+      ) {
+        location.hash = "#season-prediction/league";
+      } else {
+        renderLeaguePredictionResults(message);
+      }
+    } catch (error) {
+      renderLeaguePredictionResults(error.message);
+    }
+  });
+}
+
+function compactPredictionScheduleMarkup(schedule) {
+  const columnSize = Math.ceil(schedule.length / 4);
+  const columns = Array.from(
+    { length: 4 },
+    (_, index) => schedule.slice(index * columnSize, (index + 1) * columnSize)
+  );
+  return `
+    <section class="results-schedule">
+      <h2>Full predicted schedule</h2>
+      <p>Opponent series records are shown in parentheses.</p>
+      <div class="results-schedule-columns">
+        ${columns
+          .map(
+            (column) => `<table>
+              <caption>Games ${column[0].number}-${column.at(-1).number}</caption>
+              <colgroup>
+                <col class="results-game-number" />
+                <col />
+                <col class="results-game-result" />
+              </colgroup>
+              <thead><tr><th scope="col">#</th><th scope="col">Game</th><th scope="col">W/L</th></tr></thead>
+              <tbody>
+                ${column
+                  .map(
+                    (game) => `<tr>
+                      <td>${game.number}</td>
+                      <td>
+                        <span class="results-game-date">${escapeHtml(game.date)}</span>
+                        <span class="results-game-opponent"><b>${game.site}</b> ${escapeHtml(game.opponent)} <small>(${game.seriesRecord})</small></span>
+                      </td>
+                      <td><strong class="results-game-outcome is-${
+                        game.result === "W" ? "win" : game.result === "L" ? "loss" : "pending"
+                      }">${game.result}</strong></td>
+                    </tr>`
+                  )
+                  .join("")}
+              </tbody>
+            </table>`
+          )
+          .join("")}
+      </div>
+    </section>`;
+}
+
+function renderLeagueTeamResults() {
+  setKeys(null);
+  const prediction = loadLeaguePrediction();
+  const season = predictionSeason(prediction?.seasonId);
+  const team = prediction?.activeTeam;
+  if (!prediction || !season || !predictionTeams(season).includes(team)) {
+    location.hash = "#season-prediction/league/results";
+    return;
+  }
+  const games = gamesForTeam(season, team);
+  const records = predictionRecords({ team, picks: prediction.picks }, season);
+  const complete = games.every((game) => prediction.picks[game.id]);
+  const title = leaguePredictionTitle(prediction);
+  const rules = `${season.label} · ${team} · Full-league team results`;
+  const predictedSchedule = games.map((game, index) => {
+    const home = game.homeTeam === team;
+    const opponent = home ? game.awayTeam : game.homeTeam;
+    const winner = prediction.picks[game.id];
+    return {
+      number: index + 1,
+      date: formatScheduleDate(game.dateUtc),
+      opponent,
+      site: home ? "vs" : "@",
+      result: winner ? (winner === team ? "W" : "L") : "—",
+      seriesRecord: recordText(records.opponents.get(opponent) ?? { wins: 0, losses: 0 }),
+    };
+  });
+  app.innerHTML = `
+    <section class="prediction-results league-team-results">
+      <span class="results-kicker">${escapeHtml(season.label)} full-league prediction</span>
+      ${editableResultTitle(title, prediction.name)}
+      <p class="result-rules">${escapeHtml(rules)}</p>
+      <div class="predicted-record">
+        <span>Predicted record</span>
+        <strong>${recordText(records.overall)}</strong>
+      </div>
+      <div class="record-grid">
+        <div><span>Home</span><strong>${recordText(records.home)}</strong></div>
+        <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
+        <div><span>Games</span><strong>${games.length}</strong></div>
+      </div>
+      <div class="results-actions">
+        <button type="button" class="btn primary" data-export-league-team-image
+          ${complete ? "" : "disabled"}>Save image</button>
+        <a class="btn" href="#season-prediction/league/results">All standings</a>
+        <a class="btn ghost" href="#season-prediction/league">League overview</a>
+      </div>
+      ${compactPredictionScheduleMarkup(predictedSchedule)}
+    </section>`;
+
+  bindResultNameEditor((name) => {
+    prediction.name = name;
+    prediction.updatedAt = Date.now();
+    saveLeaguePrediction(prediction);
+    renderLeagueTeamResults();
+  });
+  app.querySelector("[data-export-league-team-image]").addEventListener("click", async (event) => {
+    const button = event.currentTarget;
+    const label = button.textContent;
+    button.disabled = true;
+    button.textContent = "Creating…";
+    try {
+      const blob = await renderPredictionImage({
+        title,
+        subtitle: rules,
+        overall: recordText(records.overall),
+        schedule: predictedSchedule,
+        footer: "zateutsch.github.io/nba-ranker",
+      });
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+      await saveImageBlob(blob, `${slug || "nba-league-team-prediction"}.png`, title);
+      button.textContent = label;
+    } catch {
+      button.textContent = "Couldn't save image";
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+function formatGameDate(dateUtc) {
+  return new Intl.DateTimeFormat(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(dateUtc));
+}
+
+function formatScheduleDate(dateUtc) {
+  return new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+  }).format(new Date(dateUtc));
+}
+
+function predictionSchedule(games, prediction, currentSeries = null) {
+  const currentGameIds = new Set(currentSeries?.games.map((game) => game.id) ?? []);
+  const pickedGames = games.filter((game) => prediction.picks[game.id]).length;
+  return `
+    <details class="prediction-schedule">
+      <summary>
+        <span>Full schedule</span>
+        <span>${pickedGames} of ${games.length} predicted</span>
+      </summary>
+      <div class="schedule-list">
+        ${games
+          .map((game, index) => {
+            const home = game.homeTeam === prediction.team;
+            const opponent = home ? game.awayTeam : game.homeTeam;
+            const winner = prediction.picks[game.id];
+            const result = winner ? (winner === prediction.team ? "W" : "L") : "";
+            const state = [
+              winner ? (result === "W" ? "is-win" : "is-loss") : "",
+              currentGameIds.has(game.id) ? "is-current" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return `<div class="schedule-row${state ? ` ${state}` : ""}">
+              <span class="schedule-number">${index + 1}</span>
+              <span class="schedule-date">${escapeHtml(formatScheduleDate(game.dateUtc))}</span>
+              <span class="schedule-opponent"><b>${home ? "vs" : "@"}</b> ${escapeHtml(opponent)}</span>
+              <span class="schedule-result">${result || (currentGameIds.has(game.id) ? "Now" : "—")}</span>
+            </div>`;
+          })
+          .join("")}
+      </div>
+    </details>`;
+}
+
+function renderPredictionGame() {
+  setKeys(null);
+  const prediction = loadPrediction();
+  const season = predictionSeason(prediction?.seasonId);
+  const games = gamesForTeam(season, prediction?.team);
+  if (!prediction || !season || !games.length) {
+    location.hash = "#season-prediction";
+    return;
+  }
+  if (normalizePredictionProgress(prediction, season)) savePrediction(prediction);
+  const series = seriesForTeam(season, prediction.team);
+  if (predictionIsComplete(prediction, games)) {
+    location.hash = "#season-prediction/results";
+    return;
+  }
+
+  const currentSeries = series[prediction.index];
+  const progress = Math.round((prediction.index / series.length) * 100);
+  const opponent = currentSeries.opponent;
+  const records = predictionRecords(prediction, season);
+  const priorSeason = priorSeasonFor(season);
+  const teamOverall = priorSeason ? actualTeamRecord(priorSeason, prediction.team) : null;
+  const opponentOverall = priorSeason ? actualTeamRecord(priorSeason, opponent) : null;
+  const teamHeadToHead = priorSeason
+    ? actualTeamRecord(priorSeason, prediction.team, opponent)
+    : null;
+  const opponentHeadToHead = priorSeason
+    ? actualTeamRecord(priorSeason, opponent, prediction.team)
+    : null;
+  const draft = Object.fromEntries(
+    currentSeries.games.map((game) => {
+      const winner = prediction.picks[game.id];
+      return [game.id, winner ? (winner === prediction.team ? "W" : "L") : ""];
+    })
+  );
+
+  app.innerHTML = `
+    <section class="prediction-play">
+      <div class="prediction-progress">
+        <span>Series ${prediction.index + 1} of ${series.length}</span>
+        <span>${games.filter((game) => prediction.picks[game.id]).length} of ${games.length} games predicted</span>
+      </div>
+      <div class="progress-track" aria-hidden="true"><span style="width:${progress}%"></span></div>
+      <div class="series-heading">
+        <div>
+          <span>Record so far</span>
+          <strong>${recordText(records.overall)}</strong>
+        </div>
+        <p>${currentSeries.games.length}-game season series</p>
+      </div>
+      <h1>${escapeHtml(prediction.team)} vs ${escapeHtml(opponent)}</h1>
+      <div class="series-matchup">
+        ${[
+          [prediction.team, teamOverall, teamHeadToHead],
+          [opponent, opponentOverall, opponentHeadToHead],
+        ]
+          .map(
+            ([name, overall, headToHead]) => `<article class="series-team-card"
+              style="${teamStyle(teamNickname(name))}">
+              ${teamLogo(name, "series-team-logo")}
+              <strong>${escapeHtml(name)}</strong>
+              ${
+                overall
+                  ? `<div class="series-records">
+                      <span><small>Last season</small><b>${recordText(overall)}</b></span>
+                      <span><small>Head-to-head</small><b>${recordText(headToHead)}</b></span>
+                    </div>`
+                  : ""
+              }
+            </article>`
+          )
+          .join("")}
+      </div>
+      <div class="series-games" aria-label="Predict each game in this series">
+        ${currentSeries.games
+          .map((game, index) => {
+            const home = game.homeTeam === prediction.team;
+            const result = draft[game.id];
+            return `<article class="series-game" data-series-game="${escapeHtml(game.id)}">
+              <div class="series-game-info">
+                <span>Game ${index + 1}</span>
+                <strong>${escapeHtml(formatGameDate(game.dateUtc))}</strong>
+                <small>${home ? "Home" : "Away"} ${home ? "vs" : "at"} ${escapeHtml(opponent)}</small>
+              </div>
+              <div class="series-result-toggle" aria-label="Game ${index + 1} result">
+                ${["W", "L"]
+                  .map(
+                    (resultOption) => `<button type="button"
+                      class="series-result${result === resultOption ? " is-selected" : ""}"
+                      data-series-result="${resultOption}"
+                      aria-pressed="${result === resultOption}">${resultOption}</button>`
+                  )
+                  .join("")}
+              </div>
+            </article>`;
+          })
+          .join("")}
+      </div>
+      <div class="prediction-controls">
+        <button type="button" class="btn ghost" data-prediction-back ${prediction.index ? "" : "disabled"}>&larr; Previous series</button>
+        <button type="button" class="btn primary" data-confirm-series
+          ${Object.values(draft).every(Boolean) ? "" : "disabled"}>Confirm series</button>
+        <a class="btn ghost" href="#season-prediction">Save &amp; exit</a>
+      </div>
+      ${predictionSchedule(games, prediction, currentSeries)}
+    </section>`;
+
+  const confirmButton = app.querySelector("[data-confirm-series]");
+  app.querySelector(".series-games").addEventListener("click", (e) => {
+    const choice = e.target.closest("[data-series-result]");
+    if (!choice) return;
+    const gameElement = choice.closest("[data-series-game]");
+    draft[gameElement.dataset.seriesGame] = choice.dataset.seriesResult;
+    gameElement.querySelectorAll("[data-series-result]").forEach((button) => {
+      const selected = button === choice;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+    confirmButton.disabled = !Object.values(draft).every(Boolean);
+  });
+  confirmButton.addEventListener("click", () => {
+    if (!Object.values(draft).every(Boolean)) return;
+    currentSeries.games.forEach((game) => {
+      prediction.picks[game.id] =
+        draft[game.id] === "W" ? prediction.team : currentSeries.opponent;
+    });
+    prediction.index += 1;
+    prediction.updatedAt = Date.now();
+    savePrediction(prediction);
+    if (predictionIsComplete(prediction, games)) location.hash = "#season-prediction/results";
+    else renderPredictionGame();
+  });
+  app.querySelector("[data-prediction-back]").addEventListener("click", () => {
+    if (!prediction.index) return;
+    prediction.index -= 1;
+    prediction.updatedAt = Date.now();
+    savePrediction(prediction);
+    renderPredictionGame();
+  });
+}
+
+function renderLeaguePredictionSeries() {
+  setKeys(null);
+  const prediction = currentLeaguePrediction();
+  const season = predictionSeason(prediction?.seasonId);
+  const team = prediction?.activeTeam;
+  if (!prediction || !season || !predictionTeams(season).includes(team)) {
+    location.hash = "#season-prediction/league";
+    return;
+  }
+  const games = gamesForTeam(season, team);
+  const series = seriesForTeam(season, team);
+  prediction.seriesIndex = Math.min(Math.max(prediction.seriesIndex, 0), series.length - 1);
+  const currentSeries = series[prediction.seriesIndex];
+  const opponent = currentSeries.opponent;
+  const teamPickedGames = games.filter((game) => prediction.picks[game.id]).length;
+  const leaguePickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
+  const records = predictionRecords({ team, picks: prediction.picks }, season);
+  const priorSeason = priorSeasonFor(season);
+  const teamOverall = priorSeason ? actualTeamRecord(priorSeason, team) : null;
+  const opponentOverall = priorSeason ? actualTeamRecord(priorSeason, opponent) : null;
+  const teamHeadToHead = priorSeason ? actualTeamRecord(priorSeason, team, opponent) : null;
+  const opponentHeadToHead = priorSeason ? actualTeamRecord(priorSeason, opponent, team) : null;
+  const draft = Object.fromEntries(
+    currentSeries.games.map((game) => {
+      const winner = prediction.picks[game.id];
+      return [game.id, winner ? (winner === team ? "W" : "L") : ""];
+    })
+  );
+  const existingPicks = new Set(
+    currentSeries.games.filter((game) => prediction.picks[game.id]).map((game) => game.id)
+  );
+  const teamProgress = Math.round((teamPickedGames / games.length) * 100);
+
+  app.innerHTML = `
+    <section class="prediction-play league-series-play">
+      <div class="prediction-progress">
+        <span>Entire NBA · ${leaguePickedGames} of ${season.games.length} games</span>
+        <span>${escapeHtml(team)} · ${teamPickedGames} of ${games.length}</span>
+      </div>
+      <div class="progress-track" aria-hidden="true"><span style="width:${teamProgress}%"></span></div>
+      <div class="series-heading">
+        <div>
+          <span>Record in progress</span>
+          <strong>${recordText(records.overall)}</strong>
+        </div>
+        <p>${currentSeries.games.length}-game season series</p>
+      </div>
+      <h1>${escapeHtml(team)} vs ${escapeHtml(opponent)}</h1>
+      <div class="series-matchup">
+        ${[
+          [team, teamOverall, teamHeadToHead],
+          [opponent, opponentOverall, opponentHeadToHead],
+        ]
+          .map(
+            ([name, overall, headToHead]) => `<article class="series-team-card"
+              style="${teamStyle(teamNickname(name))}">
+              ${teamLogo(name, "series-team-logo")}
+              <strong>${escapeHtml(name)}</strong>
+              ${
+                overall
+                  ? `<div class="series-records">
+                      <span><small>Last season</small><b>${recordText(overall)}</b></span>
+                      <span><small>Head-to-head</small><b>${recordText(headToHead)}</b></span>
+                    </div>`
+                  : ""
+              }
+            </article>`
+          )
+          .join("")}
+      </div>
+      <div class="series-games" aria-label="Predict each game in this series">
+        ${currentSeries.games
+          .map((game, index) => {
+            const home = game.homeTeam === team;
+            const result = draft[game.id];
+            return `<article class="series-game${existingPicks.has(game.id) ? " has-shared-pick" : ""}"
+              data-series-game="${escapeHtml(game.id)}">
+              <div class="series-game-info">
+                <span>Game ${index + 1}${existingPicks.has(game.id) ? " · Already predicted" : ""}</span>
+                <strong>${escapeHtml(formatGameDate(game.dateUtc))}</strong>
+                <small>${home ? "Home" : "Away"} ${home ? "vs" : "at"} ${escapeHtml(opponent)}</small>
+              </div>
+              <div class="series-result-toggle" aria-label="Game ${index + 1} result">
+                ${["W", "L"]
+                  .map(
+                    (resultOption) => `<button type="button"
+                      class="series-result${result === resultOption ? " is-selected" : ""}"
+                      data-series-result="${resultOption}"
+                      aria-pressed="${result === resultOption}">${resultOption}</button>`
+                  )
+                  .join("")}
+              </div>
+            </article>`;
+          })
+          .join("")}
+      </div>
+      <div class="prediction-controls">
+        <button type="button" class="btn ghost" data-league-series-back
+          ${prediction.seriesIndex ? "" : "disabled"}>&larr; Previous series</button>
+        <button type="button" class="btn primary" data-confirm-league-series
+          ${Object.values(draft).every(Boolean) ? "" : "disabled"}>
+          ${existingPicks.size === currentSeries.games.length ? "Update series" : "Confirm series"}
+        </button>
+        <button type="button" class="btn ghost" data-league-save-exit
+          title="Progress will be saved">Back to League</button>
+      </div>
+      ${predictionSchedule(games, { team, picks: prediction.picks }, currentSeries)}
+    </section>`;
+
+  const confirmButton = app.querySelector("[data-confirm-league-series]");
+  app.querySelector(".series-games").addEventListener("click", (event) => {
+    const choice = event.target.closest("[data-series-result]");
+    if (!choice) return;
+    const gameElement = choice.closest("[data-series-game]");
+    const gameId = gameElement.dataset.seriesGame;
+    draft[gameId] = choice.dataset.seriesResult;
+    gameElement.querySelectorAll("[data-series-result]").forEach((button) => {
+      const selected = button === choice;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+    confirmButton.disabled = !Object.values(draft).every(Boolean);
+  });
+  confirmButton.addEventListener("click", () => {
+    if (!Object.values(draft).every(Boolean)) return;
+    currentSeries.games.forEach((game) => {
+      prediction.picks[game.id] = draft[game.id] === "W" ? team : opponent;
+    });
+    const nextIncomplete = series.findIndex(
+      (matchup, index) =>
+        index > prediction.seriesIndex &&
+        matchup.games.some((game) => !prediction.picks[game.id])
+    );
+    const firstIncomplete = firstIncompleteSeriesIndex(series, prediction.picks);
+    prediction.updatedAt = Date.now();
+    if (nextIncomplete >= 0) {
+      prediction.seriesIndex = nextIncomplete;
+      saveLeaguePrediction(prediction);
+      renderLeaguePredictionSeries();
+    } else if (firstIncomplete < series.length) {
+      prediction.seriesIndex = firstIncomplete;
+      saveLeaguePrediction(prediction);
+      renderLeaguePredictionSeries();
+    } else {
+      prediction.activeTeam = null;
+      prediction.seriesIndex = 0;
+      saveLeaguePrediction(prediction);
+      location.hash = "#season-prediction/league";
+    }
+  });
+  app.querySelector("[data-league-series-back]").addEventListener("click", () => {
+    if (!prediction.seriesIndex) return;
+    prediction.seriesIndex -= 1;
+    prediction.updatedAt = Date.now();
+    saveLeaguePrediction(prediction);
+    renderLeaguePredictionSeries();
+  });
+  app.querySelector("[data-league-save-exit]").addEventListener("click", () => {
+    prediction.activeTeam = null;
+    prediction.updatedAt = Date.now();
+    saveLeaguePrediction(prediction);
+    location.hash = "#season-prediction/league";
+  });
+}
+
+function predictionRecords(prediction, season) {
+  const games = gamesForTeam(season, prediction.team);
+  const records = {
+    overall: { wins: 0, losses: 0 },
+    home: { wins: 0, losses: 0 },
+    away: { wins: 0, losses: 0 },
+    opponents: new Map(),
+  };
+
+  for (const game of games) {
+    const winner = prediction.picks[game.id];
+    if (!winner) continue;
+    const win = winner === prediction.team;
+    const location = game.homeTeam === prediction.team ? "home" : "away";
+    const opponent = game.homeTeam === prediction.team ? game.awayTeam : game.homeTeam;
+    records.overall[win ? "wins" : "losses"] += 1;
+    records[location][win ? "wins" : "losses"] += 1;
+    const opponentRecord = records.opponents.get(opponent) ?? { wins: 0, losses: 0 };
+    opponentRecord[win ? "wins" : "losses"] += 1;
+    records.opponents.set(opponent, opponentRecord);
+  }
+  return records;
+}
+
+function recordText(record) {
+  return `${record.wins}-${record.losses}`;
+}
+
+function renderPredictionResults() {
+  setKeys(null);
+  const prediction = loadPrediction();
+  const season = predictionSeason(prediction?.seasonId);
+  const games = gamesForTeam(season, prediction?.team);
+  if (!prediction || !season || !games.length) {
+    location.hash = "#season-prediction";
+    return;
+  }
+  if (!predictionIsComplete(prediction, games)) {
+    location.hash = "#season-prediction/play";
+    return;
+  }
+
+  const records = predictionRecords(prediction, season);
+  const title = teamPredictionTitle(prediction);
+  const rules = teamPredictionRules(prediction, season);
+  const predictedSchedule = games.map((game, index) => {
+    const home = game.homeTeam === prediction.team;
+    const opponent = home ? game.awayTeam : game.homeTeam;
+    return {
+      number: index + 1,
+      date: formatScheduleDate(game.dateUtc),
+      opponent,
+      site: home ? "vs" : "@",
+      result: prediction.picks[game.id] === prediction.team ? "W" : "L",
+      seriesRecord: recordText(records.opponents.get(opponent)),
+    };
+  });
+  const scheduleColumnSize = Math.ceil(predictedSchedule.length / 4);
+  const scheduleColumns = Array.from(
+    { length: 4 },
+    (_, index) => predictedSchedule.slice(index * scheduleColumnSize, (index + 1) * scheduleColumnSize)
+  );
+  app.innerHTML = `
+    <section class="prediction-results">
+      <span class="results-kicker">${escapeHtml(season.label)} prediction</span>
+      ${editableResultTitle(title, prediction.name)}
+      <p class="result-rules">${escapeHtml(rules)}</p>
+      <div class="predicted-record">
+        <span>Predicted record</span>
+        <strong>${recordText(records.overall)}</strong>
+      </div>
+      <div class="record-grid">
+        <div><span>Home</span><strong>${recordText(records.home)}</strong></div>
+        <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
+        <div><span>Games</span><strong>${games.length}</strong></div>
+      </div>
+      ${
+        season.complete
+          ? ""
+          : `<p class="schedule-status is-partial">This reflects the ${season.knownGamesPerTeam} currently scheduled games. Return after NBA Cup scheduling to predict the final ${season.expectedGamesPerTeam - season.knownGamesPerTeam}.</p>`
+      }
+      <div class="results-actions">
+        <button type="button" class="btn primary" data-export-prediction>Save image</button>
+        <button type="button" class="btn" data-export-prediction-data>Export data</button>
+        <button type="button" class="btn" data-restart-prediction>Predict again</button>
+        <a class="btn ghost" href="./">All features</a>
+      </div>
+      <section class="results-schedule">
+        <h2>Full predicted schedule</h2>
+        <p>Opponent series records are shown in parentheses.</p>
+        <div class="results-schedule-columns">
+          ${scheduleColumns
+            .map(
+              (column) => `<table>
+                <caption>Games ${column[0].number}-${column.at(-1).number}</caption>
+                <colgroup>
+                  <col class="results-game-number" />
+                  <col />
+                  <col class="results-game-result" />
+                </colgroup>
+                <thead><tr><th scope="col">#</th><th scope="col">Game</th><th scope="col">W/L</th></tr></thead>
+                <tbody>
+                  ${column
+                    .map(
+                      (game) => `<tr>
+                        <td>${game.number}</td>
+                        <td>
+                          <span class="results-game-date">${escapeHtml(game.date)}</span>
+                          <span class="results-game-opponent"><b>${game.site}</b> ${escapeHtml(game.opponent)} <small>(${game.seriesRecord})</small></span>
+                        </td>
+                        <td><strong class="results-game-outcome is-${game.result === "W" ? "win" : "loss"}">${game.result}</strong></td>
+                      </tr>`
+                    )
+                    .join("")}
+                </tbody>
+              </table>`
+            )
+            .join("")}
+        </div>
+      </section>
+    </section>`;
+
+  bindResultNameEditor((name) => {
+    prediction.name = name;
+    prediction.updatedAt = Date.now();
+    savePrediction(prediction);
+    renderPredictionResults();
+  });
+  app.querySelector("[data-export-prediction]").addEventListener("click", async (event) => {
+    const button = event.currentTarget;
+    const label = button.textContent;
+    button.disabled = true;
+    button.textContent = "Creating…";
+    try {
+      const blob = await renderPredictionImage({
+        title,
+        subtitle: rules,
+        overall: recordText(records.overall),
+        schedule: predictedSchedule,
+        footer: "zateutsch.github.io/nba-ranker",
+      });
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+      await saveImageBlob(blob, `${slug || "nba-season-prediction"}.png`, title);
+      button.textContent = label;
+    } catch {
+      button.textContent = "Couldn't save image";
+    } finally {
+      button.disabled = false;
+    }
+  });
+  app.querySelector("[data-export-prediction-data]").addEventListener("click", () => {
+    exportPredictions([prediction], predictionDataFileName(prediction));
+  });
+  app.querySelector("[data-restart-prediction]").addEventListener("click", () => {
+    deletePrediction(prediction);
+    location.hash = "#season-prediction/team";
+  });
 }
 
 // ---------- Custom builder ----------
@@ -986,7 +2928,8 @@ function renderResults(ranking) {
   const podium = ranked.slice(0, 3);
   const featured = ranked.slice(3, 10);
   const rest = ranked.slice(10);
-  const title = session.title ?? rankingTitle(session);
+  const title = rankingDisplayTitle(session);
+  const rules = rankingRules(session);
   const canUndo = Boolean(sessionSet(session)) && session.answers.length > 0;
 
   const statLine = (p) => {
@@ -996,7 +2939,8 @@ function renderResults(ranking) {
 
   app.innerHTML = `
     <section class="results">
-      <h1>${escapeHtml(title)}</h1>
+      ${editableResultTitle(title, session.name)}
+      <p class="result-rules">${escapeHtml(rules)}</p>
       <ol class="podium">
         ${podium
           .map(
@@ -1044,38 +2988,26 @@ function renderResults(ranking) {
       </div>
     </section>`;
 
+  bindResultNameEditor((name) => {
+    session.name = name;
+    session.title = name || rankingTitle(session);
+    save();
+    renderResults(session.ranking);
+  });
   app.querySelector("[data-action=image]").addEventListener("click", async (e) => {
     const btn = e.currentTarget;
     const label = btn.textContent;
     btn.disabled = true;
     btn.textContent = "Creating…";
     try {
-      const set = sessionSet(session);
-      const heading = session.mode === "top" ? `My Top ${TOP_K}` : "My ranking";
       const blob = await renderRankingImage({
-        title: set?.custom ? heading : title,
-        subtitle: set?.custom ? set.name : "",
+        title,
+        subtitle: rules,
         ranked,
         footer: "zateutsch.github.io/nba-ranker",
       });
       const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
-      const file = new File([blob], `${slug || "nba-ranking"}.png`, { type: "image/png" });
-      // Phones: the share sheet lets people save to Photos or post directly.
-      const touch = matchMedia("(pointer: coarse)").matches;
-      if (touch && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], title });
-        } catch (err) {
-          if (err.name !== "AbortError") throw err;
-        }
-      } else {
-        const url = URL.createObjectURL(blob);
-        const a = Object.assign(document.createElement("a"), { href: url, download: file.name });
-        document.body.append(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 10_000);
-      }
+      await saveImageBlob(blob, `${slug || "nba-ranking"}.png`, title);
       btn.textContent = label;
     } catch {
       btn.textContent = "Couldn't save image";
@@ -1084,7 +3016,7 @@ function renderResults(ranking) {
     }
   });
   app.querySelector("[data-action=copy]").addEventListener("click", async (e) => {
-    const text = `${title}\n${ranked.map((p, i) => `${i + 1}. ${p.name}`).join("\n")}`;
+    const text = `${title}\n${rules}\n\n${ranked.map((p, i) => `${i + 1}. ${p.name}`).join("\n")}`;
     try {
       await navigator.clipboard.writeText(text);
       e.target.textContent = "Copied!";
@@ -1120,7 +3052,7 @@ const PIN_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1
 const TRASH_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/></svg>`;
 
 // The whole card opens the ranking via a full-card button; the icon buttons sit above it.
-function savedHead(r, title, meta, { pinnable = false, openLabel }) {
+function savedHead(r, title, meta, { pinnable = false, editable = false, openLabel }) {
   return `<button type="button" class="saved-open" data-open="${r.id}" aria-label="${escapeHtml(`${openLabel} ${title}`)}"></button>
     <div class="saved-head">
       <div class="saved-text">
@@ -1134,6 +3066,12 @@ function savedHead(r, title, meta, { pinnable = false, openLabel }) {
                 aria-label="${r.pinned ? "Unpin" : "Pin to top"}" title="${r.pinned ? "Unpin" : "Pin to top"}">${PIN_ICON}</button>`
             : ""
         }
+        ${
+          editable
+            ? `<button type="button" class="icon-btn edit" data-edit="${r.id}"
+                aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
+            : ""
+        }
         <button type="button" class="icon-btn delete" data-delete="${r.id}" aria-label="Delete" title="Delete">${TRASH_ICON}</button>
       </div>
     </div>`;
@@ -1145,7 +3083,7 @@ function progressCard(r) {
   const total = maxPicks(n, r.mode, TOP_K);
   const pct = Math.min(99, Math.round((r.answers.length / total) * 100));
   return `<li class="saved-card">
-    ${savedHead(r, set.name, `${r.mode === "top" ? `Top ${TOP_K}` : "Full ranking"} · ${r.answers.length} of up to ${total} picks · ${shortDate(r.updatedAt)}`, { openLabel: "Resume" })}
+    ${savedHead(r, rankingDisplayTitle(r), `${rankingRules(r)} · ${r.answers.length} of up to ${total} picks · ${shortDate(r.updatedAt)}`, { openLabel: "Resume" })}
     <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><div style="width:${pct}%"></div></div>
   </li>`;
 }
@@ -1153,7 +3091,7 @@ function progressCard(r) {
 function finishedCard(r) {
   const top = r.ranking.map((id) => players.get(id)).filter(Boolean).slice(0, 3);
   return `<li class="saved-card${r.pinned ? " pinned" : ""}">
-    ${savedHead(r, r.title, `${r.ranking.length} players · finished ${shortDate(r.finishedAt)}`, { pinnable: true, openLabel: "View" })}
+    ${savedHead(r, rankingDisplayTitle(r), `${rankingRules(r)} · ${r.ranking.length} players · finished ${shortDate(r.finishedAt)}`, { pinnable: true, editable: true, openLabel: "View" })}
     <ol class="saved-top">
       ${top.map((p) => `<li>${escapeHtml(p.name)}</li>`).join("")}
     </ol>
@@ -1225,7 +3163,7 @@ function renderMyRankings(tab, status = "") {
       <h1>My Rankings</h1>
       <p class="lede">Saved on this device. Clearing your browser data removes them, so back them up to a file now and then.</p>
       <div class="backup-row">
-        <a class="btn primary small" href="./">+ New ranking</a>
+        <a class="btn primary small" href="#player-ranking">+ New ranking</a>
         <button type="button" class="btn ghost small" data-action="backup" ${loadRankings().length ? "" : "disabled"}>Back up</button>
         <label class="btn ghost small file-btn">Restore<input type="file" accept=".json,application/json" data-action="restore" /></label>
         <span class="backup-status" role="status">${escapeHtml(status)}</span>
@@ -1241,6 +3179,7 @@ function renderMyRankings(tab, status = "") {
               <p>${tab === "progress" ? "No rankings in progress." : "No finished rankings yet."}</p>
             </div>`
       }
+      ${tab === "finished" && list.length ? nameDialog("ranking") : ""}
     </section>`;
 
   app.querySelector("[data-action=backup]").addEventListener("click", downloadBackup);
@@ -1257,22 +3196,33 @@ function renderMyRankings(tab, status = "") {
   });
 
   const byId = new Map(list.map((r) => [r.id, r]));
+  const renameDialog = app.querySelector('[data-name-dialog="ranking"]');
+  let renameTarget = null;
   app.querySelector(".saved-list")?.addEventListener("click", (e) => {
     const open = e.target.closest("[data-open]");
     const pin = e.target.closest("[data-pin]");
+    const edit = e.target.closest("[data-edit]");
     const del = e.target.closest("[data-delete]");
     if (open) openRanking(byId.get(open.dataset.open));
     else if (pin) {
       togglePinned(pin.dataset.pin);
       renderMyRankings(tab);
       app.querySelector(`[data-pin="${pin.dataset.pin}"]`)?.focus();
+    } else if (edit) {
+      renameTarget = byId.get(edit.dataset.edit);
+      openNameDialog(renameDialog, renameTarget.name ?? "", rankingDisplayTitle(renameTarget));
     } else if (del) {
       const r = byId.get(del.dataset.delete);
-      const name = r.title ?? sessionSet(r)?.name ?? "this ranking";
+      const name = rankingDisplayTitle(r) ?? "this ranking";
       if (!confirm(`Delete “${name}”? This can't be undone.`)) return;
       deleteRanking(r.id);
       renderMyRankings(tab);
     }
+  });
+  bindNameDialog(renameDialog, (name) => {
+    if (!renameTarget) return;
+    renameRanking(renameTarget.id, name);
+    renderMyRankings(tab);
   });
 }
 
@@ -1281,10 +3231,22 @@ function renderMyRankings(tab, status = "") {
 function route() {
   session = null;
   const hash = location.hash;
-  if (hash === "#my-rankings") renderMyRankings();
+  if (!hash) renderHome();
+  else if (hash === "#player-ranking") renderSetup();
+  else if (hash === "#season-prediction") renderPredictionMode();
+  else if (hash === "#season-prediction/team") renderPredictionSetup();
+  else if (hash === "#season-prediction/play") renderPredictionGame();
+  else if (hash === "#season-prediction/results") renderPredictionResults();
+  else if (hash === "#season-prediction/league/library") renderLeaguePredictionLibrary();
+  else if (hash === "#season-prediction/league") renderLeaguePredictionHub();
+  else if (hash === "#season-prediction/league/play") renderLeaguePredictionSeries();
+  else if (hash === "#season-prediction/league/results") renderLeaguePredictionResults();
+  else if (hash === "#season-prediction/league/team") renderLeagueTeamResults();
+  else if (hash === "#my-predictions") renderMyPredictions();
+  else if (hash === "#my-rankings") renderMyRankings();
   else if (hash === "#my-rankings/in-progress") renderMyRankings("progress");
   else if (hash === "#my-rankings/finished") renderMyRankings("finished");
-  else renderSetup();
+  else renderHome();
   window.scrollTo(0, 0);
 }
 
@@ -1292,11 +3254,21 @@ function route() {
 
 async function init() {
   try {
-    const res = await fetch("data/players.json");
-    if (!res.ok) throw new Error(res.statusText);
-    const data = await res.json();
+    const [playerResponse, scheduleResponse] = await Promise.all([
+      fetch("data/players.json"),
+      fetch("data/schedules.json").catch(() => null),
+    ]);
+    if (!playerResponse.ok) throw new Error(playerResponse.statusText);
+    const data = await playerResponse.json();
     players = new Map(data.players.map((p) => [p.id, p]));
     addLatestAllStarSet();
+    if (scheduleResponse?.ok) {
+      try {
+        scheduleData = await scheduleResponse.json();
+      } catch {
+        scheduleData = null;
+      }
+    }
   } catch (err) {
     app.innerHTML = `<p class="error">Couldn't load player data (${escapeHtml(err.message)}).</p>`;
     return;

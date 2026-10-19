@@ -1,12 +1,27 @@
 # nba-ranker
 
-A web tool for ranking your favorite NBA players. Pick a group (Active
-All-Stars, MVPs, the Top 75, a franchise's All-Stars, 10 random players, or a
-custom filter), then choose between two players at a time until
-your ranking is settled — either a full ranking or just your Top 10. Rankings
-are saved in your browser, and the My Rankings page lists the ones in progress
-and the ones you've finished. Back up there to download a `.json` file, and
-Restore to merge it back in on any browser.
+A web tool with two NBA challenges:
+
+- Rank your favorite NBA players. Pick a group (Active
+  All-Stars, MVPs, the Top 75, a franchise's All-Stars, 10 random players, or a
+  custom filter), then choose between two players at a time until
+  your ranking is settled — either a full ranking or just your Top 10. Rankings
+  are saved in your browser, and the My Rankings page lists the ones in progress
+  and the ones you've finished. Back up there to download a `.json` file, and
+  Restore to merge it back in on any browser.
+- Predict one team's regular season one opponent series at a time, or predict
+  every scheduled game across the entire NBA. League-wide picks are stored
+  once per game, so each result updates both teams' progress and records. Team
+  predictions include a full game-by-game results table and shareable image.
+  Completed league predictions include conference standings, clickable team
+  results, and PNG exports for both views. The `#my-predictions` page lists
+  saved team and league predictions and supports individual or complete-library
+  JSON export/import. Selecting Entire NBA first opens a full-league library
+  grouped into in-progress and finished predictions.
+- Rankings, team predictions, and full-league predictions can be given custom
+  names. Result pages and PNG exports use that name as the main heading and
+  show the selected player-group or prediction rules beneath it. Names can also
+  be edited directly from any completed result view or completed saved card.
 
 ## Running locally
 
@@ -27,9 +42,19 @@ It's hosted on GitHub Pages straight from the root of `main`.
   sort; Top 10 uses a knockout tournament where each later pick only replays
   the previous winner's path. The sort is re-run against the saved list of
   picks, so progress (in `localStorage`) and undo come for free.
-- `js/share-image.js` — draws the finished ranking onto a canvas as a
-  shareable PNG. It's text only because cdn.nba.com headshots don't send CORS
-  headers, so they can't be drawn onto an exportable canvas.
+- `js/share-image.js` — draws finished rankings and season predictions onto a
+  canvas as shareable PNGs. Ranking images are text only because cdn.nba.com
+  headshots don't send CORS headers, so they can't be drawn onto an exportable
+  canvas.
+- `data/schedules.json` — normalized schedule snapshots for the current and
+  prior season. The active season prediction is stored in `localStorage` under
+  `nba-ranker:season-prediction`; the alphabetized saved prediction library is
+  stored under `nba-ranker:season-predictions`. Individual predictions or the
+  complete library can be exported and restored as JSON. The active shared
+  full-league prediction is stored under `nba-ranker:league-prediction`; the
+  full-league prediction library is stored under
+  `nba-ranker:league-predictions`. Multiple full-season predictions can be
+  saved, exported, imported, resumed, and viewed independently.
 
 ## Player data
 
@@ -61,3 +86,18 @@ Responses are cached in `scripts/.cache/`; pass `--refresh` to re-fetch (e.g.
 at the start of a new season). If a new player's name doesn't match NBA.com,
 add it to `MANUAL_IDS` in the script. If NBA.com is missing an award, add it
 to `AWARD_CORRECTIONS`.
+
+## Schedule data
+
+`scripts/fetch_schedules.py` downloads the 2026–27 and 2025–26 schedules from
+[Fixture Download](https://fixturedownload.com/), removes unresolved NBA Cup
+placeholders and the non-standings Cup championship, and writes the compact
+`data/schedules.json` snapshot used by the static site:
+
+```powershell
+python scripts/fetch_schedules.py
+```
+
+Before NBA Cup knockout and consolation games are assigned, the upcoming
+season contains 80 known games per team. Re-run the script after the league
+adds the remaining games; saved predictions resume at the newly added games.
