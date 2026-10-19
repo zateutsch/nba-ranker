@@ -101,3 +101,10 @@ python scripts/fetch_schedules.py
 Before NBA Cup knockout and consolation games are assigned, the upcoming
 season contains 80 known games per team. Re-run the script after the league
 adds the remaining games; saved predictions resume at the newly added games.
+
+The `Update NBA results` GitHub Actions workflow runs every 30 minutes and can
+also be started manually. It refreshes this snapshot, accepts scores only after
+Fixture Download supplies a final winner, and commits to `main` only when the
+schedule or final results change. The site bypasses its browser cache when
+loading the snapshot, so newly deployed results are picked up on the next
+visit.

@@ -81,6 +81,19 @@ def normalize_season(
         if home not in TEAMS or away not in TEAMS:
             continue
 
+        winner = raw.get("Winner")
+        home_score = raw.get("HomeTeamScore")
+        away_score = raw.get("AwayTeamScore")
+        is_final = (
+            winner in {home, away}
+            and isinstance(home_score, int)
+            and not isinstance(home_score, bool)
+            and home_score >= 0
+            and isinstance(away_score, int)
+            and not isinstance(away_score, bool)
+            and away_score >= 0
+        )
+
         games.append(
             {
                 "id": f"{season_id}:{raw['MatchNumber']}",
@@ -88,8 +101,8 @@ def normalize_season(
                 "venue": raw.get("Location") or "",
                 "homeTeam": home,
                 "awayTeam": away,
-                "homeScore": raw.get("HomeTeamScore"),
-                "awayScore": raw.get("AwayTeamScore"),
+                "homeScore": home_score if is_final else None,
+                "awayScore": away_score if is_final else None,
             }
         )
 
@@ -134,13 +147,29 @@ def normalize_season(
 
 
 def main() -> None:
+    attribution = {
+        "name": "Fixture Download",
+        "url": "https://fixturedownload.com/",
+    }
+    seasons = [normalize_season(*season) for season in SEASONS]
+
+    if OUTPUT.exists():
+        try:
+            existing = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            existing = None
+        if (
+            existing
+            and existing.get("attribution") == attribution
+            and existing.get("seasons") == seasons
+        ):
+            print(f"No schedule changes in {OUTPUT.relative_to(ROOT)}")
+            return
+
     data = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "attribution": {
-            "name": "Fixture Download",
-            "url": "https://fixturedownload.com/",
-        },
-        "seasons": [normalize_season(*season) for season in SEASONS],
+        "attribution": attribution,
+        "seasons": seasons,
     }
     OUTPUT.write_text(json.dumps(data, separators=(",", ":")) + "\n", encoding="utf-8")
 

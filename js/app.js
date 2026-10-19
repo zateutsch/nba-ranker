@@ -3256,7 +3256,7 @@ async function init() {
   try {
     const [playerResponse, scheduleResponse] = await Promise.all([
       fetch("data/players.json"),
-      fetch("data/schedules.json").catch(() => null),
+      fetch("data/schedules.json", { cache: "no-store" }).catch(() => null),
     ]);
     if (!playerResponse.ok) throw new Error(playerResponse.statusText);
     const data = await playerResponse.json();
