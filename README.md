@@ -17,7 +17,13 @@ A web tool with two NBA challenges:
   results, and PNG exports for both views. The `#my-predictions` page lists
   saved team and league predictions and supports individual or complete-library
   JSON export/import. Selecting Entire NBA first opens a full-league library
-  grouped into in-progress and finished predictions.
+  grouped into in-progress and finished predictions. Finished team and
+  full-league predictions are graded as game results arrive, showing correct
+  picks, graded games, and accuracy so far. When a prediction is started after
+  games have finished, those games are filled with their actual winners and
+  excluded from scoring. If an unpicked game finishes while a prediction is in
+  progress, it is handled the same way on the next visit; finalized games can
+  no longer be edited.
 - Rankings, team predictions, and full-league predictions can be given custom
   names. Result pages and PNG exports use that name as the main heading and
   show the selected player-group or prediction rules beneath it. Names can also

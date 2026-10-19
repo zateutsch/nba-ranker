@@ -908,9 +908,20 @@ function gamesForTeam(season, team) {
   return (season?.games ?? []).filter((game) => game.homeTeam === team || game.awayTeam === team);
 }
 
-function seriesForTeam(season, team) {
+function completedGameWinner(game) {
+  if (
+    !Number.isFinite(game?.homeScore) ||
+    !Number.isFinite(game?.awayScore) ||
+    game.homeScore === game.awayScore
+  ) {
+    return null;
+  }
+  return game.homeScore > game.awayScore ? game.homeTeam : game.awayTeam;
+}
+
+function seriesForGames(games, team) {
   const series = new Map();
-  gamesForTeam(season, team).forEach((game, scheduleIndex) => {
+  games.forEach((game, scheduleIndex) => {
     const opponent = game.homeTeam === team ? game.awayTeam : game.homeTeam;
     if (!series.has(opponent)) {
       series.set(opponent, { opponent, games: [], scheduleIndex });
@@ -918,6 +929,29 @@ function seriesForTeam(season, team) {
     series.get(opponent).games.push(game);
   });
   return [...series.values()];
+}
+
+function predictionSeries(prediction, season, team = prediction.team) {
+  return seriesForGames(
+    gamesForTeam(season, team).filter((game) => !completedGameWinner(game)),
+    team
+  );
+}
+
+function syncCompletedGames(prediction, season) {
+  const ungraded = new Set(
+    Array.isArray(prediction.ungradedGameIds) ? prediction.ungradedGameIds : []
+  );
+  for (const game of season.games) {
+    const winner = completedGameWinner(game);
+    if (!winner || prediction.picks[game.id]) continue;
+    prediction.picks[game.id] = winner;
+    ungraded.add(game.id);
+  }
+  prediction.ungradedGameIds = [...ungraded].filter((gameId) =>
+    season.games.some((game) => game.id === gameId)
+  );
+  return prediction;
 }
 
 function predictionIsComplete(prediction, games) {
@@ -930,7 +964,7 @@ function firstIncompleteSeriesIndex(series, picks) {
 }
 
 function normalizePredictionProgress(prediction, season) {
-  const series = seriesForTeam(season, prediction.team);
+  const series = predictionSeries(prediction, season);
   const firstIncomplete = firstIncompleteSeriesIndex(series, prediction.picks);
   if (prediction.flow !== "series") {
     prediction.flow = "series";
@@ -967,6 +1001,75 @@ function actualTeamRecord(season, team, opponent) {
     record[teamScore > opponentScore ? "wins" : "losses"] += 1;
   }
   return record;
+}
+
+function predictionPerformance(prediction, games) {
+  const ungraded = new Set(prediction.ungradedGameIds ?? []);
+  let correct = 0;
+  let completed = 0;
+  let finals = 0;
+  let excluded = 0;
+  for (const game of games) {
+    const winner = completedGameWinner(game);
+    if (!winner) continue;
+    finals += 1;
+    if (ungraded.has(game.id)) {
+      excluded += 1;
+      continue;
+    }
+    const pick = prediction.picks[game.id];
+    if (!pick) continue;
+    completed += 1;
+    if (pick === winner) correct += 1;
+  }
+  return {
+    correct,
+    completed,
+    finals,
+    excluded,
+    accuracy: completed ? (correct / completed) * 100 : null,
+  };
+}
+
+function accuracyText(accuracy) {
+  if (accuracy == null) return "—";
+  return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(accuracy)}%`;
+}
+
+function performanceText(performance) {
+  return performance.completed
+    ? `${performance.correct}/${performance.completed} correct · ${accuracyText(performance.accuracy)}`
+    : performance.excluded
+      ? `${performance.excluded} earlier result${performance.excluded === 1 ? "" : "s"} excluded`
+      : "No games final yet";
+}
+
+function predictionPerformanceMarkup(performance) {
+  const updated = scheduleData?.generatedAt
+    ? new Intl.DateTimeFormat(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(scheduleData.generatedAt))
+    : "";
+  return `
+    <section class="prediction-performance" aria-label="Prediction performance so far">
+      <div><span>Accuracy</span><strong>${accuracyText(performance.accuracy)}</strong></div>
+      <div><span>Correct picks</span><strong>${performance.correct}</strong></div>
+      <div><span>Picks graded</span><strong>${performance.completed}</strong></div>
+      <p>${
+        performance.completed
+          ? `Graded against ${performance.completed} eligible final game${performance.completed === 1 ? "" : "s"}${
+              performance.excluded
+                ? ` · ${performance.excluded} earlier result${performance.excluded === 1 ? "" : "s"} excluded`
+                : ""
+            }${updated ? ` · Results updated ${escapeHtml(updated)}` : ""}.`
+          : performance.excluded
+            ? `${performance.excluded} completed game${performance.excluded === 1 ? "" : "s"} predated this prediction and ${
+                performance.excluded === 1 ? "is" : "are"
+              } excluded from scoring${updated ? ` · Results updated ${escapeHtml(updated)}` : ""}.`
+            : `No regular-season games have final results yet${updated ? ` · Schedule data updated ${escapeHtml(updated)}` : ""}.`
+      }</p>
+    </section>`;
 }
 
 function franchiseForTeam(name) {
@@ -1014,13 +1117,59 @@ function predictionTeamPicker(team, season) {
     </details>`;
 }
 
-function validPrediction(prediction) {
-  return Boolean(
-    prediction &&
-      predictionSeason(prediction.seasonId) &&
-      predictionTeams(predictionSeason(prediction.seasonId)).includes(prediction.team) &&
-      prediction.picks &&
-      Number.isInteger(prediction.index)
+function normalizePrediction(prediction) {
+  const season = predictionSeason(prediction?.seasonId);
+  if (
+    !season ||
+    !predictionTeams(season).includes(prediction?.team) ||
+    !prediction?.picks ||
+    typeof prediction.picks !== "object" ||
+    !Number.isInteger(prediction.index)
+  ) {
+    return null;
+  }
+  const games = new Map(season.games.map((game) => [game.id, game]));
+  const picks = {};
+  Object.entries(prediction.picks).forEach(([gameId, winner]) => {
+    const game = games.get(gameId);
+    if (game && (winner === game.homeTeam || winner === game.awayTeam)) {
+      picks[gameId] = winner;
+    }
+  });
+  return syncCompletedGames(
+    {
+      ...prediction,
+      name: cleanName(prediction.name),
+      picks,
+      ungradedGameIds: Array.isArray(prediction.ungradedGameIds)
+        ? prediction.ungradedGameIds.filter((gameId) => games.has(gameId))
+        : [],
+      createdAt: Number.isFinite(prediction.createdAt)
+        ? prediction.createdAt
+        : Number.isFinite(prediction.updatedAt)
+          ? prediction.updatedAt
+          : Date.now(),
+      updatedAt: Number.isFinite(prediction.updatedAt) ? prediction.updatedAt : Date.now(),
+    },
+    season
+  );
+}
+
+function createPrediction(season, team, name = "") {
+  const now = Date.now();
+  return syncCompletedGames(
+    {
+      name: cleanName(name),
+      seasonId: season.id,
+      team,
+      picks: {},
+      ungradedGameIds: [],
+      index: 0,
+      flow: "series",
+      createdAt: now,
+      updatedAt: now,
+    },
+    season
   );
 }
 
@@ -1030,8 +1179,11 @@ function predictionIdentifier(prediction) {
 
 function loadPrediction() {
   try {
-    const prediction = JSON.parse(localStorage.getItem(PREDICTION_KEY));
-    if (validPrediction(prediction)) return prediction;
+    const prediction = normalizePrediction(JSON.parse(localStorage.getItem(PREDICTION_KEY)));
+    if (prediction) {
+      localStorage.setItem(PREDICTION_KEY, JSON.stringify(prediction));
+      return prediction;
+    }
   } catch {
     /* ignore */
   }
@@ -1042,7 +1194,7 @@ function loadPredictions() {
   let predictions = [];
   try {
     const stored = JSON.parse(localStorage.getItem(PREDICTIONS_KEY));
-    if (Array.isArray(stored)) predictions = stored.filter(validPrediction);
+    if (Array.isArray(stored)) predictions = stored.map(normalizePrediction).filter(Boolean);
   } catch {
     /* ignore */
   }
@@ -1064,17 +1216,21 @@ function loadPredictions() {
 }
 
 function activatePrediction(prediction) {
-  localStorage.setItem(PREDICTION_KEY, JSON.stringify(prediction));
+  const normalized = normalizePrediction(prediction);
+  if (normalized) localStorage.setItem(PREDICTION_KEY, JSON.stringify(normalized));
 }
 
 function savePrediction(prediction) {
-  activatePrediction(prediction);
+  const normalized = normalizePrediction(prediction);
+  if (!normalized) return null;
+  activatePrediction(normalized);
   const predictions = loadPredictions().filter(
-    (saved) => predictionIdentifier(saved) !== predictionIdentifier(prediction)
+    (saved) => predictionIdentifier(saved) !== predictionIdentifier(normalized)
   );
-  predictions.push(prediction);
+  predictions.push(normalized);
   predictions.sort((a, b) => a.team.localeCompare(b.team) || a.seasonId.localeCompare(b.seasonId));
   localStorage.setItem(PREDICTIONS_KEY, JSON.stringify(predictions));
+  return normalized;
 }
 
 function deletePrediction(prediction) {
@@ -1133,15 +1289,22 @@ function normalizeLeaguePrediction(prediction) {
     if (game && (winner === game.homeTeam || winner === game.awayTeam)) picks[gameId] = winner;
   });
   const updatedAt = Number.isFinite(prediction.updatedAt) ? prediction.updatedAt : Date.now();
-  return {
-    id: prediction.id ?? `league-${season.id}-${updatedAt}`,
-    name: cleanName(prediction.name),
-    seasonId: season.id,
-    picks,
-    activeTeam: prediction.activeTeam ?? null,
-    seriesIndex: Number.isInteger(prediction.seriesIndex) ? prediction.seriesIndex : 0,
-    updatedAt,
-  };
+  return syncCompletedGames(
+    {
+      id: prediction.id ?? `league-${season.id}-${updatedAt}`,
+      name: cleanName(prediction.name),
+      seasonId: season.id,
+      picks,
+      ungradedGameIds: Array.isArray(prediction.ungradedGameIds)
+        ? prediction.ungradedGameIds.filter((gameId) => games.has(gameId))
+        : [],
+      activeTeam: prediction.activeTeam ?? null,
+      seriesIndex: Number.isInteger(prediction.seriesIndex) ? prediction.seriesIndex : 0,
+      createdAt: Number.isFinite(prediction.createdAt) ? prediction.createdAt : updatedAt,
+      updatedAt,
+    },
+    season
+  );
 }
 
 function loadLeaguePrediction() {
@@ -1188,15 +1351,20 @@ function activateLeaguePrediction(prediction) {
 
 function createLeaguePrediction(season, name = "") {
   const now = Date.now();
-  return {
-    id: crypto.randomUUID?.() ?? `league-${season.id}-${now}-${Math.random().toString(36).slice(2)}`,
-    name: cleanName(name),
-    seasonId: season.id,
-    picks: {},
-    activeTeam: null,
-    seriesIndex: 0,
-    updatedAt: now,
-  };
+  return syncCompletedGames(
+    {
+      id: crypto.randomUUID?.() ?? `league-${season.id}-${now}-${Math.random().toString(36).slice(2)}`,
+      name: cleanName(name),
+      seasonId: season.id,
+      picks: {},
+      ungradedGameIds: [],
+      activeTeam: null,
+      seriesIndex: 0,
+      createdAt: now,
+      updatedAt: now,
+    },
+    season
+  );
 }
 
 function startNewLeaguePrediction(name = "") {
@@ -1240,7 +1408,7 @@ async function importPredictionData(file) {
   let imported = 0;
   if (Array.isArray(data.predictions)) {
     const merged = new Map(loadPredictions().map((prediction) => [predictionIdentifier(prediction), prediction]));
-    data.predictions.filter(validPrediction).forEach((prediction) => {
+    data.predictions.map(normalizePrediction).filter(Boolean).forEach((prediction) => {
       merged.set(predictionIdentifier(prediction), prediction);
       imported += 1;
     });
@@ -1286,19 +1454,13 @@ function seedLeaguePrediction(season) {
     seed === "full"
       ? season.games
       : season.games.slice(0, Math.ceil(season.games.length / 2));
-  const prediction = {
-    id: loadLeaguePrediction()?.id ?? `league-${season.id}-${Date.now()}`,
-    seasonId: season.id,
-    picks: Object.fromEntries(
-      games.map((game, index) => [
-        game.id,
-        index % 3 === 0 ? game.awayTeam : game.homeTeam,
-      ])
-    ),
-    activeTeam: null,
-    seriesIndex: 0,
-    updatedAt: Date.now(),
-  };
+  const prediction = createLeaguePrediction(season);
+  prediction.id = loadLeaguePrediction()?.id ?? prediction.id;
+  games.forEach((game, index) => {
+    if (completedGameWinner(game)) return;
+    prediction.picks[game.id] = index % 3 === 0 ? game.awayTeam : game.homeTeam;
+  });
+  prediction.updatedAt = Date.now();
   saveLeaguePrediction(prediction);
   params.delete("seed-league");
   const query = params.toString();
@@ -1369,7 +1531,7 @@ function predictionDataFileName(prediction) {
 function savedPredictionCard(prediction) {
   const season = predictionSeason(prediction.seasonId);
   const games = gamesForTeam(season, prediction.team);
-  const series = seriesForTeam(season, prediction.team);
+  const series = predictionSeries(prediction, season);
   const complete = predictionIsComplete(prediction, games);
   const pickedGames = games.filter((game) => prediction.picks[game.id]).length;
   const seriesIndex = Math.min(
@@ -1377,13 +1539,22 @@ function savedPredictionCard(prediction) {
     firstIncompleteSeriesIndex(series, prediction.picks)
   );
   const records = predictionRecords(prediction, season);
+  const performance = predictionPerformance(prediction, games);
   const id = escapeHtml(predictionIdentifier(prediction));
   return `
     <article class="saved-prediction" style="${teamStyle(teamNickname(prediction.team))}">
       <div class="saved-prediction-team">
         ${teamLogo(prediction.team, "saved-prediction-logo")}
         <span>
-          <strong>${escapeHtml(teamPredictionTitle(prediction))}</strong>
+          <span class="prediction-card-title-row">
+            <strong>${escapeHtml(teamPredictionTitle(prediction))}</strong>
+            ${
+              complete
+                ? `<button type="button" class="icon-btn edit" data-prediction-action="edit"
+                    data-prediction-id="${id}" aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
+                : ""
+            }
+          </span>
           <small>${escapeHtml(`${prediction.team} · ${season.label}`)}</small>
         </span>
       </div>
@@ -1391,16 +1562,15 @@ function savedPredictionCard(prediction) {
         <strong>${complete ? recordText(records.overall) : `${pickedGames}/${games.length}`}</strong>
         <span>${complete ? "Final prediction" : `Series ${seriesIndex + 1} of ${series.length}`}</span>
       </div>
+      ${
+        complete
+          ? `<div class="saved-performance-label"><b>Season score</b><span>${performanceText(performance)}</span></div>`
+          : ""
+      }
       <div class="saved-prediction-actions">
         <button type="button" class="btn primary small" data-prediction-action="open" data-prediction-id="${id}">
           ${complete ? "View results" : "Resume"}
         </button>
-        ${
-          complete
-            ? `<button type="button" class="icon-btn edit" data-prediction-action="edit"
-                data-prediction-id="${id}" aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
-            : ""
-        }
         <button type="button" class="btn ghost small" data-prediction-action="export" data-prediction-id="${id}">Export</button>
         <button type="button" class="btn ghost small" data-prediction-action="delete" data-prediction-id="${id}">Delete</button>
       </div>
@@ -1478,8 +1648,9 @@ function renderPredictionSetup(selectedSeasonId, selectedTeam) {
   const matchingSaved = savedPredictions.find(
     (prediction) => prediction.seasonId === season.id && prediction.team === team
   );
+  const completedTeamGames = gamesForTeam(season, team).filter(completedGameWinner).length;
   const savedGames = matchingSaved ? gamesForTeam(season, team) : [];
-  const savedSeries = matchingSaved ? seriesForTeam(season, team) : [];
+  const savedSeries = matchingSaved ? predictionSeries(matchingSaved, season) : [];
   const savedComplete = matchingSaved && predictionIsComplete(matchingSaved, savedGames);
   const savedSeriesIndex = matchingSaved
     ? Math.min(
@@ -1520,6 +1691,13 @@ function renderPredictionSetup(selectedSeasonId, selectedTeam) {
             placeholder="e.g. Pistons breakout season" />
         </label>
         <p class="schedule-status${season.complete ? "" : " is-partial"}">${escapeHtml(scheduleStatus(season))}</p>
+        ${
+          completedTeamGames
+            ? `<p class="schedule-status">Starting now will add ${completedTeamGames} completed game${
+                completedTeamGames === 1 ? "" : "s"
+              } as actual results and exclude ${completedTeamGames === 1 ? "it" : "them"} from scoring.</p>`
+            : ""
+        }
       </div>
       <button type="button" class="btn primary big prediction-start" data-start-prediction>
         ${matchingSaved ? (savedComplete ? "View results" : `Resume series ${savedSeriesIndex + 1}`) : "Start prediction"}
@@ -1556,15 +1734,7 @@ function renderPredictionSetup(selectedSeasonId, selectedTeam) {
   app.querySelector("[data-start-prediction]").addEventListener("click", () => {
     const name = cleanName(app.querySelector("[data-prediction-name]").value);
     if (!matchingSaved) {
-      savePrediction({
-        name,
-        seasonId: season.id,
-        team,
-        picks: {},
-        index: 0,
-        flow: "series",
-        updatedAt: Date.now(),
-      });
+      savePrediction(createPrediction(season, team, name));
     } else {
       matchingSaved.name = name;
       matchingSaved.updatedAt = Date.now();
@@ -1582,6 +1752,7 @@ function savedLeaguePredictionCard(prediction) {
   const pickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
   const complete = pickedGames === season.games.length;
   const progress = Math.round((pickedGames / season.games.length) * 100);
+  const performance = predictionPerformance(prediction, season.games);
   const updated = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
     timeStyle: "short",
@@ -1590,8 +1761,20 @@ function savedLeaguePredictionCard(prediction) {
     <article class="saved-league-prediction" data-league-prediction="${escapeHtml(prediction.id)}">
       <div>
         <span class="results-kicker">${escapeHtml(season.label)}</span>
-        <h2>${escapeHtml(leaguePredictionTitle(prediction))}</h2>
-        <p>${pickedGames} of ${season.games.length} games predicted · ${progress}% complete</p>
+        <div class="prediction-card-title-row">
+          <h2>${escapeHtml(leaguePredictionTitle(prediction))}</h2>
+          ${
+            complete
+              ? `<button type="button" class="icon-btn edit" data-edit-league
+                  aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
+              : ""
+          }
+        </div>
+        ${
+          complete
+            ? `<div class="saved-performance-label"><b>Season score</b><span>${performanceText(performance)}</span></div>`
+            : `<p>${pickedGames} of ${season.games.length} games predicted · ${progress}% complete</p>`
+        }
         <small>Updated ${escapeHtml(updated)}</small>
       </div>
       <div class="saved-league-progress" aria-hidden="true"><span style="width:${progress}%"></span></div>
@@ -1600,12 +1783,6 @@ function savedLeaguePredictionCard(prediction) {
           data-league-destination="${complete ? "#season-prediction/league/results" : "#season-prediction/league"}">
           ${complete ? "View standings" : "Continue"}
         </button>
-        ${
-          complete
-            ? `<button type="button" class="icon-btn edit" data-edit-league
-                aria-label="Edit name" title="Edit name">${EDIT_ICON}</button>`
-            : ""
-        }
         <button type="button" class="btn ghost small" data-export-league>Export</button>
         <button type="button" class="btn ghost small" data-delete-league>Delete</button>
       </div>
@@ -1699,10 +1876,16 @@ function renderLeaguePredictionLibrary() {
   );
 }
 
-function renderMyPredictions(status = "") {
+function renderMyPredictions(status = "", tab = null) {
   setKeys(null);
   const predictions = loadPredictions();
   const leaguePredictions = loadLeaguePredictions();
+  const activeTab =
+    tab === "team" || tab === "league"
+      ? tab
+      : predictions.length || !leaguePredictions.length
+        ? "team"
+        : "league";
   app.innerHTML = `
     <section class="my-predictions">
       <h1>My Predictions</h1>
@@ -1717,37 +1900,48 @@ function renderMyPredictions(status = "") {
         </label>
         <span class="backup-status" role="status">${escapeHtml(status)}</span>
       </div>
+      <div class="tabs prediction-library-tabs" role="tablist">
+        <a role="tab" class="tab" href="#my-predictions/team"
+          aria-selected="${activeTab === "team"}">Team <span class="tab-count">${predictions.length}</span></a>
+        <a role="tab" class="tab" href="#my-predictions/league"
+          aria-selected="${activeTab === "league"}">Full league <span class="tab-count">${leaguePredictions.length}</span></a>
+      </div>
       ${
-        leaguePredictions.length
+        activeTab === "league"
           ? `<section class="saved-league-section">
               <h2>Full league</h2>
               <p>Each full-season prediction is saved separately.</p>
-              <div class="saved-league-predictions">
-                ${leaguePredictions.map(savedLeaguePredictionCard).join("")}
-              </div>
+              ${
+                leaguePredictions.length
+                  ? `<div class="saved-league-predictions">
+                      ${leaguePredictions.map(savedLeaguePredictionCard).join("")}
+                    </div>`
+                  : `<div class="saved-empty"><p>No saved full-league predictions yet.</p></div>`
+              }
               ${nameDialog("league")}
             </section>`
-          : ""
+          : `<section class="saved-team-predictions">
+              <h2>Team predictions</h2>
+              <p>Sorted alphabetically by team.</p>
+              ${savedPredictionsMarkup(predictions)}
+            </section>`
       }
-      <section class="saved-team-predictions">
-        <h2>Team predictions</h2>
-        <p>Sorted alphabetically by team.</p>
-        ${savedPredictionsMarkup(predictions)}
-      </section>
     </section>`;
-  bindPredictionLibrary(app.querySelector(".my-predictions"), predictions, renderMyPredictions);
+  bindPredictionLibrary(app.querySelector(".my-predictions"), predictions, () =>
+    renderMyPredictions("", activeTab)
+  );
   bindLeaguePredictionLibrary(
     app.querySelector(".saved-league-section"),
     leaguePredictions,
-    renderMyPredictions
+    () => renderMyPredictions("", activeTab)
   );
   app.querySelector("[data-import-predictions]").addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (!file) return;
     try {
-      renderMyPredictions(await importPredictionData(file));
+      renderMyPredictions(await importPredictionData(file), activeTab);
     } catch (error) {
-      renderMyPredictions(error.message);
+      renderMyPredictions(error.message, activeTab);
     }
   });
 }
@@ -1807,6 +2001,13 @@ function renderLeaguePredictionHub() {
           ? ""
           : `<p class="schedule-status is-partial league-schedule-status">${escapeHtml(scheduleStatus(season))}</p>`
       }
+      ${
+        prediction.ungradedGameIds.length
+          ? `<p class="schedule-status league-schedule-status">${prediction.ungradedGameIds.length} completed game${
+              prediction.ungradedGameIds.length === 1 ? " was" : "s were"
+            } filled with actual results and excluded from scoring.</p>`
+          : ""
+      }
       <div class="league-team-grid">
         ${teams.map((team) => leagueTeamCard(prediction, season, team)).join("")}
       </div>
@@ -1824,7 +2025,14 @@ function renderLeaguePredictionHub() {
     const card = event.target.closest("[data-league-team]");
     if (!card) return;
     const team = card.dataset.leagueTeam;
-    const series = seriesForTeam(season, team);
+    const series = predictionSeries(prediction, season, team);
+    if (!series.length) {
+      prediction.activeTeam = team;
+      prediction.updatedAt = Date.now();
+      saveLeaguePrediction(prediction);
+      location.hash = "#season-prediction/league/team";
+      return;
+    }
     const firstIncomplete = firstIncompleteSeriesIndex(series, prediction.picks);
     prediction.activeTeam = team;
     prediction.seriesIndex = firstIncomplete < series.length ? firstIncomplete : 0;
@@ -1880,11 +2088,13 @@ function renderLeaguePredictionResults(status = "") {
   ];
   const title = leaguePredictionTitle(prediction);
   const rules = leaguePredictionRules(prediction, season);
+  const performance = predictionPerformance(prediction, season.games);
   app.innerHTML = `
     <section class="league-results">
       <span class="results-kicker">${escapeHtml(season.label)} full-league prediction</span>
       ${editableResultTitle(title, prediction.name)}
       <p class="result-rules">${escapeHtml(rules)}</p>
+      ${predictionPerformanceMarkup(performance)}
       <div class="league-standings-grid">
         ${conferences
           .map(
@@ -2032,6 +2242,7 @@ function renderLeagueTeamResults() {
   }
   const games = gamesForTeam(season, team);
   const records = predictionRecords({ team, picks: prediction.picks }, season);
+  const performance = predictionPerformance(prediction, games);
   const complete = games.every((game) => prediction.picks[game.id]);
   const title = leaguePredictionTitle(prediction);
   const rules = `${season.label} · ${team} · Full-league team results`;
@@ -2053,6 +2264,7 @@ function renderLeagueTeamResults() {
       <span class="results-kicker">${escapeHtml(season.label)} full-league prediction</span>
       ${editableResultTitle(title, prediction.name)}
       <p class="result-rules">${escapeHtml(rules)}</p>
+      ${predictionPerformanceMarkup(performance)}
       <div class="predicted-record">
         <span>Predicted record</span>
         <strong>${recordText(records.overall)}</strong>
@@ -2161,7 +2373,7 @@ function renderPredictionGame() {
     return;
   }
   if (normalizePredictionProgress(prediction, season)) savePrediction(prediction);
-  const series = seriesForTeam(season, prediction.team);
+  const series = predictionSeries(prediction, season);
   if (predictionIsComplete(prediction, games)) {
     location.hash = "#season-prediction/results";
     return;
@@ -2302,7 +2514,7 @@ function renderLeaguePredictionSeries() {
     return;
   }
   const games = gamesForTeam(season, team);
-  const series = seriesForTeam(season, team);
+  const series = predictionSeries(prediction, season, team);
   prediction.seriesIndex = Math.min(Math.max(prediction.seriesIndex, 0), series.length - 1);
   const currentSeries = series[prediction.seriesIndex];
   const opponent = currentSeries.opponent;
@@ -2500,6 +2712,7 @@ function renderPredictionResults() {
   }
 
   const records = predictionRecords(prediction, season);
+  const performance = predictionPerformance(prediction, games);
   const title = teamPredictionTitle(prediction);
   const rules = teamPredictionRules(prediction, season);
   const predictedSchedule = games.map((game, index) => {
@@ -2524,6 +2737,7 @@ function renderPredictionResults() {
       <span class="results-kicker">${escapeHtml(season.label)} prediction</span>
       ${editableResultTitle(title, prediction.name)}
       <p class="result-rules">${escapeHtml(rules)}</p>
+      ${predictionPerformanceMarkup(performance)}
       <div class="predicted-record">
         <span>Predicted record</span>
         <strong>${recordText(records.overall)}</strong>
@@ -3243,6 +3457,8 @@ function route() {
   else if (hash === "#season-prediction/league/results") renderLeaguePredictionResults();
   else if (hash === "#season-prediction/league/team") renderLeagueTeamResults();
   else if (hash === "#my-predictions") renderMyPredictions();
+  else if (hash === "#my-predictions/team") renderMyPredictions("", "team");
+  else if (hash === "#my-predictions/league") renderMyPredictions("", "league");
   else if (hash === "#my-rankings") renderMyRankings();
   else if (hash === "#my-rankings/in-progress") renderMyRankings("progress");
   else if (hash === "#my-rankings/finished") renderMyRankings("finished");
