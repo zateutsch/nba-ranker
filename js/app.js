@@ -1031,6 +1031,26 @@ function predictionPerformance(prediction, games) {
   };
 }
 
+function predictionGameAssessment(prediction, game, team) {
+  const winner = completedGameWinner(game);
+  if (!winner) {
+    return { status: "pending", label: "Pending", actual: "Awaiting final result" };
+  }
+  const home = game.homeTeam === team;
+  const teamScore = home ? game.homeScore : game.awayScore;
+  const opponentScore = home ? game.awayScore : game.homeScore;
+  const actual = `Final ${winner === team ? "W" : "L"} · ${teamScore}-${opponentScore}`;
+  if (prediction.ungradedGameIds?.includes(game.id)) {
+    return { status: "excluded", label: "Excluded", actual };
+  }
+  const correct = prediction.picks[game.id] === winner;
+  return {
+    status: correct ? "correct" : "wrong",
+    label: correct ? "Correct" : "Wrong",
+    actual,
+  };
+}
+
 function accuracyText(accuracy) {
   if (accuracy == null) return "—";
   return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(accuracy)}%`;
@@ -2193,12 +2213,30 @@ function compactPredictionScheduleMarkup(schedule) {
     { length: 4 },
     (_, index) => schedule.slice(index * columnSize, (index + 1) * columnSize)
   );
+  const filters = [
+    ["all", "All", schedule.length],
+    ["correct", "Correct", schedule.filter((game) => game.assessment === "correct").length],
+    ["wrong", "Wrong", schedule.filter((game) => game.assessment === "wrong").length],
+    ["excluded", "Excluded", schedule.filter((game) => game.assessment === "excluded").length],
+    ["pending", "Pending", schedule.filter((game) => game.assessment === "pending").length],
+  ];
   return `
     <section class="results-schedule">
-      <h2>Full predicted schedule</h2>
-      <p>Opponent series records are shown in parentheses.</p>
+      <h2>Prediction results</h2>
+      <p>Compare each prediction with the result. Games completed before the prediction are excluded from scoring.</p>
+      <div class="result-filters" role="group" aria-label="Filter prediction results">
+        ${filters
+          .map(
+            ([value, label, count]) => `<button type="button" class="result-filter"
+              data-result-filter="${value}" aria-pressed="${value === "all"}">
+              ${label} <span>${count}</span>
+            </button>`
+          )
+          .join("")}
+      </div>
       <div class="results-schedule-columns">
         ${columns
+          .filter((column) => column.length)
           .map(
             (column) => `<table>
               <caption>Games ${column[0].number}-${column.at(-1).number}</caption>
@@ -2211,11 +2249,13 @@ function compactPredictionScheduleMarkup(schedule) {
               <tbody>
                 ${column
                   .map(
-                    (game) => `<tr>
+                    (game) => `<tr data-result-status="${game.assessment}">
                       <td>${game.number}</td>
                       <td>
                         <span class="results-game-date">${escapeHtml(game.date)}</span>
                         <span class="results-game-opponent"><b>${game.site}</b> ${escapeHtml(game.opponent)} <small>(${game.seriesRecord})</small></span>
+                        <span class="results-game-assessment is-${game.assessment}">${game.assessmentLabel}</span>
+                        <span class="results-game-actual">${escapeHtml(game.actualResult)}</span>
                       </td>
                       <td><strong class="results-game-outcome is-${
                         game.result === "W" ? "win" : game.result === "L" ? "loss" : "pending"
@@ -2228,7 +2268,30 @@ function compactPredictionScheduleMarkup(schedule) {
           )
           .join("")}
       </div>
+      <p class="result-filter-empty" hidden>No games match this filter.</p>
     </section>`;
+}
+
+function bindPredictionResultFilters(root = app) {
+  const schedule = root.querySelector(".results-schedule");
+  if (!schedule) return;
+  const buttons = [...schedule.querySelectorAll("[data-result-filter]")];
+  const rows = [...schedule.querySelectorAll("[data-result-status]")];
+  const tables = [...schedule.querySelectorAll("table")];
+  const empty = schedule.querySelector(".result-filter-empty");
+  schedule.querySelector(".result-filters").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-result-filter]");
+    if (!button) return;
+    const filter = button.dataset.resultFilter;
+    buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+    rows.forEach((row) => {
+      row.hidden = filter !== "all" && row.dataset.resultStatus !== filter;
+    });
+    tables.forEach((table) => {
+      table.hidden = !table.querySelector("tbody tr:not([hidden])");
+    });
+    empty.hidden = rows.some((row) => !row.hidden);
+  });
 }
 
 function renderLeagueTeamResults() {
@@ -2250,6 +2313,7 @@ function renderLeagueTeamResults() {
     const home = game.homeTeam === team;
     const opponent = home ? game.awayTeam : game.homeTeam;
     const winner = prediction.picks[game.id];
+    const assessment = predictionGameAssessment(prediction, game, team);
     return {
       number: index + 1,
       date: formatScheduleDate(game.dateUtc),
@@ -2257,6 +2321,9 @@ function renderLeagueTeamResults() {
       site: home ? "vs" : "@",
       result: winner ? (winner === team ? "W" : "L") : "—",
       seriesRecord: recordText(records.opponents.get(opponent) ?? { wins: 0, losses: 0 }),
+      assessment: assessment.status,
+      assessmentLabel: assessment.label,
+      actualResult: assessment.actual,
     };
   });
   app.innerHTML = `
@@ -2289,6 +2356,7 @@ function renderLeagueTeamResults() {
     saveLeaguePrediction(prediction);
     renderLeagueTeamResults();
   });
+  bindPredictionResultFilters();
   app.querySelector("[data-export-league-team-image]").addEventListener("click", async (event) => {
     const button = event.currentTarget;
     const label = button.textContent;
@@ -2718,6 +2786,7 @@ function renderPredictionResults() {
   const predictedSchedule = games.map((game, index) => {
     const home = game.homeTeam === prediction.team;
     const opponent = home ? game.awayTeam : game.homeTeam;
+    const assessment = predictionGameAssessment(prediction, game, prediction.team);
     return {
       number: index + 1,
       date: formatScheduleDate(game.dateUtc),
@@ -2725,13 +2794,11 @@ function renderPredictionResults() {
       site: home ? "vs" : "@",
       result: prediction.picks[game.id] === prediction.team ? "W" : "L",
       seriesRecord: recordText(records.opponents.get(opponent)),
+      assessment: assessment.status,
+      assessmentLabel: assessment.label,
+      actualResult: assessment.actual,
     };
   });
-  const scheduleColumnSize = Math.ceil(predictedSchedule.length / 4);
-  const scheduleColumns = Array.from(
-    { length: 4 },
-    (_, index) => predictedSchedule.slice(index * scheduleColumnSize, (index + 1) * scheduleColumnSize)
-  );
   app.innerHTML = `
     <section class="prediction-results">
       <span class="results-kicker">${escapeHtml(season.label)} prediction</span>
@@ -2758,39 +2825,7 @@ function renderPredictionResults() {
         <button type="button" class="btn" data-restart-prediction>Predict again</button>
         <a class="btn ghost" href="./">All features</a>
       </div>
-      <section class="results-schedule">
-        <h2>Full predicted schedule</h2>
-        <p>Opponent series records are shown in parentheses.</p>
-        <div class="results-schedule-columns">
-          ${scheduleColumns
-            .map(
-              (column) => `<table>
-                <caption>Games ${column[0].number}-${column.at(-1).number}</caption>
-                <colgroup>
-                  <col class="results-game-number" />
-                  <col />
-                  <col class="results-game-result" />
-                </colgroup>
-                <thead><tr><th scope="col">#</th><th scope="col">Game</th><th scope="col">W/L</th></tr></thead>
-                <tbody>
-                  ${column
-                    .map(
-                      (game) => `<tr>
-                        <td>${game.number}</td>
-                        <td>
-                          <span class="results-game-date">${escapeHtml(game.date)}</span>
-                          <span class="results-game-opponent"><b>${game.site}</b> ${escapeHtml(game.opponent)} <small>(${game.seriesRecord})</small></span>
-                        </td>
-                        <td><strong class="results-game-outcome is-${game.result === "W" ? "win" : "loss"}">${game.result}</strong></td>
-                      </tr>`
-                    )
-                    .join("")}
-                </tbody>
-              </table>`
-            )
-            .join("")}
-        </div>
-      </section>
+      ${compactPredictionScheduleMarkup(predictedSchedule)}
     </section>`;
 
   bindResultNameEditor((name) => {
@@ -2799,6 +2834,7 @@ function renderPredictionResults() {
     savePrediction(prediction);
     renderPredictionResults();
   });
+  bindPredictionResultFilters();
   app.querySelector("[data-export-prediction]").addEventListener("click", async (event) => {
     const button = event.currentTarget;
     const label = button.textContent;

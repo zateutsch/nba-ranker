@@ -23,7 +23,9 @@ A web tool with two NBA challenges:
   games have finished, those games are filled with their actual winners and
   excluded from scoring. If an unpicked game finishes while a prediction is in
   progress, it is handled the same way on the next visit; finalized games can
-  no longer be edited.
+  no longer be edited. Finished team results and full-league team detail pages
+  label every game as Correct, Wrong, Excluded, or Pending and can filter the
+  schedule by any of those states.
 - Rankings, team predictions, and full-league predictions can be given custom
   names. Result pages and PNG exports use that name as the main heading and
   show the selected player-group or prediction rules beneath it. Names can also
