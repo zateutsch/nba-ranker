@@ -1770,7 +1770,7 @@ function renderPredictionSetup(selectedSeasonId, selectedTeam) {
 function savedLeaguePredictionCard(prediction) {
   const season = predictionSeason(prediction.seasonId);
   const pickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
-  const complete = pickedGames === season.games.length;
+  const complete = leaguePredictionIsComplete(prediction, season);
   const progress = Math.round((pickedGames / season.games.length) * 100);
   const performance = predictionPerformance(prediction, season.games);
   const updated = new Intl.DateTimeFormat(undefined, {
@@ -1807,6 +1807,10 @@ function savedLeaguePredictionCard(prediction) {
         <button type="button" class="btn ghost small" data-delete-league>Delete</button>
       </div>
     </article>`;
+}
+
+function leaguePredictionIsComplete(prediction, season = predictionSeason(prediction?.seasonId)) {
+  return Boolean(prediction && season && season.games.every((game) => prediction.picks[game.id]));
 }
 
 function bindLeaguePredictionLibrary(root, predictions, onDelete) {
@@ -1997,7 +2001,20 @@ function renderLeaguePredictionHub() {
     app.innerHTML = `<p class="error">Season schedule data is unavailable.</p>`;
     return;
   }
-  const teams = predictionTeams(season);
+  if (leaguePredictionIsComplete(prediction, season)) {
+    location.hash = "#season-prediction/league/results";
+    return;
+  }
+  const teamCompletion = new Map(
+    predictionTeams(season).map((team) => {
+      const games = gamesForTeam(season, team);
+      const pickedGames = games.filter((game) => prediction.picks[game.id]).length;
+      return [team, games.length ? pickedGames / games.length : 0];
+    })
+  );
+  const teams = [...teamCompletion.keys()].sort(
+    (a, b) => teamCompletion.get(b) - teamCompletion.get(a) || a.localeCompare(b)
+  );
   const pickedGames = season.games.filter((game) => prediction.picks[game.id]).length;
   const progress = Math.round((pickedGames / season.games.length) * 1000) / 10;
   app.innerHTML = `
@@ -2031,14 +2048,6 @@ function renderLeaguePredictionHub() {
       <div class="league-team-grid">
         ${teams.map((team) => leagueTeamCard(prediction, season, team)).join("")}
       </div>
-      ${
-        pickedGames === season.games.length
-          ? `<div class="league-complete-actions">
-              <a class="btn primary" href="#season-prediction/league/results">View final standings</a>
-              <a class="btn" href="#season-prediction/league/library">Start another full season</a>
-            </div>`
-          : ""
-      }
     </section>`;
 
   app.querySelector(".league-team-grid").addEventListener("click", (event) => {
@@ -2141,7 +2150,6 @@ function renderLeaguePredictionResults(status = "") {
         <label class="btn ghost file-btn">Import
           <input type="file" accept=".json,application/json" data-import-league />
         </label>
-        <a class="btn primary" href="#season-prediction/league">Back to league</a>
         <a class="btn ghost" href="./">All features</a>
       </div>
       <p class="backup-status league-results-status" role="status">${escapeHtml(status)}</p>
@@ -2331,7 +2339,13 @@ function renderLeagueTeamResults() {
       <span class="results-kicker">${escapeHtml(season.label)} full-league prediction</span>
       ${editableResultTitle(title, prediction.name)}
       <p class="result-rules">${escapeHtml(rules)}</p>
-      ${predictionPerformanceMarkup(performance)}
+      <div class="team-banner results-team-banner" style="${teamStyle(teamNickname(team))}">
+        ${teamLogo(team, "team-logo")}
+        <span class="team-banner-text">
+          <span class="team-banner-name">${escapeHtml(team)}</span>
+          <span class="team-banner-sub">${escapeHtml(season.label)} predicted schedule</span>
+        </span>
+      </div>
       <div class="predicted-record">
         <span>Predicted record</span>
         <strong>${recordText(records.overall)}</strong>
@@ -2341,11 +2355,11 @@ function renderLeagueTeamResults() {
         <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
         <div><span>Games</span><strong>${games.length}</strong></div>
       </div>
+      ${predictionPerformanceMarkup(performance)}
       <div class="results-actions">
         <button type="button" class="btn primary" data-export-league-team-image
           ${complete ? "" : "disabled"}>Save image</button>
         <a class="btn" href="#season-prediction/league/results">All standings</a>
-        <a class="btn ghost" href="#season-prediction/league">League overview</a>
       </div>
       ${compactPredictionScheduleMarkup(predictedSchedule)}
     </section>`;
@@ -2581,6 +2595,10 @@ function renderLeaguePredictionSeries() {
     location.hash = "#season-prediction/league";
     return;
   }
+  if (leaguePredictionIsComplete(prediction, season)) {
+    location.hash = "#season-prediction/league/results";
+    return;
+  }
   const games = gamesForTeam(season, team);
   const series = predictionSeries(prediction, season, team);
   prediction.seriesIndex = Math.min(Math.max(prediction.seriesIndex, 0), series.length - 1);
@@ -2707,7 +2725,12 @@ function renderLeaguePredictionSeries() {
     );
     const firstIncomplete = firstIncompleteSeriesIndex(series, prediction.picks);
     prediction.updatedAt = Date.now();
-    if (nextIncomplete >= 0) {
+    if (leaguePredictionIsComplete(prediction, season)) {
+      prediction.activeTeam = null;
+      prediction.seriesIndex = 0;
+      saveLeaguePrediction(prediction);
+      location.hash = "#season-prediction/league/results";
+    } else if (nextIncomplete >= 0) {
       prediction.seriesIndex = nextIncomplete;
       saveLeaguePrediction(prediction);
       renderLeaguePredictionSeries();

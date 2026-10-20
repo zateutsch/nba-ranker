@@ -14,7 +14,9 @@ A web tool with two NBA challenges:
   once per game, so each result updates both teams' progress and records. Team
   predictions include a full game-by-game results table and shareable image.
   Completed league predictions include conference standings, clickable team
-  results, and PNG exports for both views. The `#my-predictions` page lists
+  results, and PNG exports for both views. Completed full-league predictions
+  open directly to final standings instead of returning to the picking grid.
+  The `#my-predictions` page lists
   saved team and league predictions and supports individual or complete-library
   JSON export/import. Selecting Entire NBA first opens a full-league library
   grouped into in-progress and finished predictions. Finished team and

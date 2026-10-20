@@ -934,8 +934,9 @@ legend {
   flex: none;
   width: 3.5rem;
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   background: var(--logo-plate);
 }
@@ -1043,8 +1044,9 @@ legend {
 .team-option-logo {
   width: 2.25rem;
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   background: var(--surface-2);
 }
@@ -1514,8 +1516,9 @@ legend {
   flex: none;
   width: 2.75rem;
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--surface-2);
   border: 2px solid color-mix(in srgb, var(--team-a) 55%, var(--border));
   border-radius: 50%;
@@ -1841,8 +1844,9 @@ legend {
   flex: none;
   width: 2.5rem;
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--surface-2);
   border: 2px solid color-mix(in srgb, var(--team-a) 55%, var(--border));
   border-radius: 50%;
@@ -2312,8 +2316,9 @@ legend {
 .series-team-logo {
   width: clamp(3.5rem, 10vw, 4.75rem);
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--surface-2);
   border: 3px solid color-mix(in srgb, var(--team-a) 60%, var(--border));
   border-radius: 50%;
@@ -2554,6 +2559,12 @@ legend {
 
 .prediction-results h1 {
   margin-top: 0.35rem;
+}
+
+.results-team-banner {
+  max-width: 46rem;
+  margin: 1.5rem auto 0;
+  text-align: left;
 }
 
 .predicted-record {
