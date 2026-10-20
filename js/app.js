@@ -2339,21 +2339,25 @@ function renderLeagueTeamResults() {
       <span class="results-kicker">${escapeHtml(season.label)} full-league prediction</span>
       ${editableResultTitle(title, prediction.name)}
       <p class="result-rules">${escapeHtml(rules)}</p>
-      <div class="team-banner results-team-banner" style="${teamStyle(teamNickname(team))}">
-        ${teamLogo(team, "team-logo")}
-        <span class="team-banner-text">
-          <span class="team-banner-name">${escapeHtml(team)}</span>
-          <span class="team-banner-sub">${escapeHtml(season.label)} predicted schedule</span>
-        </span>
-      </div>
-      <div class="predicted-record">
-        <span>Predicted record</span>
-        <strong>${recordText(records.overall)}</strong>
-      </div>
-      <div class="record-grid">
-        <div><span>Home</span><strong>${recordText(records.home)}</strong></div>
-        <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
-        <div><span>Games</span><strong>${games.length}</strong></div>
+      <div class="results-team-card" style="${teamStyle(teamNickname(team))}">
+        <div class="results-team-card-main">
+          <span class="results-team-identity">
+            ${teamLogo(team, "league-team-logo")}
+            <span class="results-team-copy">
+              <strong>${escapeHtml(team)}</strong>
+              <small>${escapeHtml(season.label)} predicted schedule</small>
+            </span>
+          </span>
+          <span class="results-team-record">
+            <small>Predicted record</small>
+            <strong>${recordText(records.overall)}</strong>
+          </span>
+        </div>
+        <div class="record-grid">
+          <div><span>Home</span><strong>${recordText(records.home)}</strong></div>
+          <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
+          <div><span>Games</span><strong>${games.length}</strong></div>
+        </div>
       </div>
       ${predictionPerformanceMarkup(performance)}
       <div class="results-actions">
@@ -2827,21 +2831,32 @@ function renderPredictionResults() {
       <span class="results-kicker">${escapeHtml(season.label)} prediction</span>
       ${editableResultTitle(title, prediction.name)}
       <p class="result-rules">${escapeHtml(rules)}</p>
-      ${predictionPerformanceMarkup(performance)}
-      <div class="predicted-record">
-        <span>Predicted record</span>
-        <strong>${recordText(records.overall)}</strong>
-      </div>
-      <div class="record-grid">
-        <div><span>Home</span><strong>${recordText(records.home)}</strong></div>
-        <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
-        <div><span>Games</span><strong>${games.length}</strong></div>
+      <div class="results-team-card" style="${teamStyle(teamNickname(prediction.team))}">
+        <div class="results-team-card-main">
+          <span class="results-team-identity">
+            ${teamLogo(prediction.team, "league-team-logo")}
+            <span class="results-team-copy">
+              <strong>${escapeHtml(prediction.team)}</strong>
+              <small>${escapeHtml(season.label)} predicted schedule</small>
+            </span>
+          </span>
+          <span class="results-team-record">
+            <small>Predicted record</small>
+            <strong>${recordText(records.overall)}</strong>
+          </span>
+        </div>
+        <div class="record-grid">
+          <div><span>Home</span><strong>${recordText(records.home)}</strong></div>
+          <div><span>Away</span><strong>${recordText(records.away)}</strong></div>
+          <div><span>Games</span><strong>${games.length}</strong></div>
+        </div>
       </div>
       ${
         season.complete
           ? ""
           : `<p class="schedule-status is-partial">This reflects the ${season.knownGamesPerTeam} currently scheduled games. Return after NBA Cup scheduling to predict the final ${season.expectedGamesPerTeam - season.knownGamesPerTeam}.</p>`
       }
+      ${predictionPerformanceMarkup(performance)}
       <div class="results-actions">
         <button type="button" class="btn primary" data-export-prediction>Save image</button>
         <button type="button" class="btn" data-export-prediction-data>Export data</button>

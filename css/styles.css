@@ -2561,19 +2561,89 @@ legend {
   margin-top: 0.35rem;
 }
 
-.results-team-banner {
+.results-team-card {
+  min-width: 0;
   max-width: 46rem;
   margin: 1.5rem auto 0;
+  color: var(--text);
   text-align: left;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--team-a) 7%, var(--surface)),
+    var(--surface) 62%
+  );
+  border: 1px solid color-mix(in srgb, var(--team-a) 36%, var(--border));
+  border-radius: var(--radius);
+  box-shadow: inset 0 -3px 0 var(--team-b), var(--shadow-sm);
+  overflow: hidden;
 }
 
-.predicted-record {
+.results-team-card-main {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+}
+
+.results-team-identity {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.results-team-copy {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  max-width: 46rem;
-  margin-top: 1.5rem;
-  margin-inline: auto;
+}
+
+.results-team-copy strong {
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.results-team-card small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.results-team-record {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.results-team-record strong {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 8vw, 4rem);
+  line-height: 0.9;
+  color: var(--text);
+}
+
+.results-team-card .record-grid {
+  max-width: none;
+  margin: 0;
+  gap: 0;
+  border-top: 1px solid color-mix(in srgb, var(--team-a) 28%, var(--border));
+}
+
+.results-team-card .record-grid > div {
+  padding: 0.8rem;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid color-mix(in srgb, var(--team-a) 22%, var(--border));
+  border-radius: 0;
+  text-align: center;
+}
+
+.results-team-card .record-grid > div:last-child {
+  border-right: 0;
 }
 
 .prediction-performance {
@@ -2619,20 +2689,12 @@ legend {
   border-top: 1px solid var(--border);
 }
 
-.predicted-record span,
 .record-grid span {
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-}
-
-.predicted-record strong {
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 14vw, 7rem);
-  line-height: 1;
-  color: var(--text);
 }
 
 .record-grid {
